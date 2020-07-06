@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import navImage from "../Images/navImage.png";
 import profile from "../Images/profile.jpeg";
 import Search from "./Search";
+import { IoMdHome, IoMdPaperPlane, IoMdHeart, IoMdCompass } from "react-icons/io"
+
 import { HomeIcon, HeartIcon, ExploreIcon, InboxIcon } from "./Icons";
 
 const NavContainer = styled.div`
@@ -34,10 +36,11 @@ const NavContainer = styled.div`
 
   li {
     margin-left: 22px;
+    padding-top: 6px;
   }
 
   @media screen and (max-width: 501px) {
-    input {
+    input, .searchIcon {
       display: none;
     }
   }
@@ -60,22 +63,22 @@ const Nav = () => {
         <ul>
           <li>
             <Link to="/">
-              <HomeIcon />
+              <IoMdHome/>
             </Link>
           </li>
           <li>
             <Link to="/direct/inbox">
-              <InboxIcon />
+              <IoMdPaperPlane/>
             </Link>
           </li>
           <li>
             <Link to="/explore">
-              <ExploreIcon />
+              <IoMdCompass />
             </Link>
           </li>
           <li>
             <Link to="/">
-              <HeartIcon />
+              <IoMdHeart />
             </Link>
           </li>
           <li>

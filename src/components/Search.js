@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import {IoMdSearch} from "react-icons/io"
 
 const SearchInput = styled.input`
 border: 1px solid #DBDBDB;
@@ -14,6 +15,7 @@ const Search = () => {
     return (
         <div>
             <SearchInput placeholder='Search'/>
+            <IoMdSearch className='searchIcon'/>
         </div>
     )
 }
