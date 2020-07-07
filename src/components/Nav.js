@@ -11,7 +11,7 @@ const NavContainer = styled.div`
   display: flex;
   justify-content: center;
   top: 0;
-  width: 100%;
+  width: 100vw;
   height: 54px;
   background-color: whitesmoke;
   z-index: 100;
