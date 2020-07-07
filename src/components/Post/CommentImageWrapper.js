@@ -1,13 +1,23 @@
-import React from "react";
+import React, { useState, useRef } from "react";
+import LikeModal from './LikeModal';
+import Modal from 'react-modal';
 import styled from "styled-components";
 
 
 const CommentWrapper = styled.div`
+    border-bottom: 1px solid grey;
     padding: 0px 28px;
+    height: 149px;
 
     .like-button, .user-name{
         font-weight: 600;
         font-size: 14px;
+
+    }
+    .like-button{
+        border: none;
+        padding-left: initial;
+        background: none;
     }
 
     p{
@@ -15,23 +25,62 @@ const CommentWrapper = styled.div`
         padding: 0px 0px 0px 5px;
     }
 
+    // @media screen and (min-width: 319px) {
+    //     border: none;
+    // }
 
 `
 
 const CommentImageWrapper = () => {
+    const [isOpen, setIsOpen] = useState(false);
+    const outside = useRef()
+
+    Modal.setAppElement('#root')
+
+    const closeModal = () => {
+        setIsOpen(false)
+    }
+
+    const customStyles = {
+
+        content: {
+            top: "50%",
+            left: "50%",
+            right: "auto",
+            bottom: "auto",
+            marginRight: "-50%",
+            width: '400px',
+            padding: '0',
+            borderRadius: '5px',
+            transform: "translate(-50%, -50%)",
+            height: '400'
+        },
+        overlay: {
+            backgroundColor: "rgba(0, 0, 0, 0.6)",
+            zIndex: '1000'
+        },
+    };
+
     return (
-        <CommentWrapper>
-            <a className="like-button">5,000,000,000 likes</a>
-
+        <CommentWrapper ref={outside}>
+            <button className="like-button" onClick={() => setIsOpen(true)}>5,000,000,000 likes</button>
+            <Modal
+                isOpen={isOpen}
+                onRequestClose={closeModal}
+                style={customStyles}
+                contentLabel="Example Modal"
+            >
+                <LikeModal />
+            </Modal>
+            <p>
+                <a className="user-name">kingjames</a>
+                <span>Welcome to the jungle we aint playing games. We aint got no money and you got the same disease.</span>
+            </p>
             <p>
                 <a className="user-name">kingjames</a>
                 <span>Welcome to the jungle we aint playing games. We aint got no money and you got the same disease.</span>
             </p>
 
-            <p>
-                <a className="user-name">kingjames</a>
-                <span>Welcome to the jungle we aint playing games. We aint got no money and you got the same disease.</span>
-            </p>
         </CommentWrapper >
     )
 }
