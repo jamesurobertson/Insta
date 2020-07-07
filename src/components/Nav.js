@@ -26,7 +26,7 @@ const NavContainer = styled.div`
 
   .navImage {
     margin-top: 9px;
-    height: 29px;
+    height: 40px;
   }
 
   .nav-icon {
