@@ -10,6 +10,11 @@ const ProfilePostWrapper = styled.section`
     grid-column-gap: .25rem;
     cursor: pointer;
 
+    @media screen and (min-width: 735px) {
+        grid-row-gap: 1.5rem;
+        grid-column-gap: 1.5rem;
+  }
+
 `
 
 const ProfilePosts = () => {

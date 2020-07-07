@@ -16,8 +16,9 @@ function App() {
       <GlobalStyle/>
       <BrowserRouter>
         <Switch>
-          <AuthRoute path="/auth" component={Login}/>
-          <ProtectedRoute exact path="/" component={Home}  />
+          <AuthRoute path="/auth/register" component={Login} />
+          <AuthRoute path="/auth/login" component={Home}/>
+          <ProtectedRoute exact path="/" component={Home} currentUserId={true}  />
           <ProtectedRoute path="/direct/inbox" component={Home} currentUserId={true} />
           <ProtectedRoute path="/profile" component={Profile} currentUserId={true} />
           <ProtectedRoute path="/explore" component={Explore} currentUserId={true} />

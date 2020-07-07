@@ -35,7 +35,9 @@ const ButtonWrapper = styled.button`
   height: 100%;
   padding: 0;
   background: transparent;
+
 `;
+
 
 const ProfileDetails = styled.section`
   display: flex;
@@ -54,11 +56,12 @@ const ProfileDetails = styled.section`
     font-size: 28px;
 
     .profile-details__username {
-      width: 50vw;
-      font-size: 28px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+        width: 50vw;
+        font-size: 28px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
     }
   }
   button {
@@ -73,57 +76,45 @@ const ProfileDetails = styled.section`
 `;
 
 const ProfileFullName = styled.div`
-  padding: 0 16px 21px;
-  font-weight: bold;
-`;
+    padding: 0 16px 21px;
+    font-weight: bold;
+`
 
 const ProfileHeader = (props) => {
   const [profImgUrl, setProfImgUrl] = useState(profile);
-  const [windowSize, setWindowSize] = useState(0);
 
-  useEffect(() => {
-    window.addEventListener("resize", () => {
-      setWindowSize(window.innerWidth);
-    });
-  }, []);
   const changeProfImg = () => {
     console.log("change profile picture!");
   };
 
   const editProfile = () => {
-    console.log("edit profile!");
-  };
+      console.log('edit profile!')
+  }
 
   const logOut = () => {
-    console.log(`logout!`);
-  };
+      console.log(`logout!`)
+  }
 
-  console.log(window.innerWidth);
+  console.log(window.innerWidth)
   return (
-    <>
-      {windowSize < 736 ? (
-        <>
-          {" "}
-          <ProfileHeaderContainer>
-            <ProfileImgWrapper>
-              <ButtonWrapper onClick={changeProfImg}>
-                <img src={profile} alt="avatar" />
-              </ButtonWrapper>
-            </ProfileImgWrapper>
+      <>
+    <ProfileHeaderContainer>
+      <ProfileImgWrapper>
+        <ButtonWrapper onClick={changeProfImg}>
+          <img src={profile} alt="avatar" />
+        </ButtonWrapper>
+      </ProfileImgWrapper>
 
-            <ProfileDetails>
-              <div className="profile-details__header">
-                <div className="profile-details__username">jamesurobertson</div>
-                <IoIosSettings onClick={logOut} />
-              </div>
-              <button onClick={editProfile}>Edit Profile</button>
-            </ProfileDetails>
-          </ProfileHeaderContainer>
-          <ProfileFullName>James Robertson</ProfileFullName>{" "}
-        </>
-      ) : (
-        ""
-      )}
+      <ProfileDetails>
+        <div className="profile-details__header">
+          <div className="profile-details__username">jamesurobertson</div>
+          <IoIosSettings onClick={logOut}/>
+
+        </div>
+        <button onClick={editProfile}>Edit Profile</button>
+      </ProfileDetails>
+    </ProfileHeaderContainer>
+    <ProfileFullName>James Robertson</ProfileFullName>
     </>
   );
 };

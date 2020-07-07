@@ -13,3 +13,5 @@ const AddComment = () => {
         </AddCommentStyle>
     )
 }
+
+export default AddComment
