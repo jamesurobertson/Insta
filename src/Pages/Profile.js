@@ -13,7 +13,7 @@ const ProfileWrapper = styled.div`
 
   @media screen and (min-width: 735px) {
     margin: auto;
-    padding: 55px 20px;
+    padding: 85px 20px 0;
     max-width: 975px;
   }
   /* @media screen and (min-width: 1000px) {
@@ -30,17 +30,10 @@ const Home = () => {
     });
   }, []);
 
-  console.log(windowSize)
   return (
     <ProfileWrapper>
-      {windowSize < 735 ? (
-        <>
-          <ProfileHeader />
-          <ProfileMiddle />{" "}
-        </>
-      ) : (
-        ""
-      )}
+      <ProfileHeader windowSize={windowSize} />
+      <ProfileMiddle windowSize={windowSize} />
       <ProfilePosts />
     </ProfileWrapper>
   );
