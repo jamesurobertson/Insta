@@ -14,12 +14,11 @@ const PostHeaderContainer = styled.div`
 const PostHeader = () => {
   return (
       <PostHeaderContainer>
-        <img>
+        <img/>
 
 
         <p>Juno</p>
       </PostHeaderContainer>
-
   );
 };
 
