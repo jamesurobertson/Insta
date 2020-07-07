@@ -8,6 +8,10 @@ outline: 0;
 padding: 3px 10px;
 height: 28px;
 border-radius: 3px;
+
+.searchIcon {
+    
+}
 `
 
 const Search = () => {

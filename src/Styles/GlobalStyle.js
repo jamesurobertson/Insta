@@ -43,6 +43,7 @@ const GlobalStyle = createGlobalStyle`
     nav, ol, ul {
         list-style:none;
     }
+
 `;
 
 export default GlobalStyle
