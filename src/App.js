@@ -6,9 +6,8 @@ import { ProtectedRoute, AuthRoute } from "./Routes";
 import Home from "./Pages/Home";
 import Profile from "./Pages/Profile";
 import Explore from "./Pages/Explore"
-import Login from "./components/Login";
-import SignUp from "./components/SignUp";
-import GlobalStyle from "./Styles/GlobalStlye"
+import Login from "./components/Login/Login";
+import GlobalStyle from "./Styles/GlobalStyle"
 
 function App() {
   return (
@@ -17,9 +16,8 @@ function App() {
       <GlobalStyle/>
       <BrowserRouter>
         <Switch>
-          <AuthRoute path="/login" component={Login} currentUserId={1} />
-          <AuthRoute path="/register" component={SignUp} currentUserId={1} />
-          <ProtectedRoute exact path="/" component={Home} currentUserId={true} />
+          <AuthRoute path="/auth" component={Login}/>
+          <ProtectedRoute exact path="/" component={Home}  />
           <ProtectedRoute path="/direct/inbox" component={Home} currentUserId={true} />
           <ProtectedRoute path="/profile" component={Profile} currentUserId={true} />
           <ProtectedRoute path="/explore" component={Explore} currentUserId={true} />
