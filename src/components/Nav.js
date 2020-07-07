@@ -6,8 +6,6 @@ import profile from "../Images/profile.jpeg";
 import Search from "./Search";
 import { IoMdHome, IoMdPaperPlane, IoMdHeart, IoMdCompass } from "react-icons/io"
 
-import { HomeIcon, HeartIcon, ExploreIcon, InboxIcon } from "./Icons";
-
 const NavContainer = styled.div`
   position: fixed;
   display: flex;
@@ -16,6 +14,7 @@ const NavContainer = styled.div`
   width: 100%;
   height: 54px;
   background-color: whitesmoke;
+  z-index: 100;
 
   nav {
     display: flex;
@@ -28,6 +27,10 @@ const NavContainer = styled.div`
   .navImage {
     margin-top: 9px;
     height: 29px;
+  }
+
+  .nav-icon {
+      font-size: 25px;
   }
 
   ul {
@@ -63,22 +66,22 @@ const Nav = () => {
         <ul>
           <li>
             <Link to="/">
-              <IoMdHome/>
+              <IoMdHome className='nav-icon'/>
             </Link>
           </li>
           <li>
             <Link to="/direct/inbox">
-              <IoMdPaperPlane/>
+              <IoMdPaperPlane className='nav-icon'/>
             </Link>
           </li>
           <li>
             <Link to="/explore">
-              <IoMdCompass />
+              <IoMdCompass className='nav-icon'/>
             </Link>
           </li>
           <li>
             <Link to="/">
-              <IoMdHeart />
+              <IoMdHeart className='nav-icon'/>
             </Link>
           </li>
           <li>

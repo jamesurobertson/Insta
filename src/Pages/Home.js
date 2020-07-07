@@ -1,5 +1,4 @@
 import React from "react";
-import Nav from "../components/Nav";
 import { toast } from "react-toastify";
 import { Route, Switch } from "react-router-dom";
 import Explore from "./Explore";
