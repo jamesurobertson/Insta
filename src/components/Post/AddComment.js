@@ -36,9 +36,9 @@ const AddCommentStyle = styled.div`
         height: 40px;
     }
 
-    @media screen and (min-width: 319px) {
+    /* @media screen and (min-width: 319px) {
     width: 615px;
-    height: 35px;
+    height: 35px; */
 
     .form-post{
             display: none;
