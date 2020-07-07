@@ -14,8 +14,4 @@ const AddComment = () => {
     )
 }
 
-<<<<<<< HEAD
 export default AddComment
-=======
-export default AddComment
->>>>>>> cd5d4d84a2682c2ac79d86a5eee33b854db21660

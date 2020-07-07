@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { GrGrid } from "react-icons/gr";
+import { FaRegBookmark } from "react-icons/fa";
 
 const ProfileMiddleDataWrapper = styled.section`
   display: flex;
@@ -16,6 +17,16 @@ const ProfileMiddleDataWrapper = styled.section`
     display: flex;
     flex-direction: column;
     align-items: center;
+    display: block;
+  }
+  @media screen and (min-width: 735px) {
+    border-top: none;
+    height: 0;
+    padding: 0;
+
+    .profile-middle__data {
+      display: none;
+    }
   }
 `;
 
@@ -24,11 +35,34 @@ const ProfileMiddleIcons = styled.section`
   justify-content: space-around;
   align-items: center;
   height: 44px;
-  padding-top: 4px;
   border-bottom: 1px solid lightgray;
+
+  .middle-icon-label {
+    padding-left: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    color: grey;
+    text-align: center;
+  }
+
+  & a {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      flex: 0;
+  }
+
+  .active-profile-link .middle-icon-label {
+      color: black;
+  }
+
+  @media screen and (min-width: 735px) {
+      border-bottom: none;
+  }
+
 `;
 
-const ProfileMiddle = () => {
+const ProfileMiddle = ({ windowSize }) => {
   return (
     <>
       <ProfileMiddleDataWrapper>
@@ -46,12 +80,26 @@ const ProfileMiddle = () => {
         </div>
       </ProfileMiddleDataWrapper>
       <ProfileMiddleIcons>
-        <Link to="/profile">
-          <GrGrid size="1.5em" />
-        </Link>
-        <Link to="/profile/saved">
-          <GrGrid size="1.5em" />
-        </Link>
+        <NavLink exact to="/profile" activeClassName='active-profile-link'>
+          {windowSize < 735 ? (
+            <GrGrid size="1.5em" style={{color: 'red'}} />
+          ) : (
+            <>
+              <GrGrid size="1em" />
+              <span className="middle-icon-label">POSTS</span>
+            </>
+          )}
+        </NavLink>
+        <NavLink to="/profile/saved" activeClassName='active-profile-link'>
+          {windowSize < 735 ? (
+            <FaRegBookmark size="1.5em"/>
+          ) : (
+            <>
+              <FaRegBookmark size="1em" />
+              <span className="middle-icon-label">SAVED</span>
+            </>
+          )}
+        </NavLink>
       </ProfileMiddleIcons>
     </>
   );
