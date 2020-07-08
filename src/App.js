@@ -17,7 +17,7 @@ function App() {
       <BrowserRouter>
         <Switch>
 
-          <AuthRoute path="/auth" component={Login} currentUserId={true}/>
+          <AuthRoute path="/auth" component={Login} currentUserId={false}/>
           <ProtectedRoute exact path="/" component={Home} currentUserId={true} />
           <ProtectedRoute path="/direct/inbox" component={Home} currentUserId={true} />
           <ProtectedRoute path="/profile" component={Profile} currentUserId={true} />

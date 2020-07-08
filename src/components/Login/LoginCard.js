@@ -29,7 +29,7 @@ const LoginCard = (props) => {
   return (
       <LoginCardWrapper>
         <img className="navImage" src={navImage} alt="logo" />
-        {window.location.href.match(/login$/) ? <LoginForm/> : <RegisterForm/>}
+        {window.location.href.match(/login/) ? <LoginForm/> : <RegisterForm/>}
       </LoginCardWrapper>
   );
 };
