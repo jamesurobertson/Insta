@@ -19,7 +19,8 @@
     - DELETE /:id - deletes a post for the current logged in user
 
 3. Follows - url_prefix = /api/follow
-    - Get /:id - gets a list of everyone that follows user with :id
+    - Get /:id/follows - gets a list of everyone that follows user with :id
+    - GET /:id/following - gets a list of everyone that user :id is following
     - POST /:id - logged in user follows user with :id
     - DELETE /:id - if logged in user unfollows user with :id
 

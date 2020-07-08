@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import LikeModal from './LikeModal';
+import DynamicModal from '../DynamicModal';
 import Modal from 'react-modal';
 import styled from "styled-components";
 
@@ -30,12 +30,11 @@ const CommentWrapper = styled.div`
     // }
 
 `
+Modal.setAppElement('#root')
 
 const CommentImageWrapper = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const outside = useRef()
 
-    Modal.setAppElement('#root')
 
     const closeModal = () => {
         setIsOpen(false)
@@ -49,20 +48,18 @@ const CommentImageWrapper = () => {
             right: "auto",
             bottom: "auto",
             marginRight: "-50%",
-            width: '400px',
             padding: '0',
             borderRadius: '5px',
-            transform: "translate(-50%, -50%)",
-            height: '400'
+            transform: "translate(-50%, -50%)"
         },
         overlay: {
             backgroundColor: "rgba(0, 0, 0, 0.6)",
-            zIndex: '1000'
+            zIndex: "10000"
         },
     };
 
     return (
-        <CommentWrapper ref={outside}>
+        <CommentWrapper>
             <button className="like-button" onClick={() => setIsOpen(true)}>5,000,000,000 likes</button>
             <Modal
                 isOpen={isOpen}
@@ -70,7 +67,7 @@ const CommentImageWrapper = () => {
                 style={customStyles}
                 contentLabel="Example Modal"
             >
-                <LikeModal />
+                <DynamicModal title={'Likes'} type={'post'}/>
             </Modal>
             <p>
                 <a href="d" className="user-name">kingjames</a>

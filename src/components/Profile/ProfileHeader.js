@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import Modal from "react-modal";
+import DynamicModal from "../DynamicModal";
 import { IoIosSettings } from "react-icons/io";
 
 const ProfileHeaderWrapper = styled.div`
@@ -126,16 +128,51 @@ const ProfileFullName = styled.div`
   font-weight: bold;
 `;
 
+Modal.setAppElement("#root");
+
 const ProfileHeader = (props) => {
   // const [profImgUrl, setProfImgUrl] = useState(profile);
+  const [isFollowersOpen, setIsFollowersOpen] = useState(false);
+  const [isFollowingOpen, setIsFollowingOpen] = useState(false);
 
   const {
     windowSize,
-    numFollowers,
-    numFollows,
+    followers,
+    follows,
     numPosts,
-    userInfo: { bio, full_name: fullName, profile_image_url: profileImg, username },
+    userInfo: {
+      id,
+      bio,
+      full_name: fullName,
+      profile_image_url: profileImg,
+      username,
+    },
   } = props;
+
+  const closeFollowersModal = () => {
+    setIsFollowersOpen(false);
+  };
+
+  const closeFollowingModal = () => {
+    setIsFollowingOpen(false);
+  };
+
+  const customStyles = {
+    content: {
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      padding: "0",
+      borderRadius: "5px",
+      transform: "translate(-50%, -50%)",
+    },
+    overlay: {
+      backgroundColor: "rgba(0, 0, 0, 0.6)",
+      zIndex: "10000",
+    },
+  };
 
   const changeProfImg = () => {
     console.log("change profile picture!");
@@ -147,14 +184,6 @@ const ProfileHeader = (props) => {
 
   const logOut = () => {
     console.log(`logout!`);
-  };
-
-  const showFollowers = () => {
-    console.log("show followers!");
-  };
-
-  const showFollowing = () => {
-    console.log("show following!");
   };
 
   return (
@@ -201,27 +230,41 @@ const ProfileHeader = (props) => {
               <div
                 className="big-profile__detail"
                 style={{ cursor: "pointer" }}
-                onClick={showFollowers}
+                onClick={() => setIsFollowersOpen(true)}
               >
-                <span style={{ fontWeight: "bold" }}>{numFollowers}</span> followers
+                <span style={{ fontWeight: "bold" }}>{followers.length}</span>{" "}
+                followers
               </div>
               <div
                 className="big-profile__detail"
                 style={{ cursor: "pointer" }}
-                onClick={showFollowing}
+                onClick={() => setIsFollowingOpen(true)}
               >
-                <span style={{ fontWeight: "bold" }}>{numFollows}</span> following
+                <span style={{ fontWeight: "bold" }}>{follows.length}</span>{" "}
+                following
               </div>
             </div>
             <div style={{ fontWeight: "bold" }}>{fullName}</div>
           </BigProfileInfo>
         </ProfileHeaderBig>
       )}
-      {windowSize < 735 ? (
-        <ProfileFullName>{fullName}</ProfileFullName>
-      ) : (
-        ""
-      )}
+      {windowSize < 735 ? <ProfileFullName>{fullName}</ProfileFullName> : ""}
+      <Modal
+        isOpen={isFollowersOpen}
+        onRequestClose={closeFollowersModal}
+        style={customStyles}
+        contentLabel="Example Modal"
+      >
+        <DynamicModal title={"Followers"} id={id} followsList={follows} />
+      </Modal>
+      <Modal
+        isOpen={isFollowingOpen}
+        onRequestClose={closeFollowingModal}
+        style={customStyles}
+        contentLabel="Example Modal"
+      >
+        <DynamicModal title={"Following"} id={id} followsList={follows} />
+      </Modal>
     </>
   );
 };

@@ -23,8 +23,8 @@ const ProfileWrapper = styled.div`
 
 const Home = () => {
   const [windowSize, setWindowSize] = useState(window.innerWidth);
-  const [numFollowers, setNumFollowers] = useState('')
-  const [numFollows, setNumFollows] = useState('')
+  const [followers, setFollowers] = useState([])
+  const [follows, setFollows] = useState([])
   const [numPosts, setNumPosts] = useState('')
   const [posts, setPosts] = useState([])
   const [userInfo, setUserInfo] = useState(null)
@@ -42,9 +42,9 @@ const Home = () => {
 
               if (!res.ok) throw res
 
-              const {num_followers, num_follows, num_posts, posts, user} = await res.json()
-              setNumFollowers(num_followers)
-              setNumFollows(num_follows)
+              const {followersList, followsList, num_posts, posts, user} = await res.json()
+              setFollowers(followersList)
+              setFollows(followsList)
               setNumPosts(num_posts)
               setPosts(posts)
               setUserInfo(user)
@@ -57,8 +57,8 @@ const Home = () => {
   if (!userInfo) return null
   return (
     <ProfileWrapper>
-      <ProfileHeader numFollowers={numFollowers} numFollows={numFollows} numPosts={numPosts} userInfo={userInfo} windowSize={windowSize} />
-      <ProfileMiddle numFollowers={numFollowers} numFollows={numFollows} numPosts={numPosts} windowSize={windowSize} />
+      <ProfileHeader followers={followers} follows={follows} numPosts={numPosts} userInfo={userInfo} windowSize={windowSize} />
+      <ProfileMiddle followers={followers} follows={follows} numPosts={numPosts} userInfo={userInfo} windowSize={windowSize} />
       <ProfilePosts posts={posts}/>
     </ProfileWrapper>
   );
