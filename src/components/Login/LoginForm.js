@@ -1,5 +1,7 @@
-import React from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
+import {withRouter} from 'react-router-dom'
+import {backendURL} from "../../config"
 
 const LoginFormWrapper = styled.div`
   display: flex;
@@ -51,26 +53,80 @@ const LoginFormWrapper = styled.div`
 `;
 
 
-const LoginForm = () => {
+const LoginForm = (props) => {
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
+
+    const updateState = (e) => {
+        if (e.target.getAttribute('name') === "username") {
+            setUsername(e.target.value)
+        }
+        else setPassword(e.target.value)
+    } 
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        const data = { username, password }
+        const res = await fetch(`${backendURL}/session`, {
+            method:"POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body : JSON.stringify(data)
+        })
+
+        if (res.status !== 200) {
+            console.log("error")
+        }
+        
+
+        else {
+            const { access_token } = await res.json()
+            localStorage.setItem("Isntgram_access_token", JSON.stringify(access_token))
+            props.history.push("/")
+        }
+
+
+    }
+
     return (
-        <LoginFormWrapper>
-            
-            <form className="form-wrapper">
-                <input type="hidden" />
-                <input placeholder="username"/>
-                <input placeholder="password"/>
-                <button>Log In</button>
-            </form>
-            <button style={{width: "80%"}}>Try Our Demo</button>
+      <LoginFormWrapper>
+        <form onSubmit={handleSubmit} className="form-wrapper">
+          <input type="hidden" />
 
-            
-            <div>
-                Don't have an account?
-                <a href="/auth/register"> Sign up</a>
-            </div>
+          <label style={{ display: "none" }} htmlFor="username">
+            Username
+          </label>
 
-        </LoginFormWrapper>
+          <input
+            required
+            placeholder="Username"
+            name="username"
+            onChange={updateState}
+          />
+
+          <label style={{ display: "none" }} htmlFor="password">
+            Password
+          </label>
+
+          <input
+            required
+            type="password"
+            placeholder="Password"
+            name="password"
+            onChange={updateState}
+          />
+
+          <button type="submit">Log In</button>
+        </form>
+        <button style={{ width: "80%" }}>Try Our Demo</button>
+
+        <div>
+          Don't have an account?
+          <a href="/auth/register"> Sign up</a>
+        </div>
+      </LoginFormWrapper>
     );
 };
 
-export default LoginForm;
+export default withRouter(LoginForm);
