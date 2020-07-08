@@ -1,6 +1,8 @@
 import React, {useContext, useState} from "react";
 import {backendURL} from "../../config"
 import {UserContext} from '../../context'
+import {toast} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 
@@ -72,7 +74,7 @@ const RegisterForm = (props) => {
     const [fullName, setFullName] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [birthday, setBirthday] = useState("");
+    // const [birthday, setBirthday] = useState("");
 
     const updateState = (e) => {
       const value = e.target.value
@@ -92,9 +94,9 @@ const RegisterForm = (props) => {
         case ('confirmPassword'):
             setConfirmPassword(value)
             break
-        case('birthday'):
-            setBirthday(value)
-            break
+        // case('birthday'):
+        //     setBirthday(value)
+        //     break
         default:
             return
         
@@ -104,7 +106,8 @@ const RegisterForm = (props) => {
 
     const handleSubmit = async (e) => {
       e.preventDefault();
-      const data = { username, email, fullName, password, confirmPassword, birthday };
+      const data = { username, email, fullName, password, confirmPassword };
+
       const res = await fetch(`${backendURL}/session/register`, {
         method: "POST",
         headers: {
@@ -114,7 +117,16 @@ const RegisterForm = (props) => {
       });
 
       if (res.status !== 200) {
-        console.log("error");
+            
+        const {error} = await res.json()
+        toast(error, {
+            position: 'top-right',
+            autoClose: 5000,
+            closeOnClick: true,
+
+
+        })
+        
       } else {
         const { user, access_token } = await res.json();
         console.log(user.id);
@@ -131,7 +143,6 @@ const RegisterForm = (props) => {
             Username
           </label>
           <input
-            required
             name="username"
             placeholder="Username"
             onChange={updateState}
@@ -142,7 +153,6 @@ const RegisterForm = (props) => {
           </label>
 
           <input
-            required
             name="email"
             placeholder="Email"
             onChange={updateState}
@@ -153,7 +163,6 @@ const RegisterForm = (props) => {
           </label>
 
           <input
-            required
             name="fullName"
             placeholder="Full Name"
             onChange={updateState}
@@ -164,7 +173,6 @@ const RegisterForm = (props) => {
           </label>
 
           <input
-            required
             name="password"
             type="password"
             placeholder="Password"
@@ -175,14 +183,13 @@ const RegisterForm = (props) => {
           </label>
 
           <input
-            required
             name="confirmPassword"
             type="password"
             placeholder="Confirm Password"
             onChange={updateState}
           />
 
-          <label htmlFor="birthday">Birthday</label>
+          {/* <label htmlFor="birthday">Birthday</label>
 
           <input
             required
@@ -190,7 +197,7 @@ const RegisterForm = (props) => {
             type="date"
             placeholder="Birthday"
             onChange={updateState}
-          />
+          /> */}
 
           <button type="submit">Register</button>
         </form>

@@ -3,6 +3,8 @@ import styled from "styled-components";
 import {withRouter} from 'react-router-dom'
 import {UserContext} from "../../context"
 import {backendURL} from "../../config"
+import {toast} from 'react-toastify'
+import "react-toastify/dist/ReactToastify.css";
 
 const LoginFormWrapper = styled.div`
   display: flex;
@@ -70,6 +72,7 @@ const LoginForm = (props) => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         const data = { username, password }
+
         const res = await fetch(`${backendURL}/session`, {
             method:"POST",
             headers: {
@@ -79,11 +82,13 @@ const LoginForm = (props) => {
         })
 
         if (res.status !== 200) {
-            console.log("error")
-        }
-        
-
-        else {
+            const {error} = await res.json()
+            toast(error, {
+                position: 'top-right',
+                autoClose: 5000,
+                closeOnClick: true,
+            })
+        } else {
             const { user, access_token } = await res.json()
             console.log(user.id)
             localStorage.setItem("Isntgram_access_token", access_token)
@@ -103,7 +108,7 @@ const LoginForm = (props) => {
           </label>
 
           <input
-            required
+            // required
             placeholder="Username"
             name="username"
             onChange={updateState}
@@ -114,7 +119,7 @@ const LoginForm = (props) => {
           </label>
 
           <input
-            required
+            // required
             type="password"
             placeholder="Password"
             name="password"
