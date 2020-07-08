@@ -62,20 +62,21 @@ const ProfileMiddleIcons = styled.section`
 
 `;
 
-const ProfileMiddle = ({ windowSize }) => {
+const ProfileMiddle = (props) => {
+    const {windowSize, numFollowers, numFollows, numPosts} = props
   return (
     <>
       <ProfileMiddleDataWrapper>
         <div className="profile-middle__data">
-          <div>64</div>
+          <div>{numPosts}</div>
           <div>posts</div>
         </div>
         <div className="profile-middle__data">
-          <div>64</div>
+          <div>{numFollowers}</div>
           <div>followers</div>
         </div>
         <div className="profile-middle__data">
-          <div>64</div>
+          <div>{numFollows}</div>
           <div>following</div>
         </div>
       </ProfileMiddleDataWrapper>
