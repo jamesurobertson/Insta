@@ -18,6 +18,7 @@ const Layout1Wrapper = styled.div`
     height: 100%;
     width: 100%;
     animation: ${fadein} 2s .25s forwards;
+    object-fit: cover;
   }
 
   .img1 {
@@ -35,7 +36,7 @@ const Layout1 = (props) => {
     return (
         <Layout1Wrapper>
             {props.componentPhotos.map((photo, i) => {
-                return <img draggable={false} alt="random" key={`img${i + 1}`} src={props.componentPhotos[i]} className={`img${i + 1}`} />;
+                return <img draggable={false} alt={photo.caption} key={`img${i + 1}`} src={photo.image_url} className={`img${i + 1}`} />;
             })}
         </Layout1Wrapper>
     );
