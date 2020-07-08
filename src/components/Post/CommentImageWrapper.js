@@ -73,11 +73,11 @@ const CommentImageWrapper = () => {
                 <LikeModal />
             </Modal>
             <p>
-                <a className="user-name">kingjames</a>
+                <a href="d" className="user-name">kingjames</a>
                 <span>Welcome to the jungle we aint playing games. We aint got no money and you got the same disease.</span>
             </p>
             <p>
-                <a className="user-name">kingjames</a>
+                <a href="dsfd" className="user-name">kingjames</a>
                 <span>Welcome to the jungle we aint playing games. We aint got no money and you got the same disease.</span>
             </p>
 
