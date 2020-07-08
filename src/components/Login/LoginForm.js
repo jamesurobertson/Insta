@@ -1,6 +1,7 @@
-import React, {useState} from "react";
+import React, {useState, useContext} from "react";
 import styled from "styled-components";
 import {withRouter} from 'react-router-dom'
+import {UserContext} from "../../context"
 import {backendURL} from "../../config"
 
 const LoginFormWrapper = styled.div`
@@ -54,6 +55,8 @@ const LoginFormWrapper = styled.div`
 
 
 const LoginForm = (props) => {
+    const {setCurrentUserId} = useContext(UserContext)
+   
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 
@@ -81,8 +84,10 @@ const LoginForm = (props) => {
         
 
         else {
-            const { access_token } = await res.json()
-            localStorage.setItem("Isntgram_access_token", JSON.stringify(access_token))
+            const { user, access_token } = await res.json()
+            console.log(user.id)
+            localStorage.setItem("Isntgram_access_token", access_token)
+            setCurrentUserId(user.id)
             props.history.push("/")
         }
 

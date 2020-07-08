@@ -17,7 +17,7 @@ const Layout2Wrapper = styled.div`
     height: 100%;
     width: 100%;
     opacity: 0;
-    animation: ${fadein} 2s 1s forwards;
+    animation: ${fadein} 2s .25s forwards;
   }
 
   .img1 {
