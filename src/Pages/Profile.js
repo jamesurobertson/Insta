@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import ProfileHeader from "../components/Profile/ProfileHeader";
 import ProfileMiddle from "../components/Profile/ProfileMiddle";
 import ProfilePosts from "../components/Profile/ProfilePosts";
+import {ProfileContext} from '../context'
 
 const ProfileWrapper = styled.div`
   padding-top: 55px;
@@ -20,14 +21,18 @@ const ProfileWrapper = styled.div`
     width: 614px;
   } */
 `;
-
-const Home = () => {
+const Profile = () => {
   const [windowSize, setWindowSize] = useState(window.innerWidth);
-  const [followers, setFollowers] = useState([])
-  const [follows, setFollows] = useState([])
-  const [numPosts, setNumPosts] = useState('')
-  const [posts, setPosts] = useState([])
-  const [userInfo, setUserInfo] = useState(null)
+  const {profileData, setProfileData} = useContext(ProfileContext)
+
+  const [userId, setUserId] = useState(null)
+
+  useEffect(() => {
+      let url = window.location.href.split('/')
+      const userId = url[url.length - 1]
+      setUserId(userId)
+  })
+
 
   useEffect(() => {
     window.addEventListener("resize", () => {
@@ -36,32 +41,32 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
+      if (!userId) return
       (async () => {
           try {
-              const res = await fetch(`http://localhost:5000/api/profile/1`)
+              const res = await fetch(`http://localhost:5000/api/profile/${userId}`)
 
               if (!res.ok) throw res
 
-              const {followersList, followsList, num_posts, posts, user} = await res.json()
-              setFollowers(followersList)
-              setFollows(followsList)
-              setNumPosts(num_posts)
-              setPosts(posts)
-              setUserInfo(user)
+              const data = await res.json()
+              console.log(`data is:`, data)
+              setProfileData(data)
+
+
           } catch (e) {
               console.error(e)
           }
       })()
-  }, [])
+  }, [userId, setProfileData])
 
-  if (!userInfo) return null
+  if (!profileData) return null
   return (
     <ProfileWrapper>
-      <ProfileHeader followers={followers} follows={follows} numPosts={numPosts} userInfo={userInfo} windowSize={windowSize} />
-      <ProfileMiddle followers={followers} follows={follows} numPosts={numPosts} userInfo={userInfo} windowSize={windowSize} />
-      <ProfilePosts posts={posts}/>
+      <ProfileHeader windowSize={windowSize} />
+      <ProfileMiddle windowSize={windowSize} />
+      <ProfilePosts/>
     </ProfileWrapper>
   );
 };
 
-export default Home;
+export default Profile;

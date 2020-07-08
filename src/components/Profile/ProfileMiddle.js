@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext} from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { GrGrid } from "react-icons/gr";
 import { FaRegBookmark } from "react-icons/fa";
 import DynamicModal from "../DynamicModal";
 import Modal from "react-modal";
+import {ProfileContext} from '../../context'
+
 
 const ProfileMiddleDataWrapper = styled.section`
   display: flex;
@@ -67,15 +69,15 @@ const ProfileMiddleIcons = styled.section`
 `;
 
 const ProfileMiddle = (props) => {
+  const {profileData} = useContext(ProfileContext)
+  const {num_posts: numPosts} = profileData
+
   const [isFollowersOpen, setIsFollowersOpen] = useState(false);
   const [isFollowingOpen, setIsFollowingOpen] = useState(false);
   const {
-    windowSize,
-    followers,
-    follows,
-    numPosts,
-    userInfo: { id },
+    windowSize
   } = props;
+
 
   const closeFollowersModal = () => {
     setIsFollowersOpen(false);
@@ -98,7 +100,7 @@ const ProfileMiddle = (props) => {
     },
     overlay: {
       backgroundColor: "rgba(0, 0, 0, 0.6)",
-      zIndex: "10000",
+      zIndex: "500",
     },
   };
 
@@ -114,7 +116,7 @@ const ProfileMiddle = (props) => {
           onClick={() => setIsFollowersOpen(true)}
           className="profile-middle__data"
         >
-          <div className="profile-data__number">{followers.length}</div>
+          <div className="profile-data__number">{profileData.followersList.length}</div>
           <div>followers</div>
         </div>
         <div
@@ -122,7 +124,7 @@ const ProfileMiddle = (props) => {
           onClick={() => setIsFollowingOpen(true)}
           className="profile-middle__data"
         >
-          <div className="profile-data__number">{follows.length}</div>
+          <div className="profile-data__number">{profileData.followingList.length}</div>
           <div>following</div>
         </div>
       </ProfileMiddleDataWrapper>
@@ -154,7 +156,7 @@ const ProfileMiddle = (props) => {
         style={customStyles}
         contentLabel="Example Modal"
       >
-        <DynamicModal title={"Followers"} id={id} followsList={follows} />
+        <DynamicModal closeModal={closeFollowersModal} title={"Followers"}/>
       </Modal>
       <Modal
         isOpen={isFollowingOpen}
@@ -162,7 +164,7 @@ const ProfileMiddle = (props) => {
         style={customStyles}
         contentLabel="Example Modal"
       >
-        <DynamicModal title={"Following"} id={id} followsList={follows} />
+        <DynamicModal closeModal={closeFollowingModal} title={"Following"}/>
       </Modal>
     </>
   );

@@ -5,7 +5,7 @@ import { Route, Redirect } from 'react-router-dom';
 import Nav from "./components/Nav"
 
 export const ProtectedRoute = ({ component: Component, path, exact }) => {
-	const {currentUserId, setCurrentUserId} = useContext(UserContext)
+	const {setCurrentUserFollowingCount, setCurrentUserFollowerCount, currentUserId, setCurrentUserId, setCurrentUserProfilePic} = useContext(UserContext)
 
 	if (!currentUserId && !localStorage.getItem('Isntgram_access_token')) {
 		return <Redirect to='/auth/login'/>
@@ -22,10 +22,13 @@ export const ProtectedRoute = ({ component: Component, path, exact }) => {
 		}).then(res => {
 			return res.json()
 		}).then(obj => {
-			setCurrentUserId(obj.user.id)
-		})	
+            setCurrentUserId(obj.user.id)
+            setCurrentUserProfilePic(obj.user.profile_image_url)
+            setCurrentUserFollowerCount(obj.user.numFollowers)
+            setCurrentUserFollowingCount(obj.user.numFollowing)
+		})
 	}
-	
+
 	return (
         <>
         <Nav/>

@@ -1,10 +1,12 @@
-import React from "react";
+import React, {useContext} from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import navImage from "../Images/navImage.png";
 import profile from "../Images/profile.jpeg";
 import Search from "./Search";
 import { IoMdHome, IoMdPaperPlane, IoMdHeart, IoMdCompass } from "react-icons/io"
+import {UserContext} from '../context'
+
 
 const NavContainer = styled.div`
   position: fixed;
@@ -56,6 +58,7 @@ const NavContainer = styled.div`
 `;
 
 const Nav = () => {
+    const {currentUserId} = useContext(UserContext)
   return (
     <NavContainer>
       <nav>
@@ -85,7 +88,7 @@ const Nav = () => {
             </Link>
           </li>
           <li>
-            <Link to={`/profile`}>
+            <Link to={`/profile/${currentUserId}`}>
               <img
                 style={{
                   width: "24px",
