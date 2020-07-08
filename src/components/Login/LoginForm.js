@@ -56,7 +56,7 @@ const LoginFormWrapper = styled.div`
 
 const LoginForm = (props) => {
     const {setCurrentUserId} = useContext(UserContext)
-   
+
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 
@@ -65,7 +65,7 @@ const LoginForm = (props) => {
             setUsername(e.target.value)
         }
         else setPassword(e.target.value)
-    } 
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -81,11 +81,10 @@ const LoginForm = (props) => {
         if (res.status !== 200) {
             console.log("error")
         }
-        
+
 
         else {
             const { user, access_token } = await res.json()
-            console.log(user.id)
             localStorage.setItem("Isntgram_access_token", access_token)
             setCurrentUserId(user.id)
             props.history.push("/")
