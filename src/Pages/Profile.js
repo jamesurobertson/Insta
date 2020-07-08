@@ -23,6 +23,11 @@ const ProfileWrapper = styled.div`
 
 const Home = () => {
   const [windowSize, setWindowSize] = useState(window.innerWidth);
+  const [numFollowers, setNumFollowers] = useState('')
+  const [numFollows, setNumFollows] = useState('')
+  const [numPosts, setNumPosts] = useState('')
+  const [posts, setPosts] = useState([])
+  const [userInfo, setUserInfo] = useState(null)
 
   useEffect(() => {
     window.addEventListener("resize", () => {
@@ -30,11 +35,31 @@ const Home = () => {
     });
   }, []);
 
+  useEffect(() => {
+      (async () => {
+          try {
+              const res = await fetch(`http://localhost:5000/api/profile/1`)
+
+              if (!res.ok) throw res
+
+              const {num_followers, num_follows, num_posts, posts, user} = await res.json()
+              setNumFollowers(num_followers)
+              setNumFollows(num_follows)
+              setNumPosts(num_posts)
+              setPosts(posts)
+              setUserInfo(user)
+          } catch (e) {
+              console.error(e)
+          }
+      })()
+  }, [])
+
+  if (!userInfo) return null
   return (
     <ProfileWrapper>
-      <ProfileHeader windowSize={windowSize} />
-      <ProfileMiddle windowSize={windowSize} />
-      <ProfilePosts />
+      <ProfileHeader numFollowers={numFollowers} numFollows={numFollows} numPosts={numPosts} userInfo={userInfo} windowSize={windowSize} />
+      <ProfileMiddle numFollowers={numFollowers} numFollows={numFollows} numPosts={numPosts} windowSize={windowSize} />
+      <ProfilePosts posts={posts}/>
     </ProfileWrapper>
   );
 };

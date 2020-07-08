@@ -8,6 +8,9 @@
     - PUT /:id - updates uer info
     - DELETE /:id - deletes a user account
 
+2. Profile - url_prefix = /api/profile
+    - GET /:id - returns info to show in profile page of user :id
+
 2. Posts - url_prefix = /api/post
     - GET / - get all posts from users that logged in user follows + their posts
     - GET /:id - get all posts from user with :id

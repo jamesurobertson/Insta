@@ -7,7 +7,7 @@ const ProfilePostWrapper = styled.section`
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-row-gap: .125rem;
-    grid-column-gap: .25rem;
+    grid-column-gap: .125rem;
     cursor: pointer;
 
     @media screen and (min-width: 735px) {
@@ -17,26 +17,14 @@ const ProfilePostWrapper = styled.section`
 
 `
 
-const ProfilePosts = () => {
-
-    const [postsArray, setPostsArray] = useState(null)
-
-    useEffect(() => {
-        let picArray = []
-        for (let i = 0; i < 20; i++) {
-            picArray.push(profile)
-        }
-
-        setPostsArray(picArray)
-    }, [])
-
-
+const ProfilePosts = ({posts}) => {
+    const [postsArray, setPostsArray] = useState(posts)
 
     if (!postsArray) return null
     return (
         <ProfilePostWrapper>
             {postsArray.map(post => {
-                return <ProfilePost post={post}/>
+                return <ProfilePost key={`post - ${post.id}`} post={post}/>
             })}
         </ProfilePostWrapper>
     )
