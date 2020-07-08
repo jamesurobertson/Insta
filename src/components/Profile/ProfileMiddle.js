@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { GrGrid } from "react-icons/gr";
 import { FaRegBookmark } from "react-icons/fa";
+import DynamicModal from "../DynamicModal";
+import Modal from "react-modal";
 
 const ProfileMiddleDataWrapper = styled.section`
   display: flex;
@@ -17,7 +19,6 @@ const ProfileMiddleDataWrapper = styled.section`
     display: flex;
     flex-direction: column;
     align-items: center;
-    display: block;
   }
   @media screen and (min-width: 735px) {
     border-top: none;
@@ -27,6 +28,10 @@ const ProfileMiddleDataWrapper = styled.section`
     .profile-middle__data {
       display: none;
     }
+  }
+
+  .profile-data__number {
+    font-weight: bold;
   }
 `;
 
@@ -46,44 +51,85 @@ const ProfileMiddleIcons = styled.section`
   }
 
   & a {
-      height: 100%;
-      display: flex;
-      align-items: center;
-      flex: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex: 0;
   }
 
   .active-profile-link .middle-icon-label {
-      color: black;
+    color: black;
   }
 
   @media screen and (min-width: 735px) {
-      border-bottom: none;
+    border-bottom: none;
   }
-
 `;
 
 const ProfileMiddle = (props) => {
-    const {windowSize, numFollowers, numFollows, numPosts} = props
+  const [isFollowersOpen, setIsFollowersOpen] = useState(false);
+  const [isFollowingOpen, setIsFollowingOpen] = useState(false);
+  const {
+    windowSize,
+    followers,
+    follows,
+    numPosts,
+    userInfo: { id },
+  } = props;
+
+  const closeFollowersModal = () => {
+    setIsFollowersOpen(false);
+  };
+
+  const closeFollowingModal = () => {
+    setIsFollowingOpen(false);
+  };
+
+  const customStyles = {
+    content: {
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      padding: "0",
+      borderRadius: "5px",
+      transform: "translate(-50%, -50%)",
+    },
+    overlay: {
+      backgroundColor: "rgba(0, 0, 0, 0.6)",
+      zIndex: "10000",
+    },
+  };
+
   return (
     <>
       <ProfileMiddleDataWrapper>
         <div className="profile-middle__data">
-          <div>{numPosts}</div>
+          <div className="profile-data__number">{numPosts}</div>
           <div>posts</div>
         </div>
-        <div className="profile-middle__data">
-          <div>{numFollowers}</div>
+        <div
+          style={{ cursor: "pointer" }}
+          onClick={() => setIsFollowersOpen(true)}
+          className="profile-middle__data"
+        >
+          <div className="profile-data__number">{followers.length}</div>
           <div>followers</div>
         </div>
-        <div className="profile-middle__data">
-          <div>{numFollows}</div>
+        <div
+          style={{ cursor: "pointer" }}
+          onClick={() => setIsFollowingOpen(true)}
+          className="profile-middle__data"
+        >
+          <div className="profile-data__number">{follows.length}</div>
           <div>following</div>
         </div>
       </ProfileMiddleDataWrapper>
       <ProfileMiddleIcons>
-        <NavLink exact to="/profile" activeClassName='active-profile-link'>
+        <NavLink exact to="/profile" activeClassName="active-profile-link">
           {windowSize < 735 ? (
-            <GrGrid size="1.5em" style={{color: 'red'}} />
+            <GrGrid size="1.5em" style={{ color: "red" }} />
           ) : (
             <>
               <GrGrid size="1em" />
@@ -91,9 +137,9 @@ const ProfileMiddle = (props) => {
             </>
           )}
         </NavLink>
-        <NavLink to="/profile/saved" activeClassName='active-profile-link'>
+        <NavLink to="/profile/saved" activeClassName="active-profile-link">
           {windowSize < 735 ? (
-            <FaRegBookmark size="1.5em"/>
+            <FaRegBookmark size="1.5em" />
           ) : (
             <>
               <FaRegBookmark size="1em" />
@@ -102,6 +148,22 @@ const ProfileMiddle = (props) => {
           )}
         </NavLink>
       </ProfileMiddleIcons>
+      <Modal
+        isOpen={isFollowersOpen}
+        onRequestClose={closeFollowersModal}
+        style={customStyles}
+        contentLabel="Example Modal"
+      >
+        <DynamicModal title={"Followers"} id={id} followsList={follows} />
+      </Modal>
+      <Modal
+        isOpen={isFollowingOpen}
+        onRequestClose={closeFollowingModal}
+        style={customStyles}
+        contentLabel="Example Modal"
+      >
+        <DynamicModal title={"Following"} id={id} followsList={follows} />
+      </Modal>
     </>
   );
 };
