@@ -96,7 +96,6 @@ const LoginForm = (props) => {
     return (
       <LoginFormWrapper>
         <form onSubmit={handleSubmit} className="form-wrapper">
-          <input type="hidden" />
 
           <label style={{ display: "none" }} htmlFor="username">
             Username

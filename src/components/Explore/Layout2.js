@@ -18,6 +18,7 @@ const Layout2Wrapper = styled.div`
     width: 100%;
     opacity: 0;
     animation: ${fadein} 2s .25s forwards;
+    object-fit: cover;
   }
 
   .img1 {
@@ -42,9 +43,9 @@ const Layout2 = (props) => {
           return (
             <img
               draggable={false}
-              alt="random"
+              alt={photo.caption}
               key={`img${i + 1}`}
-              src={props.componentPhotos[i]}
+              src={photo.image_url}
               className={`img${i + 1}`}
             />
           );
