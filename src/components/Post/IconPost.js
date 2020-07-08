@@ -34,6 +34,8 @@ const IconWrapper = styled.div`
 
 
 const IconPost = () => {
+
+
     return (
         <IconWrapper>
             <div className="left-post-icons">

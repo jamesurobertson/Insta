@@ -1,7 +1,7 @@
 import React from "react";
-import { toast } from "react-toastify";
-import { Route, Switch } from "react-router-dom";
-import Explore from "./Explore";
+// import { toast } from "react-toastify";
+// import { Route, Switch } from "react-router-dom";
+// import Explore from "./Explore";
 import styled from "styled-components";
 import Post from "../components/Post/Post"
 
@@ -15,9 +15,9 @@ const Feed = styled.div`
 const Home = () => {
 
   return (
-      <Feed>
-        <Post />
-      </Feed>
+    <Feed>
+      <Post />
+    </Feed>
   )
 };
 

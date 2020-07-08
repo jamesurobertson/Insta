@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import profile from "../../Images/profile.jpeg";
 import { IoIosSettings } from "react-icons/io";
@@ -128,7 +128,7 @@ const ProfileFullName = styled.div`
 `;
 
 const ProfileHeader = ({ windowSize }) => {
-  const [profImgUrl, setProfImgUrl] = useState(profile);
+  // const [profImgUrl, setProfImgUrl] = useState(profile);
 
   const changeProfImg = () => {
     console.log("change profile picture!");
@@ -144,11 +144,11 @@ const ProfileHeader = ({ windowSize }) => {
 
 
   const showFollowers = () => {
-      console.log('show followers!')
+    console.log('show followers!')
   }
 
   const showFollowing = () => {
-      console.log('show following!')
+    console.log('show following!')
   }
 
   return (
@@ -169,30 +169,30 @@ const ProfileHeader = ({ windowSize }) => {
           </ProfileDetails>
         </ProfileHeaderWrapper>
       ) : (
-        <ProfileHeaderBig>
+          <ProfileHeaderBig>
             <BigProfileImageWrapper onClick={changeProfImg}>
-                <img src={profile} alt='avatar'/>
+              <img src={profile} alt='avatar' />
             </BigProfileImageWrapper>
             <BigProfileInfo>
-                <div className='big-profile-details__header'>
-                    <div className='big-profile__username'>jamesurobertson</div>
-                    <button className='big-profile__editProfile-button' onClick={editProfile}> Edit Profile</button>
-                    <IoIosSettings className='big-profile__logout-icon' onClick={logOut}/>
-                </div>
-                <div className='big-profile-details'>
-                    <div className='big-profile__detail'><span style={{fontWeight: 'bold'}}>20</span> posts</div>
-                    <div className='big-profile__detail' style={{cursor: 'pointer'}} onClick={showFollowers}><span style={{fontWeight: 'bold'}}>469</span> followers</div>
-                    <div className='big-profile__detail' style={{cursor: 'pointer'}} onClick={showFollowing}><span style={{fontWeight: 'bold'}}>598</span> following</div>
-                </div>
-                <div style={{fontWeight: 'bold'}} >James Robertson</div>
+              <div className='big-profile-details__header'>
+                <div className='big-profile__username'>jamesurobertson</div>
+                <button className='big-profile__editProfile-button' onClick={editProfile}> Edit Profile</button>
+                <IoIosSettings className='big-profile__logout-icon' onClick={logOut} />
+              </div>
+              <div className='big-profile-details'>
+                <div className='big-profile__detail'><span style={{ fontWeight: 'bold' }}>20</span> posts</div>
+                <div className='big-profile__detail' style={{ cursor: 'pointer' }} onClick={showFollowers}><span style={{ fontWeight: 'bold' }}>469</span> followers</div>
+                <div className='big-profile__detail' style={{ cursor: 'pointer' }} onClick={showFollowing}><span style={{ fontWeight: 'bold' }}>598</span> following</div>
+              </div>
+              <div style={{ fontWeight: 'bold' }} >James Robertson</div>
             </BigProfileInfo>
-        </ProfileHeaderBig>
-      )}
+          </ProfileHeaderBig>
+        )}
       {windowSize < 735 ? (
         <ProfileFullName>James Robertson</ProfileFullName>
       ) : (
-        ""
-      )}
+          ""
+        )}
     </>
   );
 };

@@ -9,19 +9,20 @@ import AddComment from './AddComment';
 const PostWrapper = styled.div`
   height: 679px;
   width: 100%;
-  max-width: 614px;
-  height: 1063px;
+  /* max-width: 614px; */
+  height: 907px;
+
 
   @media screen and (min-width: 640px) {
     border: 1px solid grey;
     border-radius: 3px;
     margin-top: 15px;
-    width: 600px;
+    // width: 200px;
     height: 318.66;
   }
   @media screen and (min-width: 1000px) {
     width: 614px;
-    height: 1063px;
+    height: 925px;
   }
 `;
 

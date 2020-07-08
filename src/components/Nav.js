@@ -66,22 +66,22 @@ const Nav = () => {
         <ul>
           <li>
             <Link to="/">
-              <IoMdHome className='nav-icon'/>
+              <IoMdHome className='nav-icon' />
             </Link>
           </li>
           <li>
             <Link to="/direct/inbox">
-              <IoMdPaperPlane className='nav-icon'/>
+              <IoMdPaperPlane className='nav-icon' />
             </Link>
           </li>
           <li>
             <Link to="/explore">
-              <IoMdCompass className='nav-icon'/>
+              <IoMdCompass className='nav-icon' />
             </Link>
           </li>
           <li>
             <Link to="/">
-              <IoMdHeart className='nav-icon'/>
+              <IoMdHeart className='nav-icon' />
             </Link>
           </li>
           <li>
