@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, {useContext } from "react";
 import styled from "styled-components";
-import profile from "../../Images/profile.jpeg";
 import ProfilePost from "./ProfilePost"
+import {ProfileContext} from '../../context'
+
 
 const ProfilePostWrapper = styled.section`
     display: grid;
@@ -18,12 +19,13 @@ const ProfilePostWrapper = styled.section`
 `
 
 const ProfilePosts = ({posts}) => {
-    const [postsArray, setPostsArray] = useState(posts)
+    const {profileData} = useContext(ProfileContext)
 
-    if (!postsArray) return null
+
+    if (!profileData) return null
     return (
         <ProfilePostWrapper>
-            {postsArray.map(post => {
+            {profileData.posts.map(post => {
                 return <ProfilePost key={`post - ${post.id}`} post={post}/>
             })}
         </ProfilePostWrapper>

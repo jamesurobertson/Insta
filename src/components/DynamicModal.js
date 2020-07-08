@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
+import { UserContext, ProfileContext } from "../context";
 
 const ModalWrapper = styled.div`
   width: 260px;
@@ -64,23 +66,56 @@ const ModalWrapper = styled.div`
 `;
 
 const DynamicModal = (props) => {
-  const { title, type, id, followsList } = props;
+  const {
+    title,
+    closeModal,
+    type,
+
+  } = props;
   const [userArray, setUserArray] = useState([]);
-  const [follows, setFollows] = useState([])
+  const [currentUserFollows, setCurrentUserFollows] = useState([]);
+  const [endpoint, setEndpoint] = useState("");
+
+  const { currentUserId } = useContext(UserContext);
+  const {profileData} = useContext(ProfileContext);
+  const {user: {id}} = profileData
+  useEffect(() => {
+    if (!currentUserId) return;
+    (async () => {
+      try {
+        const res = await fetch(
+          `http://localhost:5000/api/follow/${currentUserId}/following`
+        );
+
+        if (!res.ok) throw res;
+
+        const { users } = await res.json();
+        const userIds = users.map((user) => user.id);
+        setCurrentUserFollows(userIds);
+      } catch (e) {
+        console.error(e);
+      }
+    })();
+  }, [currentUserId]);
+
 
   useEffect(() => {
-    (async () => {
-      let endpoint;
-      if (title === "Likes" && type === "post") {
-        endpoint = `post/${id}`;
-      } else if (title === "Likes" && type === "comment") {
-        endpoint = `comment/${id}`;
-      } else if (title === "Followers") {
-        endpoint = `api/follow/${id}`;
-      } else {
-        endpoint = `api/follow/${id}/following`;
-      }
+    let url;
+    if (title === "Likes" && type === "post") {
+      url = `post/${id}`;
+    } else if (title === "Likes" && type === "comment") {
+      url = `comment/${id}`;
+    } else if (title === "Followers") {
+      url = `api/follow/${id}`;
+    } else {
+      url = `api/follow/${id}/following`;
+    }
+    setEndpoint(url);
+  }, [id, title, type]);
 
+  useEffect(() => {
+    if (!endpoint) return
+    (async () => {
       try {
         const res = await fetch(`http://localhost:5000/${endpoint}`);
 
@@ -92,26 +127,57 @@ const DynamicModal = (props) => {
         console.error(e);
       }
     })();
-  }, []);
+  }, [currentUserFollows, endpoint]);
 
-  useEffect(() => {
-      let followsIdList = []
-      followsList.forEach(user => {
-          followsIdList.push(user.user_followed_id)
-      })
-      setFollows(followsIdList)
-  }, [followsList])
-
-  const followUser = (e, id) => {
+  const followUser = async (e, userFollowedId) => {
     e.preventDefault();
-    console.log(`follow user ${id}!`);
+    const body = { userId: currentUserId, userFollowedId };
+    try {
+      const res = await fetch(`http://localhost:5000/api/follow`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (!res.ok) throw res;
+
+      const response = await res.json();
+      const { user_followed_id: id } = response
+
+      setCurrentUserFollows([...currentUserFollows, id]);
+    } catch (e) {
+      console.error(e);
+    }
   };
 
-  const unfollowUser = (e, id) => {
+  const unfollowUser = async (e, userFollowedId) => {
     e.preventDefault();
-    console.log(`unfollow user ${id}!`);
+    const body = { userId: currentUserId, userFollowedId };
+    try {
+      const res = await fetch(`http://localhost:5000/api/follow`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (!res.ok) throw res;
+
+      const {user_followed_id: id} = await res.json();
+
+      let currentUserFollowsCopy = [...currentUserFollows];
+      const index = currentUserFollowsCopy.indexOf(id);
+      currentUserFollowsCopy.splice(index, 1);
+      setCurrentUserFollows(currentUserFollowsCopy);
+
+    } catch (e) {
+      console.error(e);
+    }
   };
-  if (!userArray) return null;
+  if (!profileData) return null;
   return (
     <ModalWrapper>
       <h1 className="dynamic-modal__header">{title}</h1>
@@ -125,28 +191,45 @@ const DynamicModal = (props) => {
         return (
           <div key={`userRow ${id}`} className="dynamic-modal__row">
             <div className="user-row">
-              <img
-                className="dynamic-modal__row-image"
-                src={profileImg}
-                alt="corner-img"
-              />
+              <Link onClick={() => closeModal()} to={`/profile/${id}`}>
+                <img
+                  className="dynamic-modal__row-image"
+                  src={profileImg}
+                  alt="corner-img"
+                />
+              </Link>
 
               <div>
-                <div className="dynamic-modal__username">{username}</div>
+                <Link onClick={() => closeModal()} to={`/profile/${id}`}>
+                  <div className="dynamic-modal__username">{username}</div>
+                </Link>
                 <div className="dynamic-modal__fullName">{fullName}</div>
               </div>
             </div>
-            {follows.includes(id) ? <button style={{ outline: '0', textAlign: 'center', border: '1px solid lightgrey', backgroundColor: 'white', color: '#262626'}}
-              onClick={(e) => unfollowUser(e, id)}
-              className="dynamic-modal__follow-button"
-            >
-              Following
-            </button> : <button
-              onClick={(e) => followUser(e, id)}
-              className="dynamic-modal__follow-button"
-            >
-              Follow
-            </button>}
+            {currentUserId === id ? (
+              ""
+            ) : currentUserFollows.includes(id) ? (
+              <button
+                style={{
+                  outline: "0",
+                  textAlign: "center",
+                  border: "1px solid lightgrey",
+                  backgroundColor: "white",
+                  color: "#262626",
+                }}
+                onClick={(e) => unfollowUser(e, id)}
+                className="dynamic-modal__follow-button"
+              >
+                Following
+              </button>
+            ) : (
+              <button
+                onClick={(e) => followUser(e, id)}
+                className="dynamic-modal__follow-button"
+              >
+                Follow
+              </button>
+            )}
           </div>
         );
       })}

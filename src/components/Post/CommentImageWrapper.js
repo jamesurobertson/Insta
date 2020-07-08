@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import DynamicModal from '../DynamicModal';
 import Modal from 'react-modal';
 import styled from "styled-components";
@@ -67,7 +67,7 @@ const CommentImageWrapper = () => {
                 style={customStyles}
                 contentLabel="Example Modal"
             >
-                <DynamicModal title={'Likes'} type={'post'}/>
+                <DynamicModal closeModal={closeModal} title={'Likes'} type={'post'}/>
             </Modal>
             <p>
                 <a href="d" className="user-name">kingjames</a>
