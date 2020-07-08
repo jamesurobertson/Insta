@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import styled from "styled-components";
+import {backendURL} from '../../config'
 import Layout1 from "./Layout1"
 import Layout2 from "./Layout2"
 import Layout3 from "./Layout3"
@@ -28,29 +29,30 @@ const ExploreGrid = (props) => {
 
         let photoArray = []
 
-        for (let i = 0; i < 20; i++) {
-            let picRandomInt = getRandomInt(1, 100)
-            photoArray.push(`https://picsum.photos/id/${picRandomInt}/614/614`)    
-        }
+        fetch(`${backendURL}/post`, {
+            Authorization: localStorage.getItem('Isntgram_access_token')
+        }).then((res)=>{
+            return res.json()
+        }).then((obj)=>{
+            photoArray = obj.posts
+            setPhotos(photoArray);
 
-        setPhotos(photoArray)
+            let templateArray = [];
+            let squares = photoArray.length;
 
-        let templateArray = []
-        let squares = photoArray.length
+            while (squares >= 3) {
+               const randomInt = getRandomInt(1, 4);
 
-        while(squares >= 3) {
-            const randomInt = getRandomInt(1, 4)
+               if (templateArray[0] === randomInt) {
+                 continue;
+               }
 
-            if (templateArray[0] === randomInt){
-                continue
-            }
+               templateArray.unshift(randomInt);
+               squares -= 3;
+             }
 
-            templateArray.unshift(randomInt)
-            squares -= 3
-        }
-
-        setTemplate(templateArray)
-       
+             setTemplate(templateArray);
+        })
     }, [photos.length])
 
     const displayLayout = (layout, i) => {
