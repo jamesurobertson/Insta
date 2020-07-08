@@ -1,5 +1,8 @@
-import React from "react";
+import React, {useContext, useState} from "react";
+import {backendURL} from "../../config"
+import {UserContext} from '../../context'
 import styled from "styled-components";
+import { withRouter } from "react-router-dom";
 
 const RegisterFormWrapper = styled.div`
   display: flex;
@@ -58,27 +61,145 @@ const RegisterFormWrapper = styled.div`
 `;
 
 
-const RegisterForm = () => {
-    return (
-        <RegisterFormWrapper>
-            <form className="form-wrapper">
-                <input type="hidden"/>
-                <input name="username" placeholder="username" />
-                <input name="email" placeholder="email" />
-                <input name="fullName" placeholder="full name" />
-                <input name="password" type="password" placeholder="password" />
-                <input type="password" placeholder="confirm password" />
-                <label htmlFor="birthday">Birthday</label>
-                <input type="date" placeholder="birthday" />
-                <button>Register</button>
-            </form>
-            <div>
-                Have an account?
-                <a href="/auth/login"> Login</a>
-            </div>
 
-        </RegisterFormWrapper>
+
+const RegisterForm = (props) => {
+
+    const { setCurrentUserId } = useContext(UserContext);
+
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const [fullName, setFullName] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [birthday, setBirthday] = useState("");
+
+    const updateState = (e) => {
+      const value = e.target.value
+      switch (e.target.getAttribute('name')){
+        case ('username'):
+            setUsername(value)
+            break
+        case ('email'):
+            setEmail(value)
+            break
+        case ('fullName'):
+            setFullName(value)
+            break
+        case ('password'):
+            setPassword(value)
+            break
+        case ('confirmPassword'):
+            setConfirmPassword(value)
+            break
+        case('birthday'):
+            setBirthday(value)
+            break
+        default:
+            return
+        
+      }
+     
+    };
+
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      const data = { username, email, fullName, password, confirmPassword, birthday };
+      const res = await fetch(`${backendURL}/session/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (res.status !== 200) {
+        console.log("error");
+      } else {
+        const { user, access_token } = await res.json();
+        console.log(user.id);
+        localStorage.setItem("Isntgram_access_token", access_token);
+        setCurrentUserId(user.id);
+        props.history.push("/");
+      }
+    };
+
+    return (
+      <RegisterFormWrapper>
+        <form onSubmit={handleSubmit} className="form-wrapper">
+          <label style={{ display: "none" }} htmlFor="username">
+            Username
+          </label>
+          <input
+            required
+            name="username"
+            placeholder="Username"
+            onChange={updateState}
+          />
+
+          <label style={{ display: "none" }} htmlFor="email">
+            Email
+          </label>
+
+          <input
+            required
+            name="email"
+            placeholder="Email"
+            onChange={updateState}
+          />
+
+          <label style={{ display: "none" }} htmlFor="fullName">
+            Full Name
+          </label>
+
+          <input
+            required
+            name="fullName"
+            placeholder="Full Name"
+            onChange={updateState}
+          />
+
+          <label style={{ display: "none" }} htmlFor="password">
+            Password
+          </label>
+
+          <input
+            required
+            name="password"
+            type="password"
+            placeholder="Password"
+            onChange={updateState}
+          />
+          <label style={{ display: "none" }} htmlFor="confirmPassword">
+            Confirm Password
+          </label>
+
+          <input
+            required
+            name="confirmPassword"
+            type="password"
+            placeholder="Confirm Password"
+            onChange={updateState}
+          />
+
+          <label htmlFor="birthday">Birthday</label>
+
+          <input
+            required
+            name="birthday"
+            type="date"
+            placeholder="Birthday"
+            onChange={updateState}
+          />
+
+          <button type="submit">Register</button>
+        </form>
+        <div>
+          Have an account?
+          <a href="/auth/login"> Login</a>
+        </div>
+      </RegisterFormWrapper>
     );
 };
 
-export default RegisterForm;
+export default withRouter(RegisterForm);

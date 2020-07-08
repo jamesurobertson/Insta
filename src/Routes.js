@@ -4,7 +4,7 @@ import {UserContext} from "./context"
 import { Route, Redirect } from 'react-router-dom';
 import Nav from "./components/Nav"
 
-export const ProtectedRoute = ({ component: Component, path, exact }) => {
+export const ProtectedRoute = ({ component: Component, path, exact, }) => {
 	const {currentUserId, setCurrentUserId} = useContext(UserContext)
 
 	if (!currentUserId && !localStorage.getItem('Isntgram_access_token')) {
@@ -23,7 +23,10 @@ export const ProtectedRoute = ({ component: Component, path, exact }) => {
 			return res.json()
 		}).then(obj => {
 			setCurrentUserId(obj.user.id)
-		})	
+		}).catch(error =>{
+			window.location.href="/auth/login"
+			console.log(error)
+		})
 	}
 	
 	return (
