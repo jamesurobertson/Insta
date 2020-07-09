@@ -18,7 +18,7 @@ const LoginCardWrapper = styled.div`
 
  .navImage {
      margin-top: 20px;
-     width: 60%;
+     width: 25vh;
      max-width: 200px;
      object-fit: contain;
  }

@@ -28,6 +28,7 @@ const NavContainer = styled.div`
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    max-width: 614px;
     padding: 0 20px;
 
 
@@ -35,7 +36,7 @@ const NavContainer = styled.div`
 
   .navImage {
     margin-top: 9px;
-    width: 40vw;
+   
     height: 40px;
   }
 
@@ -66,11 +67,6 @@ const NavContainer = styled.div`
     }
   }
 
-  @media screen and (min-width: 1000px) {
-    nav {
-      width: 975px;
-    }
-  }
 
   .active {
     color: #0095f6 !important;

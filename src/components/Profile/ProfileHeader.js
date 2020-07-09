@@ -156,7 +156,7 @@ const ProfileHeader = (props) => {
   const [isFollowersOpen, setIsFollowersOpen] = useState(false);
   const [isFollowingOpen, setIsFollowingOpen] = useState(false);
   const [currentUserFollowingList, setCurrentUserFollowingList] = useState([]);
-  const [openEditPicModal, setOpenEditPicModal] = useState(true)
+  const [openEditPicModal, setOpenEditPicModal] = useState(false)
 
 
   const closeEditPicModal = () => {
