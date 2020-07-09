@@ -222,7 +222,7 @@ const ProfileHeader = (props) => {
               <div className="profile-details__username">{username}</div>
               <IoIosSettings onClick={logOut} />
             </div>
-            {currentUserId == profileId ? (
+            {currentUserId === profileId ? (
               <button onClick={editProfile}>Edit Profile</button>
             ) : currentUserFollowingList.includes(profileId) ?
               <button style={{ width: "85px" }} onClick={unfollowUser}>
@@ -240,7 +240,7 @@ const ProfileHeader = (props) => {
           <BigProfileInfo>
             <div className="big-profile-details__header">
               <div className="big-profile__username">{username}</div>
-              {currentUserId == profileId ? (
+              {currentUserId === profileId ? (
                 <button
                   className="big-profile__editProfile-button"
                   onClick={editProfile}

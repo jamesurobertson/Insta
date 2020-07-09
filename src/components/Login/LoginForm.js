@@ -57,7 +57,11 @@ const LoginFormWrapper = styled.div`
 
 
 const LoginForm = (props) => {
-    const {setCurrentUserId} = useContext(UserContext)
+    const {
+        setCurrentUserId, 
+        setCurrentUserFollowerCount, 
+        setCurrentUserFollowingCount, 
+        setCurrentUserProfilePic} = useContext(UserContext)
 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -91,7 +95,10 @@ const LoginForm = (props) => {
         } else {
             const { user, access_token } = await res.json()
             localStorage.setItem("Isntgram_access_token", access_token)
-            setCurrentUserId(user.id)
+             setCurrentUserId(user.id);
+             setCurrentUserProfilePic(user.profile_image_url);
+             setCurrentUserFollowerCount(user.numFollowers);
+             setCurrentUserFollowingCount(user.numFollowing);
             props.history.push("/")
         }
 

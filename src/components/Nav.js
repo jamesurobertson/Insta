@@ -1,12 +1,11 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 import { NavLink, Link } from "react-router-dom";
-import navImage from "../Images/navImage.png";
-import Search from "./Search";
+import navImage from "../Images/logo.svg";
 import {
   RiHome5Line,
   RiCamera2Line,
-  RiCompass4Line,
+
   RiHeartLine,
   RiSearchLine
 } from "react-icons/ri";
