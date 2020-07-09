@@ -1,14 +1,11 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
-import { NavLink, Link } from "react-router-dom";
-import navImage from "../Images/logo.svg"
-import MobileNav from "./MobileNav";
+import { NavLink } from "react-router-dom";
 import {
   RiHome5Line,
   RiCamera2Line,
-
   RiHeartLine,
-  RiSearchLine
+  RiSearchLine,
 } from "react-icons/ri";
 import { UserContext } from "../context";
 
@@ -16,7 +13,7 @@ const NavContainer = styled.div`
   position: fixed;
   display: flex;
   justify-content: center;
-  top: 0;
+  bottom: 0;
   border-bottom: 1px solid #dfdfdf;
   background-color: white;
   width: 100vw;
@@ -29,8 +26,6 @@ const NavContainer = styled.div`
     align-items: center;
     width: 100%;
     padding: 0 20px;
-
-
   }
 
   .navImage {
@@ -44,7 +39,9 @@ const NavContainer = styled.div`
   }
 
   ul {
+    width: 100%;
     display: flex;
+    justify-content: space-around;
   }
 
   li {
@@ -52,18 +49,8 @@ const NavContainer = styled.div`
     padding-top: 6px;
   }
 
-  @media screen and (max-width: 475px) {
-    nav {
-      display: flex;
-      justify-content: center;
-    }
-    nav ul {
-      display: none;
-    }
-    .navImage{
-      display: flex;
-      justify-content: center;
-    }
+  @media screen and (min-width: 475px) {
+    display: none
   }
 
   @media screen and (min-width: 1000px) {
@@ -98,15 +85,11 @@ const NavProfileContainer = styled.div`
   }
 `;
 
-const Nav = () => {
+const MobileNav = () => {
   const { currentUserProfilePic, currentUserId } = useContext(UserContext);
   return (
-    <>
     <NavContainer>
       <nav>
-        <Link to="/">
-          <img className="navImage" src={navImage} alt="logo" />
-        </Link>
         <ul>
           <li>
             <NavLink exact activeClassName="active" to="/">
@@ -145,9 +128,7 @@ const Nav = () => {
         </ul>
       </nav>
     </NavContainer>
-    <MobileNav/>
-    </>
   );
 };
 
-export default Nav;
+export default MobileNav;
