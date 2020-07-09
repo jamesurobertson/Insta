@@ -8,7 +8,7 @@ import GitIcons from "./GitIcons"
 const LogIn = () => {
     return (
         <>
-        <Loading/>
+        <Loading position={{top: "-40%"}}/>
         <LoginCard/>
         <GitIcons/>
         </>

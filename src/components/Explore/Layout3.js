@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from "styled-components"
-import { fadein } from "../../Styles/animations";
+import { fadeIn } from "../../Styles/animations";
 
 const Layout3Wrapper = styled.div`
   display: grid;
@@ -11,13 +11,13 @@ const Layout3Wrapper = styled.div`
   grid-gap: 1vw;
   margin-bottom: 1vw;
   height: calc((100vw / 3) * 2);
-  max-height: 624px;
+  max-height: 409px;
 
   img {
     height: 100%;
     width: 100%;
     opacity: 0;
-    animation: ${fadein} 2s .25s forwards;
+    animation: ${fadeIn} 1s .25s forwards;
     object-fit: cover;
   }
 
