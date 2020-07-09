@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 
 const CommentWrapper = styled.div`
-    border-bottom: 1px solid grey;
+    border-bottom: 1px solid #dfdfdf;
     padding: 0px 28px;
     height: 149px;
 

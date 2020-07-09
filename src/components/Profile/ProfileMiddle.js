@@ -14,8 +14,8 @@ const ProfileMiddleDataWrapper = styled.section`
   align-items: center;
   height: 61px;
   padding: 12px 0;
-  border-top: 1px solid lightgray;
-  border-bottom: 1px solid lightgray;
+  border-top: 1px solid #dfdfdf;
+  border-bottom: 1px solid #dfdfdf;
 
   .profile-middle__data {
     display: flex;
@@ -42,7 +42,7 @@ const ProfileMiddleIcons = styled.section`
   justify-content: space-around;
   align-items: center;
   height: 44px;
-  border-bottom: 1px solid lightgray;
+  border-bottom: 1px solid #dfdfdf;
 
   .middle-icon-label {
     padding-left: 5px;
@@ -60,7 +60,7 @@ const ProfileMiddleIcons = styled.section`
   }
 
   .active-profile-link .middle-icon-label {
-    color: black;
+    color: #262626;
   }
 
   @media screen and (min-width: 735px) {

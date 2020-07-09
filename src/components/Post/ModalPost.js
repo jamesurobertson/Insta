@@ -13,7 +13,7 @@ const ModalStyle = styled.div`
         height: 48px;
         background: white;
         border: none;
-        border-bottom: 1px solid lightgray;
+        border-bottom: 1px solid #dfdfdf;
         outline: none;
     }
 
@@ -26,7 +26,7 @@ const ModalStyle = styled.div`
     }
 
     button:active{
-        background: lightgrey;
+        background: #dfdfdf;
         outline: none;
     }
 

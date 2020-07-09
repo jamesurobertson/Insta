@@ -12,7 +12,7 @@ const ModalWrapper = styled.div`
     text-align: center;
     padding: 17px;
     background-color: white;
-    border-bottom: 1px solid lightgrey;
+    border-bottom: 1px solid #dfdfdf;
   }
 
   .dynamic-modal__row {
@@ -213,7 +213,7 @@ const DynamicModal = (props) => {
                 style={{
                   outline: "0",
                   textAlign: "center",
-                  border: "1px solid lightgrey",
+                  border: "1px solid #dfdfdf",
                   backgroundColor: "white",
                   color: "#262626",
                 }}

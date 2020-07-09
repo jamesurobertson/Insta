@@ -1,21 +1,26 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import navImage from "../Images/navImage.png";
-import profile from "../Images/profile.jpeg";
 import Search from "./Search";
-import { IoMdHome, IoMdPaperPlane, IoMdHeart, IoMdCompass } from "react-icons/io"
-import {UserContext} from '../context'
-
+import {
+  RiHome5Line,
+  RiCamera2Line,
+  RiCompass4Line,
+  RiHeartLine,
+  RiSearchLine
+} from "react-icons/ri";
+import { UserContext } from "../context";
 
 const NavContainer = styled.div`
   position: fixed;
   display: flex;
   justify-content: center;
   top: 0;
+  border-bottom: 1px solid #dfdfdf;
+  background-color: white;
   width: 100vw;
   height: 54px;
-  background-color: whitesmoke;
   z-index: 100;
 
   nav {
@@ -32,7 +37,7 @@ const NavContainer = styled.div`
   }
 
   .nav-icon {
-      font-size: 25px;
+    font-size: 25px;
   }
 
   ul {
@@ -45,61 +50,86 @@ const NavContainer = styled.div`
   }
 
   @media screen and (max-width: 501px) {
-    input, .searchIcon {
+    input,
+    .searchIcon {
       display: none;
     }
   }
 
   @media screen and (min-width: 1000px) {
-      nav {
-          width:975px;
-      }
+    nav {
+      width: 975px;
+    }
+  }
+
+  .active {
+    color: #0095f6 !important;
+  }
+
+  .activeAvatar div{
+      padding: 1px;
+    border: 2px solid #0095f6;
+  }
+`;
+
+const NavProfileContainer = styled.div`
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .navProfilePic {
+    width: 23px;
+    height: 23px;
+    object-fit: contain;
+    border-radius: 12px;
   }
 `;
 
 const Nav = () => {
-    const {currentUserId} = useContext(UserContext)
+  const { currentUserProfilePic, currentUserId } = useContext(UserContext);
   return (
     <NavContainer>
       <nav>
         <Link to="/">
           <img className="navImage" src={navImage} alt="logo" />
         </Link>
-        <Search />
         <ul>
           <li>
-            <Link to="/">
-              <IoMdHome className='nav-icon' />
-            </Link>
+            <NavLink exact activeClassName="active" to="/">
+              <RiHome5Line className="nav-icon" />
+            </NavLink>
           </li>
           <li>
-            <Link to="/direct/inbox">
-              <IoMdPaperPlane className='nav-icon' />
-            </Link>
+            <NavLink activeClassName="active" to="/upload">
+              <RiCamera2Line className="nav-icon" />
+            </NavLink>
           </li>
           <li>
-            <Link to="/explore">
-              <IoMdCompass className='nav-icon' />
-            </Link>
+            <NavLink activeClassName="active" to="/explore">
+              <RiSearchLine className="nav-icon" />
+            </NavLink>
           </li>
           <li>
-            <Link to="/">
-              <IoMdHeart className='nav-icon' />
-            </Link>
+            <NavLink activeClassName="active" to="/notifications">
+              <RiHeartLine className="nav-icon" />
+            </NavLink>
           </li>
           <li>
-            <Link to={`/profile/${currentUserId}`}>
-              <img
-                style={{
-                  width: "24px",
-                  height: "24px",
-                  objectFit: "cover",
-                  borderRadius: "12px",
-                }}
-                src={profile}
-                alt="avatar"
-              />
-            </Link>
+            <NavLink
+              activeClassName="activeAvatar"
+              to={`/profile/${currentUserId}`}
+            >
+              <NavProfileContainer>
+                <img
+                  className="navProfilePic"
+                  src={currentUserProfilePic}
+                  alt="avatar"
+                />
+              </NavProfileContainer>
+            </NavLink>
           </li>
         </ul>
       </nav>

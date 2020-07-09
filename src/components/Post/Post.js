@@ -14,7 +14,7 @@ const PostWrapper = styled.div`
 
 
   @media screen and (min-width: 640px) {
-    border: 1px solid grey;
+    border: 1px solid #dfdfdf;
     border-radius: 3px;
     margin-top: 15px;
     // width: 200px;

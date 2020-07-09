@@ -10,7 +10,7 @@ const PostHeaderWrapper = styled.div`
   justify-content: space-between;
   height: 60px;
   padding: 16px;
-  border-bottom: 1px solid grey;
+  border-bottom: 1px solid #dfdfdf;
 
   .post-header-image {
     display: flex;
@@ -36,13 +36,6 @@ const PostHeaderWrapper = styled.div`
     border: none;
     padding: 0;
   }
-
-  .modal{
-    width: 400px;
-    border: 1px solid grey;
-    margin: 0x auto;
-    margin-top: 10px;
-    background: grey;
 
   .ReactModal__Body--open {
   overflow-y: hidden;

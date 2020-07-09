@@ -48,6 +48,10 @@ const GlobalStyle = createGlobalStyle`
         list-style:none;
     }
 
+    body {
+      background-color: #fafafa;
+    }
+
 `;
 
 export default GlobalStyle

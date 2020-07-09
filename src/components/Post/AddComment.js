@@ -25,14 +25,14 @@ const AddCommentStyle = styled.div`
     }
 
     .comment-wrapper{
-        border: 1px solid black
+        border: 1px solid #262626
         height: 40px;
 
     }
 
     .form-post{
         bottom: 0px;
-        border: 1px solid black
+        border: 1px solid #262626
         height: 40px;
     }
 

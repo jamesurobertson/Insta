@@ -1,9 +1,9 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 import Modal from "react-modal";
 import DynamicModal from "../DynamicModal";
 import { IoIosSettings } from "react-icons/io";
-import { ProfileContext } from "../../context";
+import { ProfileContext, UserContext } from "../../context";
 
 const ProfileHeaderWrapper = styled.div`
   display: flex;
@@ -62,7 +62,7 @@ const ProfileDetails = styled.section`
     height: 30px;
     background: transparent;
     padding: 5px 9px;
-    border: 1px solid lightgray;
+    border: 1px solid #dfdfdf;
     border-radius: 3px;
     font-size: 14px;
     font-weight: bold;
@@ -99,7 +99,7 @@ const BigProfileInfo = styled.section`
 
   .big-profile__editProfile-button {
     background-color: transparent;
-    border: 1px solid lightgray;
+    border: 1px solid #dfdfdf;
     border-radius: 3px;
     font-size: 14px;
     font-weight: 500;
@@ -125,8 +125,12 @@ const BigProfileInfo = styled.section`
 `;
 
 const ProfileFullName = styled.div`
-  padding: 0 16px 21px;
+  padding: 0 16px 11px;
   font-weight: bold;
+`;
+
+const ProfileBio = styled.div`
+  padding: 0 16px 21px;
 `;
 
 Modal.setAppElement("#root");
@@ -134,14 +138,29 @@ Modal.setAppElement("#root");
 const ProfileHeader = (props) => {
   const { windowSize } = props;
   const { profileData } = useContext(ProfileContext);
+  const { currentUserId } = useContext(UserContext);
   const {
     num_posts: numPosts,
-    user: { profile_image_url: profileImg, username, full_name: fullName },
+    followingList,
+    user: {
+      id: profileId,
+      bio,
+      profile_image_url: profileImg,
+      username,
+      full_name: fullName,
+    },
   } = profileData;
 
   // const [profImgUrl, setProfImgUrl] = useState(profile);
   const [isFollowersOpen, setIsFollowersOpen] = useState(false);
   const [isFollowingOpen, setIsFollowingOpen] = useState(false);
+  const [currentUserFollowingList, setCurrentUserFollowingList] = useState([]);
+
+  useEffect(() => {
+    console.log(`yaaa`, followingList)
+    const list = followingList.map((user) => user.id);
+    setCurrentUserFollowingList(list);
+  }, [followingList]);
 
   const closeFollowersModal = () => {
     setIsFollowersOpen(false);
@@ -180,6 +199,14 @@ const ProfileHeader = (props) => {
     console.log(`logout!`);
   };
 
+  const followUser = () => {
+    console.log("follow user!");
+  };
+
+  const unfollowUser = () => {
+    console.log("follow user!");
+  };
+
   if (!profileData) return null;
   return (
     <>
@@ -195,7 +222,14 @@ const ProfileHeader = (props) => {
               <div className="profile-details__username">{username}</div>
               <IoIosSettings onClick={logOut} />
             </div>
-            <button onClick={editProfile}>Edit Profile</button>
+            {currentUserId == profileId ? (
+              <button onClick={editProfile}>Edit Profile</button>
+            ) : currentUserFollowingList.includes(profileId) ?
+              <button style={{ width: "85px" }} onClick={unfollowUser}>
+                Following </button> : <button style={{ width: "85px" }} onClick={followUser}>
+                Follow
+              </button>
+            }
           </ProfileDetails>
         </ProfileHeaderWrapper>
       ) : (
@@ -206,13 +240,29 @@ const ProfileHeader = (props) => {
           <BigProfileInfo>
             <div className="big-profile-details__header">
               <div className="big-profile__username">{username}</div>
-              <button
-                className="big-profile__editProfile-button"
-                onClick={editProfile}
-              >
-                {" "}
-                Edit Profile
-              </button>
+              {currentUserId == profileId ? (
+                <button
+                  className="big-profile__editProfile-button"
+                  onClick={editProfile}
+                >
+                  Edit Profile
+                </button>
+              ) : currentUserFollowingList.includes(profileId) ? (
+                <button
+                  className="big-profile__editProfile-button"
+                  onClick={unfollowUser}
+                >
+                  Following
+                </button>
+              ) : (
+                <button
+                  className="big-profile__editProfile-button"
+                  onClick={followUser}
+                >
+                  Follow
+                </button>
+              )}
+
               <IoIosSettings
                 className="big-profile__logout-icon"
                 onClick={logOut}
@@ -244,10 +294,18 @@ const ProfileHeader = (props) => {
               </div>
             </div>
             <div style={{ fontWeight: "bold" }}>{fullName}</div>
+            <div style={{ paddingTop: "5px" }}>{bio}</div>
           </BigProfileInfo>
         </ProfileHeaderBig>
       )}
-      {windowSize < 735 ? <ProfileFullName>{fullName}</ProfileFullName> : ""}
+      {windowSize < 735 ? (
+        <>
+          <ProfileFullName>{fullName}</ProfileFullName>
+          <ProfileBio>{bio}</ProfileBio>
+        </>
+      ) : (
+        ""
+      )}
       <Modal
         isOpen={isFollowersOpen}
         onRequestClose={closeFollowersModal}

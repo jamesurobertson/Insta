@@ -40,7 +40,7 @@ const RegisterFormWrapper = styled.div`
 
  label {
      text-align: left;
-     color: grey;
+     color: #262626;
      margin-bottom: 5px;
  }
 
@@ -99,9 +99,9 @@ const RegisterForm = (props) => {
         //     break
         default:
             return
-        
+
       }
-     
+
     };
 
     const handleSubmit = async (e) => {
@@ -117,7 +117,7 @@ const RegisterForm = (props) => {
       });
 
       if (res.status !== 200) {
-            
+
         const {error} = await res.json()
         toast(error, {
             position: 'top-right',
@@ -126,7 +126,7 @@ const RegisterForm = (props) => {
 
 
         })
-        
+
       } else {
         const { user, access_token } = await res.json();
         console.log(user.id);
