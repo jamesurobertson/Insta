@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+
 import { 
-    fadein, 
     yTranslate, 
     yTranslateRev,
     rotate0, 
@@ -12,9 +12,14 @@ import {
 } from "../../Styles/animations";
 
 const LoadingWrapper = styled.div`
-  position: fixed;
-  z-index: -5;
-  top: -40%;
+  .positioner {
+      position: fixed;
+      z-index: -5
+  }
+  
+  .positioner * {
+    z-index: -5;
+  }
 
   .box {
     position: fixed;
@@ -96,30 +101,32 @@ const LoadingWrapper = styled.div`
 const Loading = (props) => {
   return (
     <LoadingWrapper>
-      <div className="box red-box">
-        <div className="color for-color red"></div>
-      </div>
-      <div className="box yellow-box">
-        <div className="color for-color yellow"></div>
-      </div>
-      <div className="box green-box">
-        <div className="color for-color green"></div>
-      </div>
-      <div className="box blue-box">
-        <div className="color for-color blue"></div>
-      </div>
-      <div className="box red2-box">
-        <div className="color rev-color red2"></div>
-      </div>
-      <div className="box yellow2-box">
-        <div className="color  rev-color yellow2"></div>
-      </div>
-      <div className="box green2-box">
-        <div className="color  rev-color green2"></div>
-      </div>
-      <div className="box blue2-box">
-        <div className="color  rev-color blue2"></div>
-      </div>
+    <div className='positioner' style={props.position}>
+        <div className="box red-box">
+            <div className="color for-color red"></div>
+        </div>
+        <div className="box yellow-box">
+            <div className="color for-color yellow"></div>
+        </div>
+        <div className="box green-box">
+            <div className="color for-color green"></div>
+        </div>
+        <div className="box blue-box">
+            <div className="color for-color blue"></div>
+        </div>
+        <div className="box red2-box">
+            <div className="color rev-color red2"></div>
+        </div>
+        <div className="box yellow2-box">
+            <div className="color  rev-color yellow2"></div>
+        </div>
+        <div className="box green2-box">
+            <div className="color  rev-color green2"></div>
+        </div>
+        <div className="box blue2-box">
+            <div className="color  rev-color blue2"></div>
+        </div>
+    </div>
     </LoadingWrapper>
   );
 };
