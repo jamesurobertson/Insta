@@ -4,6 +4,7 @@ import Modal from "react-modal";
 import DynamicModal from "../DynamicModal";
 import { IoIosSettings } from "react-icons/io";
 import { ProfileContext, UserContext } from "../../context";
+import ProfilePicModal from './ProfilePicModal'
 
 const ProfileHeaderWrapper = styled.div`
   display: flex;
@@ -155,7 +156,12 @@ const ProfileHeader = (props) => {
   const [isFollowersOpen, setIsFollowersOpen] = useState(false);
   const [isFollowingOpen, setIsFollowingOpen] = useState(false);
   const [currentUserFollowingList, setCurrentUserFollowingList] = useState([]);
+  const [openEditPicModal, setOpenEditPicModal] = useState(true)
 
+
+  const closeEditPicModal = () => {
+    setOpenEditPicModal(false)
+}
   useEffect(() => {
     console.log(`yaaa`, followingList)
     const list = followingList.map((user) => user.id);
@@ -189,10 +195,10 @@ const ProfileHeader = (props) => {
 
   const changeProfImg = () => {
     console.log("change profile picture!");
+    setOpenEditPicModal(true)
   };
 
   const editProfile = () => {
-    console.log("edit profile!");
   };
 
   const logOut = () => {
@@ -216,6 +222,7 @@ const ProfileHeader = (props) => {
             <ButtonWrapper onClick={changeProfImg}>
               <img src={profileImg} alt="avatar" />
             </ButtonWrapper>
+            {openEditPicModal ? <ProfilePicModal openModal={openEditPicModal} closeModal={closeEditPicModal} setOpenModal={setOpenEditPicModal}/> : ''}
           </ProfileImgWrapper>
           <ProfileDetails>
             <div className="profile-details__header">
@@ -237,6 +244,7 @@ const ProfileHeader = (props) => {
           <BigProfileImageWrapper onClick={changeProfImg}>
             <img src={profileImg} alt="avatar" />
           </BigProfileImageWrapper>
+            {openEditPicModal ? <ProfilePicModal openModal={openEditPicModal} closeModal={closeEditPicModal} setOpenModal={setOpenEditPicModal}/> : ''}
           <BigProfileInfo>
             <div className="big-profile-details__header">
               <div className="big-profile__username">{username}</div>
