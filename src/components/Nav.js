@@ -19,7 +19,7 @@ const NavContainer = styled.div`
   top: 0;
   border-bottom: 1px solid #dfdfdf;
   background-color: white;
-  width: 100vw;
+  width: 100%;
   height: 54px;
   z-index: 100;
 
@@ -28,7 +28,7 @@ const NavContainer = styled.div`
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    max-width: 614px;
+    max-width: 935px;
     padding: 0 20px;
 
 
@@ -36,7 +36,7 @@ const NavContainer = styled.div`
 
   .navImage {
     margin-top: 9px;
-   
+
     height: 40px;
   }
 

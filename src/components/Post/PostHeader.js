@@ -3,6 +3,7 @@ import styled from "styled-components";
 import ModalPost from "./ModalPost";
 import Modal from "react-modal";
 import { AiOutlineEllipsis } from "react-icons/ai";
+import { Link } from "react-router-dom";
 
 const PostHeaderWrapper = styled.div`
   display: flex;
@@ -44,9 +45,11 @@ const PostHeaderWrapper = styled.div`
 }
 `;
 
-const PostHeader = () => {
+const PostHeader = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const outside = useRef();
+
+  const { userPic, username, postId, userId } = props;
 
   Modal.setAppElement("#root");
 
@@ -75,12 +78,12 @@ const PostHeader = () => {
   return (
     <PostHeaderWrapper ref={outside}>
       <div className="header-photo">
-        <img
-          className="post-header-image"
-          src="https://slickpics.s3.us-east-2.amazonaws.com/IMAGE-1593494929679.jpeg"
-          alt="corner-img"
-        />
-        <p className="post-header-name">KingJames</p>
+        <Link to={`/profile/${userId}`}>
+          <img className="post-header-image" src={userPic} alt="corner-img" />
+        </Link>
+        <Link className="post-header-name" to={`/profile/${userId}`}>
+          {username}
+        </Link>
       </div>
       <button className="ellipsis-button" onClick={() => setIsOpen(true)}>
         <div className="ellipsis">
@@ -94,7 +97,7 @@ const PostHeader = () => {
         style={customStyles}
         contentLabel="Example Modal"
       >
-        <ModalPost />
+        <ModalPost closeModal={closeModal} postId={postId} userId={userId}/>
       </Modal>
     </PostHeaderWrapper>
   );

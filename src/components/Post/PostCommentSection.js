@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import DynamicModal from "../DynamicModal";
 import Modal from "react-modal";
 import styled from "styled-components";
-import Comment from './Comment'
+import Comment from "./Comment";
+import {Link} from "react-router-dom"
 
 const CommentWrapper = styled.div`
   padding: 0px 16px 16px;
@@ -19,15 +20,37 @@ const CommentWrapper = styled.div`
   }
 
   .post-date-created {
-      padding-top: 5px;
-      font-size: 11px;
-      color: #8E8E8E;
+    padding-top: 5px;
+    font-size: 11px;
+    color: #8e8e8e;
   }
+
+  .comments__view-all {
+    padding: 16px;
+    color: #0095F6;
+
+    @media screen and (min-width: 735px) {
+      padding: 0;
+    }
+  }
+
+
+
 `;
 Modal.setAppElement("#root");
 
-const PostCommentSection = () => {
+const PostCommentSection = (props) => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const {
+    likeCount,
+    caption,
+    comments: { commentsList, total },
+    createdAt,
+    postUserId,
+    username,
+    postId
+  } = props;
 
   const closeModal = () => {
     setIsOpen(false);
@@ -50,10 +73,11 @@ const PostCommentSection = () => {
     },
   };
 
+  console.log(username)
   return (
     <CommentWrapper>
       <button className="like-button" onClick={() => setIsOpen(true)}>
-        5,000,000,000 likes
+        {likeCount} likes
       </button>
       <Modal
         isOpen={isOpen}
@@ -63,10 +87,15 @@ const PostCommentSection = () => {
       >
         <DynamicModal closeModal={closeModal} title={"Likes"} type={"post"} />
       </Modal>
-      <Comment></Comment>
-      <Comment></Comment>
-      <Comment></Comment>
-      <div className='post-date-created'>6 HOURS AGO</div>
+      <Comment userId={postUserId} username={username} content={caption} ></Comment>
+      {total > 2 ? <Link className='comments__view-all' to={`/post/${postId}`}>
+          {`View all ${total} comments`}
+      </Link>: ''}
+      {commentsList.map((comment) => {
+          const {id, user_id, username: {username}, likesComment, content} = comment
+        return <Comment key={`post-comment-${id}`} userId={user_id} username={username} likesComment={likesComment} content={content} ></Comment>;
+      })}
+      <div className="post-date-created">6 HOURS AGO</div>
     </CommentWrapper>
   );
 };

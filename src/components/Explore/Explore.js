@@ -6,10 +6,9 @@ import ExploreGrid from "./ExploreGrid"
 const Explore = () => {
     return (
         <>
-           <Nav/>
            <ExploreGrid/>
         </>
-       
+
     )
 }
 
