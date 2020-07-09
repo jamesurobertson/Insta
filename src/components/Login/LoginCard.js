@@ -1,5 +1,5 @@
 import React from "react";
-import navImage from "../../Images/navImage.png"
+import navImage from "../../Images/logo.svg"
 import LoginForm from './LoginForm'
 import RegisterForm from "./RegisterForm"
 import styled from "styled-components";

@@ -67,7 +67,12 @@ const RegisterFormWrapper = styled.div`
 
 const RegisterForm = (props) => {
 
-    const { setCurrentUserId } = useContext(UserContext);
+    const {
+      setCurrentUserId,
+      setCurrentUserFollowerCount,
+      setCurrentUserFollowingCount,
+      setCurrentUserProfilePic,
+    } = useContext(UserContext);
 
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
@@ -132,6 +137,9 @@ const RegisterForm = (props) => {
         console.log(user.id);
         localStorage.setItem("Isntgram_access_token", access_token);
         setCurrentUserId(user.id);
+        setCurrentUserProfilePic(user.profile_image_url);
+        setCurrentUserFollowerCount(user.numFollowers);
+        setCurrentUserFollowingCount(user.numFollowing);
         props.history.push("/");
       }
     };
