@@ -3,34 +3,40 @@ import styled from "styled-components";
 import PostHeader from "./PostHeader";
 import PhotoImagePost from "./PhotoImagePost";
 import IconPost from "./IconPost";
-import CommentImageWrapper from './CommentImageWrapper';
-import AddComment from './AddComment';
+import PostCommentSection from "./PostCommentSection";
+import CommentInputField from "./CommentInputField";
 
 const PostWrapper = styled.div`
-  height: 679px;
   width: 100%;
   max-width: 614px;
-  height: 907px;
-
+  background-color: white;
 
   @media screen and (min-width: 615px) {
     border: 1px solid #dfdfdf;
     border-radius: 3px;
-    margin-top: 15px;
+    margin-bottom: 60px;
     height: 318.66;
   }
-
 `;
 
 const Post = () => {
   return (
-    <PostWrapper>
-      <PostHeader />
-      <PhotoImagePost />
-      <IconPost />
-      <CommentImageWrapper />
-      <AddComment />
-    </PostWrapper>
+    <div style={{ dispaly: "flex", flexFlow: "column" }}>
+      <PostWrapper>
+        <PostHeader />
+        <PhotoImagePost />
+        <IconPost />
+        <PostCommentSection />
+        <CommentInputField />
+      </PostWrapper>
+      <PostWrapper>
+        <PostHeader />
+        <PhotoImagePost />
+        <IconPost />
+        <PostCommentSection />
+        <CommentInputField />
+      </PostWrapper>
+    </div>
   );
 };
 
