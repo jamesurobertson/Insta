@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import Modal from "react-modal";
 import { ProfileContext } from "../../context";
 import styled from "styled-components";
+import { toast } from "react-toastify";
 
 Modal.setAppElement("#root");
 
@@ -44,12 +45,65 @@ const EditProfilePicWrapper = styled.div`
     font-weight: bold;
     color: #ed4956;
   }
+
+  #photoUploadButton {
+    display: none;
+  }
+  #photoUploadLabel {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  & .Toastify__toast--success {
+    background-color: #0095f6;
+  }
 `;
 
 const ProfilePicModal = (props) => {
-  const { openModal, setOpenModal, closeModal } = props;
+  const { openModal, closeModal } = props;
 
-  const { profileData } = useContext(ProfileContext);
+  const [imageUrl, setImageUrl] = useState("");
+
+  const { profileData, setProfileData } = useContext(ProfileContext);
+
+  const changePhoto = (e) => {
+    const file = e.currentTarget.files[0];
+    let formData;
+
+    if (file) {
+      formData = new FormData();
+      formData.append("img", file);
+    }
+    console.log(formData);
+    postImage(formData);
+  };
+
+  const postImage = async (formData) => {
+    console.log(`hey brothers`, formData.get("img"));
+    if (!formData) return;
+    try {
+      const res = await fetch(`http://localhost:5000/api/aws`, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) {
+        toast.error("Error uploading photo. Please try again");
+        throw res;
+      }
+
+      const response = await res.json();
+
+      toast.info("Photo upload Success!");
+      closeModal();
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   const customStyles = {
     content: {
@@ -77,7 +131,17 @@ const ProfilePicModal = (props) => {
     >
       <EditProfilePicWrapper>
         <div className="changeProfilePhoto">Change Profile Photo</div>
-        <div className="uploadPhoto">Upload Photo</div>
+        <div className="uploadPhoto">
+          <label htmlFor="photoUploadButton" id="photoUploadLabel">
+            <input
+              accept="image/*"
+              type="file"
+              onChange={changePhoto}
+              id="photoUploadButton"
+            />
+            Upload Photo
+          </label>
+        </div>
         <div className="removeCurrentPhoto">Remove Current Photo</div>
         <div className="cancel" onClick={() => closeModal(false)}>
           Cancel

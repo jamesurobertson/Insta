@@ -32,7 +32,7 @@ function App() {
   return (
     <UserContext.Provider value={userContextValue}>
       <ProfileContext.Provider value={profileContextValue}>
-        <ToastContainer autoClose={2000} />
+        <ToastContainer autoClose={5000} />
         <GlobalStyle />
         <BrowserRouter>
           <Switch>
