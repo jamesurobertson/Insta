@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import {Link} from 'react-router-dom'
+import { AiOutlineConsoleSql } from "react-icons/ai";
 
 
 
@@ -33,13 +35,21 @@ const ModalStyle = styled.div`
 }
    `
 
-const ModalPost = () => {
+const ModalPost = ({postId, userId, closeModal}) => {
+
+    const unfollowUser = (e) => {
+        console.log(`Unfollowed user!`)
+    }
+
+    const copyLink =(e) => {
+        console.log('copied post link!')
+    }
     return (
         <ModalStyle>
-            <button id='button-unfollow' className='button-post'>Unfollow</button>
-            <button className='button-post'>Go To Post</button>
-            <button className='button-post'>Copy Link</button>
-            <button id='button-cancel' className='button-post'>Cancel</button>
+            <button onClick={unfollowUser} id='button-unfollow' className='button-post'>Unfollow</button>
+            <Link to={`/post/${postId}`} className='button-post'>Go To Post</Link>
+            <button onClick={copyLink} className='button-post'>Copy Link</button>
+            <button onClick={closeModal} id='button-cancel' className='button-post'>Cancel</button>
         </ModalStyle>
     )
 }

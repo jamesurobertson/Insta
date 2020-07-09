@@ -8,12 +8,12 @@ const PostWrapper = styled.div`
   }
 `;
 
-const PhotoImagePost = () => {
+const PhotoImagePost = ({postImg}) => {
   return (
     <PostWrapper>
       <img
         className="post-header-image"
-        src="https://images.unsplash.com/photo-1573935146153-f6322e84d1e4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80"
+        src={postImg}
         alt="feed-post"
       />
     </PostWrapper>
