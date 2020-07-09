@@ -17,7 +17,7 @@ const Layout3Wrapper = styled.div`
     height: 100%;
     width: 100%;
     opacity: 0;
-    animation: ${fadeIn} 1s .25s forwards;
+    animation: ${fadeIn} 2s .25s forwards;
     object-fit: cover;
   }
 

@@ -56,7 +56,7 @@ function getRandomInt(min, max) {
 function getTemplate (toRender, photoArray) {
     const randomInt = getRandomInt(0, 4)
     
-    if (toRender.length === 0 || photoArray.length < 3){
+    if (toRender.length === 0 || photoArray.length < 3 || !toRender[toRender.length - 1].key.includes(`layout1key`)) {
         return [
         <Layout1
                 key={`layout1key-${toRender.length}`}
@@ -83,6 +83,7 @@ function getTemplate (toRender, photoArray) {
               />,
             ]
             default:
+                console.log(toRender)
             return [
               <Layout3
                 key={`layout3key-${toRender.length}`}
