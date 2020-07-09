@@ -17,7 +17,7 @@ const Layout1Wrapper = styled.div`
     opacity: 0;
     height: 100%;
     width: 100%;
-    animation: ${fadein} 2s .25s forwards;
+    animation: ${fadein} ${Math.random() * 2}s .25s forwards;
     object-fit: cover;
   }
 
