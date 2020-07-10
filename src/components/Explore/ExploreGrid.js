@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext  } from "react";
 import styled from "styled-components";
 import InfiniteScroll from "react-infinite-scroller";
 import { backendURL } from "../../config";
+import { UserContext } from "../../context";
 
 import { fadeIn } from "../../Styles/animations";
 
@@ -52,63 +53,69 @@ const ExploreGridWrapper = styled.div`
   }
 `;
 
-function getRandomInt(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
-}
 
-function getTemplate(toRender, photoArray) {
-  const randomInt = getRandomInt(0, 4);
-
-  if (
-    toRender.length === 0 ||
-    photoArray.length < 3 ||
-    !toRender[toRender.length - 1].key.includes(`layout1key`)
-  ) {
-    return [
-      <Layout1
-        key={`layout1key-${toRender.length}`}
-        componentPhotos={photoArray}
-      />,
-    ];
-  }
-  if (toRender[toRender.length - 1].key.includes(`layout${randomInt}key`)) {
-    return getTemplate(toRender, photoArray);
-  } else {
-    switch (randomInt) {
-      case 1:
-        return [
-          <Layout1
-            key={`layout1key-${toRender.length}`}
-            componentPhotos={photoArray}
-          />,
-        ];
-      case 2:
-        return [
-          <Layout2
-            key={`layout2key-${toRender.length}`}
-            componentPhotos={photoArray}
-          />,
-        ];
-      default:
-        console.log(toRender);
-        return [
-          <Layout3
-            key={`layout3key-${toRender.length}`}
-            componentPhotos={photoArray}
-          />,
-        ];
-    }
-  }
-}
 
 const ExploreGrid = (props) => {
+  const { currentUserId } = useContext(UserContext);
+
+  
   const [toRender, setToRender] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
 
+  function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+  }
+
+  function getTemplate(toRender, photoArray) {
+    const randomInt = getRandomInt(0, 4);
+
+    if (
+      toRender.length === 0 ||
+      photoArray.length < 3 ||
+      !toRender[toRender.length - 1].key.includes(`layout1key`)
+    ) {
+      return [
+        <Layout1
+          key={`layout1key-${toRender.length}`}
+          componentPhotos={photoArray}
+        />,
+      ];
+    }
+    if (toRender[toRender.length - 1].key.includes(`layout${randomInt}key`)) {
+      return getTemplate(toRender, photoArray);
+    } else {
+      switch (randomInt) {
+        case 1:
+          return [
+            <Layout1
+              key={`layout1key-${toRender.length}`}
+              componentPhotos={photoArray}
+            />,
+          ];
+        case 2:
+          return [
+            <Layout2
+              key={`layout2key-${toRender.length}`}
+              componentPhotos={photoArray}
+            />,
+          ];
+        default:
+          console.log(toRender);
+          return [
+            <Layout3
+              key={`layout3key-${toRender.length}`}
+              componentPhotos={photoArray}
+            />,
+          ];
+      }
+    }
+  }
+
   const fetchMore = () => {
+    if (!currentUserId) return;
     setLoading(true);
 
     fetch(`${backendURL}/post/scroll/${toRender.length * 3}`, {
@@ -128,6 +135,7 @@ const ExploreGrid = (props) => {
     setLoading(false);
   };
 
+  if (!toRender) return
   return (
     <ExploreGridWrapper key="gridWrapper">
       <InfiniteScroll pageStart={0} loadMore={fetchMore} hasMore={hasMore}>
@@ -135,7 +143,7 @@ const ExploreGrid = (props) => {
       </InfiniteScroll>
       <LoadingWrapper
         style={{ animationName: `${loading ? "fadeIn" : "fadeOut"}` }}
-      >
+        >
         <Loading />
       </LoadingWrapper>
     </ExploreGridWrapper>
