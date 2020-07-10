@@ -8,10 +8,10 @@ import CommentInputField from "./CommentInputField";
 
 const PostWrapper = styled.div`
   width: 100%;
-  max-width: 614px;
+  max-width: 600px;
   background-color: white;
 
-  @media screen and (min-width: 615px) {
+  @media screen and (min-width: 640px) {
     border: 1px solid #dfdfdf;
     border-radius: 3px;
     margin-bottom: 60px;

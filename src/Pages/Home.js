@@ -15,7 +15,7 @@ const Feed = styled.div`
   justify-content: center;
   padding-bottom: 53px;
 
-  @media screen and (min-width: 615px) {
+  @media screen and (min-width: 640px) {
     padding-top: 75px;
 }
 
