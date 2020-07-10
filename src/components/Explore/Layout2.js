@@ -12,6 +12,7 @@ const Layout2Wrapper = styled.div`
   margin-bottom: 1vw;
   height: calc((100vw / 3) * 2);
   max-height: 409px;
+  overflow: hidden;
 
   img {
     height: 100%;
@@ -31,7 +32,24 @@ const Layout2Wrapper = styled.div`
   }
   .img3 {
     grid-area: img3;
-  
+  }
+
+  .explore-image-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    z-index: 2;
+  }
+
+  .explore-image-overlay:hover {
+    opacity: 1;
   }
 `;
 
