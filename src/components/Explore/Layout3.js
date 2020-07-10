@@ -16,6 +16,12 @@ const Layout3Wrapper = styled.div`
   height: calc((100vw / 3) * 2);
   max-height: 409px;
   overflow: hidden;
+
+  & * {
+    color: white;
+    font-size: 2vw;
+  }
+
   img {
     height: 100%;
     width: 100%;
@@ -33,6 +39,9 @@ const Layout3Wrapper = styled.div`
 
   .img3 {
     grid-area: big;
+  }
+  .img3 * {
+    font-size: 3.5vw;
   }
 
   .explore-image-overlay {

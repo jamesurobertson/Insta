@@ -132,9 +132,9 @@ const LoginForm = (props) => {
             onChange={updateState}
           />
 
-          <button type="submit">Log In</button>
+          <button style={{cursor:"pointer"}} type="submit">Log In</button>
         </form>
-        <button style={{ width: "80%" }}>Try Our Demo</button>
+        <button style={{ cursor: 'pointer', width: "80%" }}>Try Our Demo</button>
 
         <div>
           Don't have an account?

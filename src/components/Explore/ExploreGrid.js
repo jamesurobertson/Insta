@@ -53,8 +53,6 @@ const ExploreGridWrapper = styled.div`
   }
 `;
 
-
-
 const ExploreGrid = (props) => {
   const { currentUserId } = useContext(UserContext);
 
