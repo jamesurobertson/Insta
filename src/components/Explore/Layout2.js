@@ -1,5 +1,8 @@
-import React from 'react';
-import styled from "styled-components"
+import React from "react";
+import { Link } from "react-router-dom";
+import { RiHeartLine } from "react-icons/ri";
+import { FaRegComment } from "react-icons/fa";
+import styled from "styled-components";
 import { fadeIn } from "../../Styles/animations";
 
 const Layout2Wrapper = styled.div`
@@ -18,7 +21,7 @@ const Layout2Wrapper = styled.div`
     height: 100%;
     width: 100%;
     opacity: 0;
-    animation: ${fadeIn} 2s .25s forwards;
+    animation: ${fadeIn} 2s 0.25s forwards;
     object-fit: cover;
   }
 
@@ -28,7 +31,6 @@ const Layout2Wrapper = styled.div`
 
   .img2 {
     grid-area: img2;
-    
   }
   .img3 {
     grid-area: img3;
@@ -59,13 +61,35 @@ const Layout2 = (props) => {
       <Layout2Wrapper>
         {props.componentPhotos.map((photo, i) => {
           return (
-            <img
-              draggable={false}
-              alt={photo.caption}
+            <Link
               key={`img${i + 1}`}
-              src={photo.image_url}
               className={`img${i + 1}`}
-            />
+              style={{ position: "relative" }}
+              to={`/post/${photo.id}`}
+            >
+              <div className={`explore-image-overlay img${i + 1}`}>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <RiHeartLine />
+                  <div style={{ paddingLeft: "1vw" }}>
+                    {photo["like_count"]}
+                  </div>
+                </div>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <FaRegComment />
+                  <div style={{ paddingLeft: "1vw" }}>
+                    {" "}
+                    {}
+                    {photo["comment_count"]}
+                  </div>
+                </div>
+              </div>
+              <img
+                className={`img${i + 1}`}
+                draggable={false}
+                src={photo.image_url}
+                alt={photo.caption}
+              />
+            </Link>
           );
         })}
       </Layout2Wrapper>

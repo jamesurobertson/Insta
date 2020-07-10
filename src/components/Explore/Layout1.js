@@ -1,4 +1,7 @@
 import React from 'react';
+import {Link} from 'react-router-dom'
+import { RiHeartLine } from "react-icons/ri";
+import { FaRegComment } from "react-icons/fa";
 import styled from "styled-components"
 import {fadeIn} from "../../Styles/animations"
 
@@ -6,7 +9,7 @@ import {fadeIn} from "../../Styles/animations"
 
 const Layout1Wrapper = styled.div`
   display: grid;
-  grid-template-columns: 1fr .97fr 1fr;
+  grid-template-columns: 1fr 0.97fr 1fr;
   grid-template-areas: "img1 img2 img3";
   grid-gap: 1vw;
   margin: 1vw 0;
@@ -18,7 +21,7 @@ const Layout1Wrapper = styled.div`
     opacity: 0;
     height: 100%;
     width: 100%;
-    animation: ${fadeIn} 2s .25s forwards;
+    animation: ${fadeIn} 2s 0.25s forwards;
     object-fit: cover;
   }
 
@@ -56,7 +59,36 @@ const Layout1 = (props) => {
     return (
         <Layout1Wrapper>
             {props.componentPhotos.map((photo, i) => {
-                return <img draggable={false} alt={photo.caption} key={`img${i + 1}`} src={photo.image_url} className={`img${i + 1}`} />;
+              return (
+                <Link
+                  key={`img${i + 1}`}
+                  className={`img${i + 1}`}
+                  style={{ position: "relative" }}
+                  to={`/post/${photo.id}`}
+                >
+                  <div className={`explore-image-overlay`}>
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <RiHeartLine />
+                      <div style={{ paddingLeft: "1vw" }}>
+                        {photo["like_count"]}
+                      </div>
+                    </div>
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <FaRegComment />
+                      <div style={{ paddingLeft: "1vw" }}>
+                        {" "}
+                        {photo["comment_count"]}
+                      </div>
+                    </div>
+                  </div>
+                  <img
+                    className={`img${i + 1}`}
+                    draggable={false}
+                    src={photo.image_url}
+                    alt={photo.caption}
+                  />
+                </Link>
+              );
             })}
         </Layout1Wrapper>
     );
