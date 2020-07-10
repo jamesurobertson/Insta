@@ -32,7 +32,7 @@ const Post = ({ post }) => {
   } = post;
 
   return (
-    <div style={{ dispaly: "flex", flexFlow: "column" }}>
+    <div className="Pst"style={{ dispaly: "flex", flexFlow: "column" }}>
       <PostWrapper>
         <PostHeader userPic={userInfo.profilePic} username={userInfo.username} postId={postId} userId={userId}/>
         <PhotoImagePost postImg={postImg} />

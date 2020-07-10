@@ -87,7 +87,7 @@ const LoginForm = (props) => {
 
         if (res.status !== 200) {
             const {error} = await res.json()
-            toast(error, {
+            toast.info(error, {
                 position: 'top-right',
                 autoClose: 5000,
                 closeOnClick: true,

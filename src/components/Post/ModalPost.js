@@ -48,7 +48,7 @@ const ModalPost = ({ postId, userId, closeModal }) => {
         <ModalStyle>
             <button onClick={unfollowUser} id='button-unfollow' className='button-post'>Unfollow</button>
             <Link to={`/post/${postId}`} className='button-post'>Go To Post</Link>
-            <CopyToClipboard text={window.location.href} onCopy={() => setCopied(true)}>
+            <CopyToClipboard text={`${window.location.href}/post/${postId}`} onCopy={() => setCopied(true)}>
                 <button onClick={({ target: { value } }) => {
                     setValue(value);
                     setCopied(false);
