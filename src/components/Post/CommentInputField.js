@@ -79,7 +79,6 @@ const CommentInputField = (props) => {
                 <input className='comment-post'
                     placeholder="Add a comment..."
                     onChange={updateCommentState} />
-
                 </div>
                 <button type="submit" className='button-post'>Post</button>
             </form>

@@ -26,6 +26,7 @@ const GlobalStyle = createGlobalStyle`
       padding:0;
       border:0;
       outline:0;
+      color: #262626;
       font-size: 16px;
       vertical-align:baseline;
       background:transparent;

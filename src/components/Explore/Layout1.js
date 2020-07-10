@@ -45,7 +45,6 @@ const Layout1Wrapper = styled.div`
     align-items: center;
     opacity: 0;
     background-color: rgba(0, 0, 0, 0.3);
-    background-size: 100% 100%;
     overflow: hidden;
     z-index: 2;
   }

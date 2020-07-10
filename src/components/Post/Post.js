@@ -19,21 +19,25 @@ const PostWrapper = styled.div`
   }
 `;
 
-const Post = () => {
+const Post = ({ post }) => {
+  const {
+    id: postId,
+    user_info: userInfo,
+    comments,
+    created_at: createdAt,
+    caption,
+    image_url: postImg,
+    likeCount,
+    user_id: userId,
+  } = post;
+
   return (
     <div style={{ dispaly: "flex", flexFlow: "column" }}>
       <PostWrapper>
-        <PostHeader />
-        <PhotoImagePost />
-        <IconPost />
-        <PostCommentSection />
-        <CommentInputField />
-      </PostWrapper>
-      <PostWrapper>
-        <PostHeader />
-        <PhotoImagePost />
-        <IconPost />
-        <PostCommentSection />
+        <PostHeader userPic={userInfo.profilePic} username={userInfo.username} postId={postId} userId={userId}/>
+        <PhotoImagePost postImg={postImg} />
+        <IconPost postId={postId}/>
+        <PostCommentSection postId={postId} username={userInfo.username} postUserId={userId} caption={caption} createdAt={createdAt} likeCount={likeCount} comments={comments}/>
         <CommentInputField />
       </PostWrapper>
     </div>
@@ -41,16 +45,3 @@ const Post = () => {
 };
 
 export default Post;
-
-//  align-items: stretch;
-//   border: 0 solid #000;
-//   box-sizing: border-box;
-//   display: flex;
-//   flex-direction: column;
-//   flex-shrink: 0;
-//   margin: 0;
-//   padding: 0;
-
-// @media screen and (max-width: 601px) {
-//     width: 200px;
-//   }

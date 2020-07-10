@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { RiHeartLine } from "react-icons/ri";
 import { FaRegComment } from "react-icons/fa";
 import { FaRegBookmark } from "react-icons/fa";
+import {Link} from 'react-router-dom'
 
 const IconWrapper = styled.div`
   height: 40px;
@@ -10,7 +11,6 @@ const IconWrapper = styled.div`
   justify-content: space-between;
   padding: 5px 10px;
 
-  .heart,
   .comment,
   .bookmark {
     margin: 0px 8px;
@@ -18,29 +18,23 @@ const IconWrapper = styled.div`
     color: inherit;
     border: none;
     padding: 0;
+  }
 
-    .red {
-      background: none;
+    .liked-post {
+      color: rgb(237, 73, 86);
     }
 
-    .red--active {
-      color: red;
-    }
-
-    .black {
-      background: none;
-    }
-
-    .black--active {
-      color: blue;
+    .unliked-post {
+      color: #262626;
     }
   }
 `;
 
-const IconPost = () => {
+const IconPost = ({ postId }) => {
+    // TODO: LOGIC FOR CURRENT USER LIKING A POST- from context?
   const likePost = (e) => {
     console.log("like post!");
-    e.target.classList.toggle("red--active");
+    e.target.classList.toggle("liked-post");
   };
   const commentPost = () => {
     console.log("comment post!");
@@ -52,17 +46,17 @@ const IconPost = () => {
   return (
     <IconWrapper>
       <div className="left-post-icons">
-        <button onClick={likePost} className="heart">
-          <RiHeartLine size={24} />
-        </button>
-        <button onClick={commentPost} className="comment">
+        <RiHeartLine
+          size={24}
+          onClick={likePost}
+          className={true ? "liked-post" : "unliked-post"}
+        />
+        <Link to={`/post/${postId}`} onClick={commentPost} className="comment">
           <FaRegComment size={24} />
-        </button>
+        </Link>
       </div>
       <div className="right-post-icons">
-        <button onClick={savePost} className="bookmark">
-          <FaRegBookmark size={24} />
-        </button>
+          <FaRegBookmark onClick={savePost}  size={24} />
       </div>
     </IconWrapper>
   );
