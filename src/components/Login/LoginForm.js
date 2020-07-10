@@ -63,8 +63,8 @@ const LoginForm = (props) => {
         setCurrentUserFollowingCount, 
         setCurrentUserProfilePic} = useContext(UserContext)
 
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
+    const [username, setUsername] = useState('johnH')
+    const [password, setPassword] = useState('password')
 
     const updateState = (e) => {
         if (e.target.getAttribute('name') === "username") {
@@ -118,6 +118,7 @@ const LoginForm = (props) => {
             placeholder="Username"
             name="username"
             onChange={updateState}
+            value="johnH"
           />
 
           <label style={{ display: "none" }} htmlFor="password">
@@ -130,6 +131,7 @@ const LoginForm = (props) => {
             placeholder="Password"
             name="password"
             onChange={updateState}
+            value="password"
           />
 
           <button style={{cursor:"pointer"}} type="submit">Log In</button>

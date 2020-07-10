@@ -39,10 +39,11 @@ function App() {
           <Switch>
             <AuthRoute path="/auth" component={Login} />
             {/* <ProtectedRoute path="/direct/inbox" component={Home} /> */}
-            <ProtectedRoute exact path="/profile/:id" component={Profile} />
+            <ProtectedRoute path="/profile/:id" component={Profile} />
             <ProtectedRoute path="/explore" component={Explore} />
+            <ProtectedRoute path="/notifications" component={Notifications}
+            />
             <ProtectedRoute exact path="/" component={Home} />
-            <ProtectedRoute exact path='/notifications' component={Notifications}/>
           </Switch>
         </BrowserRouter>
       </ProfileContext.Provider>
