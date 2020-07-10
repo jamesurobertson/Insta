@@ -92,7 +92,7 @@ const ProfilePicModal = (props) => {
       });
 
       if (!res.ok) {
-        toast.error("Error uploading photo. Please try again");
+        toast.info("Error uploading photo. Please try again");
         throw res;
       }
 

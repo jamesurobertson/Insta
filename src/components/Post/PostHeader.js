@@ -64,7 +64,6 @@ const PostHeader = (props) => {
       right: "auto",
       bottom: "auto",
       marginRight: "-50%",
-      // width: '400px',
       padding: "0",
       borderRadius: "5px",
       transform: "translate(-50%, -50%)",
