@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import {Link} from 'react-router-dom'
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { Link } from 'react-router-dom';
 import { AiOutlineConsoleSql } from "react-icons/ai";
 
 
@@ -33,25 +34,58 @@ const ModalStyle = styled.div`
     }
 
 }
-   `
+   `;
 
-const ModalPost = ({postId, userId, closeModal}) => {
+const ModalPost = ({ postId, userId, closeModal }) => {
+    const [value, setValue] = useState('');
+    const [copied, setCopied] = useState(false);
 
     const unfollowUser = (e) => {
         console.log(`Unfollowed user!`)
     }
 
-    const copyLink =(e) => {
-        console.log('copied post link!')
-    }
     return (
         <ModalStyle>
             <button onClick={unfollowUser} id='button-unfollow' className='button-post'>Unfollow</button>
             <Link to={`/post/${postId}`} className='button-post'>Go To Post</Link>
-            <button onClick={copyLink} className='button-post'>Copy Link</button>
+            <CopyToClipboard text={window.location.href} onCopy={() => setCopied(true)}>
+                <button onClick={({ target: { value } }) => {
+                    setValue(value);
+                    setCopied(false);
+                    alert("copied to clipboard")
+                }} className='button-post'>Copy Link</button>
+            </CopyToClipboard>
             <button onClick={closeModal} id='button-cancel' className='button-post'>Cancel</button>
-        </ModalStyle>
+        </ModalStyle >
     )
 }
 
 export default ModalPost;
+
+// import React, { Component } from "react"
+
+// export default class YourComponent extends Component {
+//     copyCodeToClipboard = () => {
+//         const el = this.textArea
+//         el.select()
+//         document.execCommand("copy")
+//     }
+
+//     render() {
+//         return (
+//             <div>
+//                 <div>
+//                     <textarea
+//                         ref={(textarea) => this.textArea = textarea}
+//                         value={window.location.href}
+//                     />
+//                 </div>
+//                 <div>
+//                     <button onClick={() => this.copyCodeToClipboard()}>
+//                         Copy to Clipboard
+//           </button>
+//                 </div>
+//             </div>
+//         )
+//     }
+// }
