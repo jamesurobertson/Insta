@@ -30,7 +30,6 @@ export const ProtectedRoute = ({ component: Component, path, exact }) => {
 
 		}).catch(error =>{
 			window.location.href="/auth/login"
-			console.log(error)
 
 		})
 	}

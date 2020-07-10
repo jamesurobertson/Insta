@@ -67,7 +67,6 @@ const CommentInputField = (props) => {
         }
         else {
             const content = await res.json()
-            console.log(content)
             setContent(content)
         }
     }

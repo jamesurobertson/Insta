@@ -129,7 +129,7 @@ const ProfileMiddle = (props) => {
         </div>
       </ProfileMiddleDataWrapper>
       <ProfileMiddleIcons>
-        <NavLink exact to="/profile" activeClassName="active-profile-link">
+        <NavLink exact to={`/profile/${profileData.user.id}`} activeClassName="active-profile-link">
           {windowSize < 735 ? (
             <GrGrid size="1.5em" style={{ color: "red" }} />
           ) : (
@@ -139,7 +139,7 @@ const ProfileMiddle = (props) => {
             </>
           )}
         </NavLink>
-        <NavLink to="/profile/saved" activeClassName="active-profile-link">
+        <NavLink to={`/profile/${profileData.user.id}/saved`} activeClassName="active-profile-link">
           {windowSize < 735 ? (
             <FaRegBookmark size="1.5em" />
           ) : (

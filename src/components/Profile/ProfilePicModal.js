@@ -78,12 +78,10 @@ const ProfilePicModal = (props) => {
       formData = new FormData();
       formData.append("img", file);
     }
-    console.log(formData);
     postImage(formData);
   };
 
   const postImage = async (formData) => {
-    console.log(`hey brothers`, formData.get("img"));
     if (!formData) return;
     try {
       const res = await fetch(`http://localhost:5000/api/aws`, {
@@ -92,7 +90,7 @@ const ProfilePicModal = (props) => {
       });
 
       if (!res.ok) {
-        toast.info("Error uploading photo. Please try again");
+        toast.error("Error uploading photo. Please try again");
         throw res;
       }
 
