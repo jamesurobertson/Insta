@@ -15,6 +15,7 @@ const Layout2Wrapper = styled.div`
   margin-bottom: 1vw;
   height: calc((100vw / 3) * 2);
   max-height: 409px;
+  overflow: hidden;
 
   img {
     height: 100%;

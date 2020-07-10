@@ -15,6 +15,7 @@ const Layout1Wrapper = styled.div`
   margin: 1vw 0;
   height: calc(100vw / 3);
   max-height: 204px;
+  overflow: hidden;
 
   img {
     opacity: 0;
