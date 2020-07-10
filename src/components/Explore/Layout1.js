@@ -12,6 +12,7 @@ const Layout1Wrapper = styled.div`
   margin: 1vw 0;
   height: calc(100vw / 3);
   max-height: 204px;
+  overflow: hidden;
 
   img {
     opacity: 0;
@@ -30,6 +31,25 @@ const Layout1Wrapper = styled.div`
   .img3 {
     grid-area: img3;
   }
+
+  .explore-image-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    z-index: 2;
+  }
+
+  .explore-image-overlay:hover {
+    opacity: 1;
+  }
+
 `;
 
 const Layout1 = (props) => {
