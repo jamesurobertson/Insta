@@ -17,6 +17,11 @@ const Layout2Wrapper = styled.div`
   max-height: 409px;
   overflow: hidden;
 
+  & * {
+    color: white;
+    font-size: 2vw;
+  }
+
   img {
     height: 100%;
     width: 100%;
@@ -27,6 +32,10 @@ const Layout2Wrapper = styled.div`
 
   .img1 {
     grid-area: big;
+  }
+
+  .img1 * {
+    font-size: 3.5vw;
   }
 
   .img2 {

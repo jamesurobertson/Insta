@@ -8,6 +8,7 @@ import Home from "./Pages/Home";
 import Profile from "./Pages/Profile";
 import Explore from "./components/Explore/Explore";
 import Login from "./components/Login/Login";
+import Notifications from './components/Notifications/Notifications'
 import GlobalStyle from "./Styles/GlobalStyle";
 
 function App() {
@@ -37,10 +38,11 @@ function App() {
         <BrowserRouter>
           <Switch>
             <AuthRoute path="/auth" component={Login} />
-            <ProtectedRoute exact path="/" component={Home} />
-            <ProtectedRoute path="/direct/inbox" component={Home} />
+            {/* <ProtectedRoute path="/direct/inbox" component={Home} /> */}
             <ProtectedRoute exact path="/profile/:id" component={Profile} />
             <ProtectedRoute path="/explore" component={Explore} />
+            <ProtectedRoute exact path="/" component={Home} />
+            <ProtectedRoute exact path='/notifications' component={Notifications}/>
           </Switch>
         </BrowserRouter>
       </ProfileContext.Provider>

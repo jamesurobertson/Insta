@@ -17,6 +17,11 @@ const Layout1Wrapper = styled.div`
   max-height: 204px;
   overflow: hidden;
 
+  & * {
+    color: white;
+    font-size: 2vw;
+  }
+
   img {
     opacity: 0;
     height: 100%;
@@ -52,7 +57,6 @@ const Layout1Wrapper = styled.div`
   .explore-image-overlay:hover {
     opacity: 1;
   }
-
 `;
 
 const Layout1 = (props) => {
@@ -67,13 +71,13 @@ const Layout1 = (props) => {
                   to={`/post/${photo.id}`}
                 >
                   <div className={`explore-image-overlay`}>
-                    <div style={{ display: "flex", alignItems: "center" }}>
+                    <div style={{ color: "white", display: "flex", alignItems: "center" }}>
                       <RiHeartLine />
                       <div style={{ paddingLeft: "1vw" }}>
                         {photo["like_count"]}
                       </div>
                     </div>
-                    <div style={{ display: "flex", alignItems: "center" }}>
+                    <div style={{ color: "white", display: "flex", alignItems: "center" }}>
                       <FaRegComment />
                       <div style={{ paddingLeft: "1vw" }}>
                         {" "}
