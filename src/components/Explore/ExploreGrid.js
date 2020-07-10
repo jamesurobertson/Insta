@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import styled from "styled-components";
 import InfiniteScroll from "react-infinite-scroller"
 import {backendURL} from '../../config'
@@ -36,7 +36,7 @@ const LoadingWrapper = styled.div`
     animation-name: fadeIn;
     animation-duration: 3s;
     animation-fill-mode: forwards;
-
+    
 `;
 
 const ExploreGridWrapper = styled.div`
@@ -97,29 +97,61 @@ function getTemplate (toRender, photoArray) {
 
 
 const ExploreGrid = (props) => {
-    const [toRender, setToRender] = useState([])
-    const [hasMore, setHasMore] = useState(true)
-    const [loading, setLoading] = useState(true)
+    const [exploreState, setExploreState] = useState({
+      toRender: [],
+      hasMore: true,
+      loading: true,
+    })
 
-    const fetchMore = () => {
-        setLoading(true)
+    useEffect(()=>{
 
-        fetch(`${backendURL}/post/scroll/${toRender.length * 3}`, {
+      (async()=>{
+        
+         const res = await fetch(
+           `${backendURL}/post/scroll/${exploreState.toRender.length * 3}`,
+           {
+             Authorization: localStorage.getItem("Isntgram_access_token"),
+           }
+         );
+         const obj = await res.json();
+         let photoArray = obj.posts;
+         const componentToRender = getTemplate(
+           exploreState.toRender,
+           photoArray
+         );
+         setExploreState({
+           toRender: [...exploreState.toRender, ...componentToRender],
+           hasMore: !photoArray < 3,
+           loading: false,
+          
+         });
+        
+      })()
+
+    },[])
+
+
+
+    const fetchMore = async () => {
+        if (!exploreState.loading){
+          setExploreState({...exploreState, loading: true})
+        }
+
+        const res = await fetch(`${backendURL}/post/scroll/${exploreState.toRender.length * 3}`, {
             Authorization: localStorage.getItem('Isntgram_access_token')
-        }).then((res)=>{
-            return res.json()
-        }).then((obj)=>{
-            let photoArray = obj.posts
-            if (photoArray.length < 3) {
-                setHasMore(false);
-            }
-            const componentToRender = getTemplate(toRender, photoArray)
-            setToRender([...toRender, ...componentToRender])
-
-            
         })
-        setLoading(false);
+        const obj = await res.json()
+        let photoArray = obj.posts
+        const componentToRender = getTemplate(exploreState.toRender, photoArray)
+        setExploreState({
+          toRender: [...exploreState.toRender, ...componentToRender ],
+          hasMore: (!photoArray < 3),
+          loading: false
+        })
+              
     }
+
+        
   
 
     
@@ -128,11 +160,14 @@ const ExploreGrid = (props) => {
         <InfiniteScroll
           pageStart={0}
           loadMore={fetchMore}
-          hasMore={hasMore}        
+          hasMore={exploreState.hasMore} 
+          initialLoad={true}
+          threshold={1000}
+       
         >
-          {toRender}
+          {exploreState.toRender}
         </InfiniteScroll>
-        <LoadingWrapper style={{animationName: `${loading ? 'fadeIn' : "fadeOut"}`}} >
+        <LoadingWrapper style={{animationName: `${exploreState.loading ? 'fadeIn' : "fadeOut"}`}} >
         <Loading />
         </LoadingWrapper>
       </ExploreGridWrapper>
