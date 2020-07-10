@@ -17,49 +17,49 @@ const RegisterFormWrapper = styled.div`
   padding: 16px;
   object-fit: cover;
 
- * {
-     width: 90%;
-     font-size: .9rem;
-     text-align: center;
-   }
+  * {
+    width: 90%;
+    font-size: 0.9rem;
+    text-align: center;
+  }
 
- .form-wrapper {
-     display: flex;
-     flex-flow: column;
-     align-items: center;
- }
+  .form-wrapper {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+  }
 
- input {
-     padding: 0 5px;
-     height: 32px;
-     border: #dcdcdc 1px solid;
-     border-radius: 5px;
-     margin-bottom: 20px;
-     text-align: left;
- }
+  input {
+    padding: 0 5px;
+    height: 32px;
+    border: #dfdfdf 1px solid;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    text-align: left;
+  }
 
- label {
-     text-align: left;
-     color: #262626;
-     margin-bottom: 5px;
- }
+  label {
+    text-align: left;
+    color: #262626;
+    margin-bottom: 5px;
+  }
 
- button {
-     background-color: lightblue;
-     border: none;
-     border-radius: 5px;
-     height: 30px;
-     margin-bottom: 10px;
- }
+  button {
+    background-color: #0095f6;
+    border: none;
+    border-radius: 5px;
+    height: 30px;
+    margin-bottom: 10px;
+  }
 
- a {
-     color: #26abff;
-     font-weight: 700;
- }
+  a {
+    color: #0095f6;
+    font-weight: 700;
+  }
 
- a:hover {
-     color: blue;
- }
+  a:hover {
+    color: blue;
+  }
 `;
 
 
@@ -151,6 +151,7 @@ const RegisterForm = (props) => {
           </label>
           <input
             name="username"
+            id="username"
             placeholder="Username"
             onChange={updateState}
           />
@@ -161,6 +162,7 @@ const RegisterForm = (props) => {
 
           <input
             name="email"
+            id="email"
             placeholder="Email"
             onChange={updateState}
           />
@@ -171,6 +173,7 @@ const RegisterForm = (props) => {
 
           <input
             name="fullName"
+            id="fullName"
             placeholder="Full Name"
             onChange={updateState}
           />
@@ -181,6 +184,7 @@ const RegisterForm = (props) => {
 
           <input
             name="password"
+            id="password"
             type="password"
             placeholder="Password"
             onChange={updateState}
@@ -191,6 +195,7 @@ const RegisterForm = (props) => {
 
           <input
             name="confirmPassword"
+            id="confirmPassword"
             type="password"
             placeholder="Confirm Password"
             onChange={updateState}

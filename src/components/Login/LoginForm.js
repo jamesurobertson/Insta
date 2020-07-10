@@ -17,42 +17,42 @@ const LoginFormWrapper = styled.div`
   padding: 16px;
   object-fit: cover;
 
- * {
-     width: 90%;
-     font-size: .9rem;
-     text-align: center;
-   }
+  * {
+    width: 90%;
+    font-size: 0.9rem;
+    text-align: center;
+  }
 
- .form-wrapper {
-     display: flex;
-     flex-flow: column;
-     align-items: center;
- }
+  .form-wrapper {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+  }
 
- input {
-     padding: 0 5px;
-     height: 32px;
-     border: #dcdcdc 1px solid;
-     border-radius: 5px;
-     margin-bottom: 30px;
-     text-align: left;
- }
+  input {
+    padding: 0 5px;
+    height: 32px;
+    border: #dfdfdf 1px solid;
+    border-radius: 5px;
+    margin-bottom: 30px;
+    text-align: left;
+  }
 
- button {
-     background-color: lightblue;
-     border: none;
-     border-radius: 5px;
-     height: 30px;
- }
+  button {
+    background-color: #0095f6;
+    border: none;
+    border-radius: 5px;
+    height: 30px;
+  }
 
- a {
-     color: #26abff;
-     font-weight: 700;
- }
+  a {
+    color: #0095f6;
+    font-weight: 700;
+  }
 
- a:hover {
-     color: blue;
- }
+  a:hover {
+    color: blue;
+  }
 `;
 
 
@@ -117,6 +117,7 @@ const LoginForm = (props) => {
             // required
             placeholder="Username"
             name="username"
+            id="username"
             onChange={updateState}
             value="johnH"
           />
@@ -130,6 +131,7 @@ const LoginForm = (props) => {
             type="password"
             placeholder="Password"
             name="password"
+            id="password"
             onChange={updateState}
             value="password"
           />
