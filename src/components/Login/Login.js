@@ -4,15 +4,14 @@ import Loading from "../Loading/Loading"
 import GitIcons from "./GitIcons"
 
 
-
 const LogIn = () => {
     return (
-        <>
-        <Loading position={{top: "-40%"}}/>
-        <LoginCard/>
-        <GitIcons/>
-        </>
-    )
+      <>
+        <Loading position={{ top: "-40vh" }} />
+        <LoginCard />
+        <GitIcons />
+      </>
+    );
 }
 
 
