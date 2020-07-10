@@ -49,7 +49,6 @@ const Profile = () => {
               if (!res.ok) throw res
 
               const data = await res.json()
-              console.log(`data is:`, data)
               setProfileData(data)
 
 

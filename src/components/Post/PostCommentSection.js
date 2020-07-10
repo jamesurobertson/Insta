@@ -73,7 +73,6 @@ const PostCommentSection = (props) => {
     },
   };
 
-  console.log(username)
   return (
     <CommentWrapper>
       <button className="like-button" onClick={() => setIsOpen(true)}>

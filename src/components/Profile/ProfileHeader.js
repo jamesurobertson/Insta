@@ -2,9 +2,10 @@ import React, { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 import Modal from "react-modal";
 import DynamicModal from "../DynamicModal";
-import { IoIosSettings } from "react-icons/io";
 import { ProfileContext, UserContext } from "../../context";
-import ProfilePicModal from './ProfilePicModal'
+import ProfilePicModal from "./ProfilePicModal";
+import { backendURL } from "../../config";
+import { RiLogoutBoxRLine } from "react-icons/ri";
 
 const ProfileHeaderWrapper = styled.div`
   display: flex;
@@ -138,8 +139,14 @@ Modal.setAppElement("#root");
 
 const ProfileHeader = (props) => {
   const { windowSize } = props;
-  const { profileData } = useContext(ProfileContext);
   const { currentUserId } = useContext(UserContext);
+  const [isFollowersOpen, setIsFollowersOpen] = useState(false);
+  const [isFollowingOpen, setIsFollowingOpen] = useState(false);
+  const [isEditProfileOpen, setIsEditProfileOpen] = useState(true);
+  const [currentUserFollowingList, setCurrentUserFollowingList] = useState([]);
+  const [openEditPicModal, setOpenEditPicModal] = useState(false);
+
+  const { profileData, setProfileData } = useContext(ProfileContext);
   const {
     num_posts: numPosts,
     followingList,
@@ -152,22 +159,31 @@ const ProfileHeader = (props) => {
     },
   } = profileData;
 
-  // const [profImgUrl, setProfImgUrl] = useState(profile);
-  const [isFollowersOpen, setIsFollowersOpen] = useState(false);
-  const [isFollowingOpen, setIsFollowingOpen] = useState(false);
-  const [currentUserFollowingList, setCurrentUserFollowingList] = useState([]);
-  const [openEditPicModal, setOpenEditPicModal] = useState(false)
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch(
+          `${backendURL}/follow/${currentUserId}/following`
+        );
 
+        if (!res.ok) throw res;
+
+        const { users: currentUserFollowing } = await res.json();
+
+        const followingList = [];
+        currentUserFollowing.forEach((user) => {
+          followingList.push(user.id);
+        });
+        setCurrentUserFollowingList(followingList);
+      } catch (e) {
+        console.error(e);
+      }
+    })();
+  }, [profileData]);
 
   const closeEditPicModal = () => {
-    setOpenEditPicModal(false)
-}
-  useEffect(() => {
-    console.log(`yaaa`, followingList)
-    const list = followingList.map((user) => user.id);
-    setCurrentUserFollowingList(list);
-  }, [followingList]);
-
+    setOpenEditPicModal(false);
+  };
   const closeFollowersModal = () => {
     setIsFollowersOpen(false);
   };
@@ -175,6 +191,10 @@ const ProfileHeader = (props) => {
   const closeFollowingModal = () => {
     setIsFollowingOpen(false);
   };
+
+  const closeEditProfile = () => {
+      setIsEditProfileOpen(false)
+  }
 
   const customStyles = {
     content: {
@@ -194,23 +214,67 @@ const ProfileHeader = (props) => {
   };
 
   const changeProfImg = () => {
-    console.log("change profile picture!");
-    setOpenEditPicModal(true)
+    setOpenEditPicModal(true);
   };
 
-  const editProfile = () => {
-  };
+  const editProfile = () => {};
 
   const logOut = () => {
-    console.log(`logout!`);
+    localStorage.removeItem("Isntgram_access_token");
+    window.location.reload();
   };
 
-  const followUser = () => {
-    console.log("follow user!");
+  const followUser = async (e) => {
+    e.preventDefault();
+    console.log(profileData);
+    const body = { userId: currentUserId, userFollowedId: profileId };
+    try {
+      const res = await fetch(`http://localhost:5000/api/follow`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (!res.ok) throw res;
+
+      const response = await res.json();
+      console.log(profileData);
+      console.log(response);
+
+      const updatesList = [...profileData.followersList, response];
+      setProfileData({ ...profileData, ...{ followersList: updatesList } });
+    } catch (e) {
+      console.error(e);
+    }
   };
 
-  const unfollowUser = () => {
+  const unfollowUser = async (e) => {
     console.log("follow user!");
+    e.preventDefault();
+    const body = { userId: currentUserId, userFollowedId: profileId };
+    try {
+      const res = await fetch(`http://localhost:5000/api/follow`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (!res.ok) throw res;
+
+      const response = await res.json();
+      const { user_id: deletedId } = response;
+
+      const filteredList = profileData.followersList.filter(
+        (user) => user.user_id !== deletedId
+      );
+      setProfileData({ ...profileData, ...{ followersList: filteredList } });
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   if (!profileData) return null;
@@ -222,21 +286,44 @@ const ProfileHeader = (props) => {
             <ButtonWrapper onClick={changeProfImg}>
               <img src={profileImg} alt="avatar" />
             </ButtonWrapper>
-            {openEditPicModal ? <ProfilePicModal openModal={openEditPicModal} closeModal={closeEditPicModal} setOpenModal={setOpenEditPicModal}/> : ''}
+            {openEditPicModal ? (
+              <ProfilePicModal
+                openModal={openEditPicModal}
+                closeModal={closeEditPicModal}
+                setOpenModal={setOpenEditPicModal}
+              />
+            ) : (
+              ""
+            )}
           </ProfileImgWrapper>
           <ProfileDetails>
             <div className="profile-details__header">
               <div className="profile-details__username">{username}</div>
-              <IoIosSettings onClick={logOut} />
+              {currentUserId === profileId ? (
+                <RiLogoutBoxRLine onClick={logOut} />
+              ) : (
+                ""
+              )}
             </div>
             {currentUserId === profileId ? (
               <button onClick={editProfile}>Edit Profile</button>
-            ) : currentUserFollowingList.includes(profileId) ?
+            ) : currentUserFollowingList.includes(profileId) ? (
               <button style={{ width: "85px" }} onClick={unfollowUser}>
-                Following </button> : <button style={{ width: "85px" }} onClick={followUser}>
+                Following{" "}
+              </button>
+            ) : (
+              <button
+                style={{
+                  width: "85px",
+                  outline: "0",
+                  backgroundColor: "#0096F5",
+                  color: "white",
+                }}
+                onClick={followUser}
+              >
                 Follow
               </button>
-            }
+            )}
           </ProfileDetails>
         </ProfileHeaderWrapper>
       ) : (
@@ -244,7 +331,15 @@ const ProfileHeader = (props) => {
           <BigProfileImageWrapper onClick={changeProfImg}>
             <img src={profileImg} alt="avatar" />
           </BigProfileImageWrapper>
-            {openEditPicModal ? <ProfilePicModal openModal={openEditPicModal} closeModal={closeEditPicModal} setOpenModal={setOpenEditPicModal}/> : ''}
+          {openEditPicModal ? (
+            <ProfilePicModal
+              openModal={openEditPicModal}
+              closeModal={closeEditPicModal}
+              setOpenModal={setOpenEditPicModal}
+            />
+          ) : (
+            ""
+          )}
           <BigProfileInfo>
             <div className="big-profile-details__header">
               <div className="big-profile__username">{username}</div>
@@ -265,16 +360,21 @@ const ProfileHeader = (props) => {
               ) : (
                 <button
                   className="big-profile__editProfile-button"
+                  style={{
+                    backgroundColor: "#0096F5",
+                    color: "white",
+                    outline: "0",
+                  }}
                   onClick={followUser}
                 >
                   Follow
                 </button>
               )}
-
-              <IoIosSettings
-                className="big-profile__logout-icon"
-                onClick={logOut}
-              />
+              {currentUserId === profileId ? (
+                <RiLogoutBoxRLine onClick={logOut} />
+              ) : (
+                ""
+              )}
             </div>
             <div className="big-profile-details">
               <div className="big-profile__detail">

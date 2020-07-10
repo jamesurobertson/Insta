@@ -134,7 +134,6 @@ const RegisterForm = (props) => {
 
       } else {
         const { user, access_token } = await res.json();
-        console.log(user.id);
         localStorage.setItem("Isntgram_access_token", access_token);
         setCurrentUserId(user.id);
         setCurrentUserProfilePic(user.profile_image_url);

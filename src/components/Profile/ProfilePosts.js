@@ -9,11 +9,13 @@ const ProfilePostWrapper = styled.section`
     grid-template-columns: 1fr 1fr 1fr;
     grid-row-gap: .125rem;
     grid-column-gap: .125rem;
+    padding-bottom: 53px;
     cursor: pointer;
 
     @media screen and (min-width: 735px) {
         grid-row-gap: 1.5rem;
         grid-column-gap: 1.5rem;
+        padding-bottom: 0;
   }
 
 `
