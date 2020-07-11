@@ -11,6 +11,7 @@ import Login from "./components/Login/Login";
 import Notifications from './components/Notifications/Notifications'
 import GlobalStyle from "./Styles/GlobalStyle";
 import EditProfile from "./components/Profile/EditProfile";
+import SinglePost from './components/Post/SinglePost'
 
 function App() {
   const [currentUserId, setCurrentUserId] = useState("");
@@ -40,13 +41,14 @@ function App() {
           <Switch>
             <AuthRoute path="/auth" component={Login} />
             {/* <ProtectedRoute path="/direct/inbox" component={Home} /> */}
-            <ProtectedRoute path="/profile/:id" component={Profile} />
+            <ProtectedRoute exact path="/profile/:id" component={Profile} />
             <ProtectedRoute path="/explore" component={Explore} />
             <ProtectedRoute path="/notifications" component={Notifications}
             />
             <ProtectedRoute exact path="/" component={Home} />
             <ProtectedRoute path='/notifications' component={Notifications}/>
             <ProtectedRoute path='/accounts/edit' component ={EditProfile}/>
+            <ProtectedRoute path='/post/:id' component ={SinglePost}/>
           </Switch>
         </BrowserRouter>
       </ProfileContext.Provider>

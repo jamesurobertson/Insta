@@ -273,7 +273,9 @@ const ProfileHeader = (props) => {
     }
   };
 
-  if (!profileData) return null;
+  if (!profileData) return null
+  if (profileData.user.id !== parseInt(window.location.href.match(/(\d+)$/))) return null
+
   return (
     <>
       {windowSize < 735 ? (
