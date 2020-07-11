@@ -119,7 +119,7 @@ const LoginForm = (props) => {
             name="username"
             id="username"
             onChange={updateState}
-            value="johnH"
+           
           />
 
           <label style={{ display: "none" }} htmlFor="password">
@@ -133,7 +133,7 @@ const LoginForm = (props) => {
             name="password"
             id="password"
             onChange={updateState}
-            value="password"
+            
           />
 
           <button style={{cursor:"pointer"}} type="submit">Log In</button>
