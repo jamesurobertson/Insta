@@ -201,16 +201,6 @@ const RegisterForm = (props) => {
             onChange={updateState}
           />
 
-          {/* <label htmlFor="birthday">Birthday</label>
-
-          <input
-            required
-            name="birthday"
-            type="date"
-            placeholder="Birthday"
-            onChange={updateState}
-          /> */}
-
           <button type="submit">Register</button>
         </form>
         <div>

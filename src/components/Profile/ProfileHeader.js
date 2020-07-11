@@ -6,6 +6,8 @@ import { ProfileContext, UserContext } from "../../context";
 import ProfilePicModal from "./ProfilePicModal";
 import { backendURL } from "../../config";
 import { RiLogoutBoxRLine } from "react-icons/ri";
+import {EditProfile} from "./EditProfile";
+import {Link} from 'react-router-dom'
 
 const ProfileHeaderWrapper = styled.div`
   display: flex;
@@ -140,11 +142,13 @@ Modal.setAppElement("#root");
 const ProfileHeader = (props) => {
   const { windowSize } = props;
   const { currentUserId } = useContext(UserContext);
+
+  // modals
   const [isFollowersOpen, setIsFollowersOpen] = useState(false);
   const [isFollowingOpen, setIsFollowingOpen] = useState(false);
-  const [isEditProfileOpen, setIsEditProfileOpen] = useState(true);
+  const [isEditProfilePicOpen, setIsEditProfilePicOpen] = useState(false);
+
   const [currentUserFollowingList, setCurrentUserFollowingList] = useState([]);
-  const [openEditPicModal, setOpenEditPicModal] = useState(false);
 
   const { profileData, setProfileData } = useContext(ProfileContext);
   const {
@@ -182,7 +186,7 @@ const ProfileHeader = (props) => {
   }, [profileData]);
 
   const closeEditPicModal = () => {
-    setOpenEditPicModal(false);
+    setIsEditProfilePicOpen(false);
   };
   const closeFollowersModal = () => {
     setIsFollowersOpen(false);
@@ -192,9 +196,6 @@ const ProfileHeader = (props) => {
     setIsFollowingOpen(false);
   };
 
-  const closeEditProfile = () => {
-      setIsEditProfileOpen(false)
-  }
 
   const customStyles = {
     content: {
@@ -214,10 +215,8 @@ const ProfileHeader = (props) => {
   };
 
   const changeProfImg = () => {
-    setOpenEditPicModal(true);
+    setIsEditProfilePicOpen(true);
   };
-
-  const editProfile = () => {};
 
   const logOut = () => {
     localStorage.removeItem("Isntgram_access_token");
@@ -226,7 +225,6 @@ const ProfileHeader = (props) => {
 
   const followUser = async (e) => {
     e.preventDefault();
-    console.log(profileData);
     const body = { userId: currentUserId, userFollowedId: profileId };
     try {
       const res = await fetch(`http://localhost:5000/api/follow`, {
@@ -240,8 +238,6 @@ const ProfileHeader = (props) => {
       if (!res.ok) throw res;
 
       const response = await res.json();
-      console.log(profileData);
-      console.log(response);
 
       const updatesList = [...profileData.followersList, response];
       setProfileData({ ...profileData, ...{ followersList: updatesList } });
@@ -286,11 +282,10 @@ const ProfileHeader = (props) => {
             <ButtonWrapper onClick={changeProfImg}>
               <img src={profileImg} alt="avatar" />
             </ButtonWrapper>
-            {openEditPicModal ? (
+            {isEditProfilePicOpen ? (
               <ProfilePicModal
-                openModal={openEditPicModal}
+                openModal={isEditProfilePicOpen}
                 closeModal={closeEditPicModal}
-                setOpenModal={setOpenEditPicModal}
               />
             ) : (
               ""
@@ -306,7 +301,9 @@ const ProfileHeader = (props) => {
               )}
             </div>
             {currentUserId === profileId ? (
-              <button onClick={editProfile}>Edit Profile</button>
+                <Link to='/accounts/edit'>
+                    <button>Edit Profile</button>
+                </Link>
             ) : currentUserFollowingList.includes(profileId) ? (
               <button style={{ width: "85px" }} onClick={unfollowUser}>
                 Following{" "}
@@ -331,11 +328,10 @@ const ProfileHeader = (props) => {
           <BigProfileImageWrapper onClick={changeProfImg}>
             <img src={profileImg} alt="avatar" />
           </BigProfileImageWrapper>
-          {openEditPicModal ? (
+          {isEditProfilePicOpen ? (
             <ProfilePicModal
-              openModal={openEditPicModal}
+              openModal={isEditProfilePicOpen}
               closeModal={closeEditPicModal}
-              setOpenModal={setOpenEditPicModal}
             />
           ) : (
             ""
@@ -344,12 +340,15 @@ const ProfileHeader = (props) => {
             <div className="big-profile-details__header">
               <div className="big-profile__username">{username}</div>
               {currentUserId === profileId ? (
+                <Link to='/accounts/edit'>
                 <button
                   className="big-profile__editProfile-button"
-                  onClick={editProfile}
                 >
                   Edit Profile
                 </button>
+
+                </Link>
+
               ) : currentUserFollowingList.includes(profileId) ? (
                 <button
                   className="big-profile__editProfile-button"

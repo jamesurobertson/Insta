@@ -10,6 +10,7 @@ import Explore from "./components/Explore/Explore";
 import Login from "./components/Login/Login";
 import Notifications from './components/Notifications/Notifications'
 import GlobalStyle from "./Styles/GlobalStyle";
+import EditProfile from "./components/Profile/EditProfile";
 
 function App() {
   const [currentUserId, setCurrentUserId] = useState("");
@@ -44,6 +45,8 @@ function App() {
             <ProtectedRoute path="/notifications" component={Notifications}
             />
             <ProtectedRoute exact path="/" component={Home} />
+            <ProtectedRoute path='/notifications' component={Notifications}/>
+            <ProtectedRoute path='/accounts/edit' component ={EditProfile}/>
           </Switch>
         </BrowserRouter>
       </ProfileContext.Provider>
