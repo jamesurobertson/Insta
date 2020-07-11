@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const PostWrapper = styled.div`
+const PostImageWrapper = styled.div`
     width: 100%;
     max-width: 600px;
   .post-header-image {
@@ -12,13 +12,13 @@ const PostWrapper = styled.div`
 
 const PhotoImagePost = ({postImg}) => {
   return (
-    <PostWrapper>
+    <PostImageWrapper>
       <img
         className="post-header-image"
         src={postImg}
         alt="feed-post"
       />
-    </PostWrapper>
+    </PostImageWrapper>
   );
 };
 

@@ -57,9 +57,6 @@ const RegisterFormWrapper = styled.div`
      font-weight: 700;
  }
 
- a:hover {
-     color: blue;
- }
 `;
 
 
@@ -195,16 +192,6 @@ const RegisterForm = (props) => {
             placeholder="Confirm Password"
             onChange={updateState}
           />
-
-          {/* <label htmlFor="birthday">Birthday</label>
-
-          <input
-            required
-            name="birthday"
-            type="date"
-            placeholder="Birthday"
-            onChange={updateState}
-          /> */}
 
           <button type="submit">Register</button>
         </form>

@@ -22,7 +22,7 @@ const CommentInputWrapper = styled.section`
     .button-post{
         border: none;
         padding: 0;
-        color: #0096f5;
+        color: #0095F5;
         font-weight: 600;
         background-color: transparent;
         outline: 0;
