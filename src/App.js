@@ -42,10 +42,11 @@ function App() {
             {/* <ProtectedRoute path="/direct/inbox" component={Home} /> */}
             <ProtectedRoute path="/profile/:id" component={Profile} />
             <ProtectedRoute path="/explore" component={Explore} />
+            <ProtectedRoute path="/notifications" component={Notifications}
+            />
             <ProtectedRoute exact path="/" component={Home} />
             <ProtectedRoute path='/notifications' component={Notifications}/>
             <ProtectedRoute path='/accounts/edit' component ={EditProfile}/>
-
           </Switch>
         </BrowserRouter>
       </ProfileContext.Provider>
