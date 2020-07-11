@@ -36,7 +36,7 @@ const EditProfilePicWrapper = styled.div`
     cursor: default;
   }
 
-  .uploadPhoto {
+  .uploadPhoto label {
     font-weight: bold;
     color: #0095f6;
   }
@@ -78,6 +78,7 @@ const ProfilePicModal = (props) => {
       formData = new FormData();
       formData.append("img", file);
     }
+    console.log(formData.get('img'))
     postImage(formData);
   };
 

@@ -23,7 +23,7 @@ const Post = ({ post }) => {
   const {
     id: postId,
     user_info: userInfo,
-    comments,
+    comments: {commentsList, total},
     created_at: createdAt,
     caption,
     image_url: postImg,
@@ -31,13 +31,14 @@ const Post = ({ post }) => {
     user_id: userId,
   } = post;
 
+
   return (
     <div className="Pst"style={{ dispaly: "flex", flexFlow: "column" }}>
       <PostWrapper>
         <PostHeader userPic={userInfo.profilePic} username={userInfo.username} postId={postId} userId={userId}/>
         <PhotoImagePost postImg={postImg} />
-        <IconPost postId={postId}/>
-        <PostCommentSection postId={postId} username={userInfo.username} postUserId={userId} caption={caption} createdAt={createdAt} likeCount={likeCount} comments={comments}/>
+        <IconPost postId={postId} post={post}/>
+        <PostCommentSection postId={postId} username={userInfo.username} postUserId={userId} caption={caption} createdAt={createdAt} likeCount={likeCount} commentsList={commentsList} total={total}/>
         <CommentInputField />
       </PostWrapper>
     </div>

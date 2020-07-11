@@ -1,4 +1,4 @@
-import React, {useState, useContext} from "react";
+import React, {useState, useContext, useRef, useEffect} from "react";
 import {backendURL} from '../../config'
 import styled from "styled-components";
 import {UserContext} from '../../context'
@@ -9,6 +9,8 @@ const CommentInputWrapper = styled.section`
     height: 55px;
     max-height: 80px;
     border-top: 1px solid #dfdfdf;
+    border-bottom: 1px solid #dfdfdf;
+
     display: none;
 
     .comment-post{
@@ -46,7 +48,9 @@ const CommentInputWrapper = styled.section`
 const CommentInputField = (props) => {
     const [content, setContent] = useState('');
     const { currentUserId } = useContext(UserContext)
-    const { postId } = props
+    const { postId, isSinglePage } = props
+
+    const inputField = useRef(null)
 
 
     const updateCommentState = (e) => {
@@ -56,6 +60,7 @@ const CommentInputField = (props) => {
     const handleSubmit = async (event) => {
         event.preventDefault()
         const data = { content, userId: currentUserId, postId }
+        console.log(data)
         const res = await fetch(`${backendURL}/comment`, {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },
@@ -67,17 +72,24 @@ const CommentInputField = (props) => {
         }
         else {
             const content = await res.json()
-            setContent(content)
+            setContent('')
         }
     }
 
+    useEffect(() => {
+        inputField.current.focus()
+      })
+
     return (
-        <CommentInputWrapper>
+        <CommentInputWrapper style={{display: `${isSinglePage ? 'block' : 'none'}`}}>
             <form className='form-post' onSubmit={handleSubmit}>
                 <div style={{display: 'flex', alignItems: 'center', width: '100%'}}>
-                <input className='comment-post'
+                <input
+                    className='comment-post'
+                    ref={inputField}
                     placeholder="Add a comment..."
-                    onChange={updateCommentState} />
+                    onChange={updateCommentState}
+                    value={content} />
                 </div>
                 <button type="submit" className='button-post'>Post</button>
             </form>

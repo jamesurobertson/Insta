@@ -45,12 +45,14 @@ const PostCommentSection = (props) => {
   const {
     likeCount,
     caption,
-    comments: { commentsList, total },
     createdAt,
     postUserId,
     username,
-    postId
-  } = props;
+    postId,
+    isSinglePage,
+    commentsList,
+    total
+} = props;
 
   const closeModal = () => {
     setIsOpen(false);
@@ -73,6 +75,28 @@ const PostCommentSection = (props) => {
     },
   };
 
+  function timeSince(timeStamp) {
+    timeStamp = new Date(timeStamp)
+    const  now = new Date()
+    console.log(timeStamp - now.getTime())
+    const secondsPast = (now.getTime() - timeStamp) / 1000;
+    if (secondsPast < 60) {
+      return parseInt(secondsPast) + 's';
+    }
+    if (secondsPast < 3600) {
+      return parseInt(secondsPast / 60) + 'm';
+    }
+    if (secondsPast <= 86400) {
+      return parseInt(secondsPast / 3600) + 'h';
+    }
+    if (secondsPast > 86400) {
+      const day = timeStamp.getDate();
+      const month = timeStamp.toDateString().match(/ [a-zA-Z]*/)[0].replace(" ", "");
+      const year = timeStamp.getFullYear() == now.getFullYear() ? "" : " " + timeStamp.getFullYear();
+      return day + " " + month + year;
+    }
+  }
+
   return (
     <CommentWrapper>
       <button className="like-button" onClick={() => setIsOpen(true)}>
@@ -87,14 +111,17 @@ const PostCommentSection = (props) => {
         <DynamicModal closeModal={closeModal} title={"Likes"} type={"post"} />
       </Modal>
       <Comment userId={postUserId} username={username} content={caption} ></Comment>
-      {total > 2 ? <Link className='comments__view-all' to={`/post/${postId}`}>
+      {isSinglePage ? commentsList.map((comment) => {
+          const {id, user_id, username: {username}, likesComment, content} = comment
+        return <Comment key={`post-comment-${id}`} userId={user_id} username={username} likesComment={likesComment} content={content} ></Comment>;
+      }): total > 2 ? <Link className='comments__view-all' to={`/post/${postId}`}>
           {`View all ${total} comments`}
       </Link>: ''}
       {commentsList.map((comment) => {
           const {id, user_id, username: {username}, likesComment, content} = comment
         return <Comment key={`post-comment-${id}`} userId={user_id} username={username} likesComment={likesComment} content={content} ></Comment>;
       })}
-      <div className="post-date-created">6 HOURS AGO</div>
+      <div className="post-date-created">{`${timeSince(createdAt)}`}</div>
     </CommentWrapper>
   );
 };

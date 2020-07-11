@@ -4,6 +4,8 @@ import ProfileHeader from "../components/Profile/ProfileHeader";
 import ProfileMiddle from "../components/Profile/ProfileMiddle";
 import ProfilePosts from "../components/Profile/ProfilePosts";
 import {ProfileContext} from '../context'
+import LoadingPage from '../components/Loading/LoadingPage'
+
 
 const ProfileWrapper = styled.div`
   padding-top: 55px;
@@ -21,7 +23,7 @@ const ProfileWrapper = styled.div`
     width: 614px;
   } */
 `;
-const Profile = () => {
+const Profile = (props) => {
   const [windowSize, setWindowSize] = useState(window.innerWidth);
   const {profileData, setProfileData} = useContext(ProfileContext)
 
@@ -60,6 +62,9 @@ const Profile = () => {
   }, [userId, setProfileData])
 
   if (!profileData) return null
+  console.log(props.location.pathname)
+  console.log( profileData.user.id === 7)
+  if (profileData.user.id !== parseInt(props.location.pathname.match(/(\d+)$/))) return <LoadingPage/>
   return (
     <ProfileWrapper>
       <ProfileHeader windowSize={windowSize} />

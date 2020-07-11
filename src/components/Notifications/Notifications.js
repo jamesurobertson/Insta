@@ -6,7 +6,6 @@ import { UserContext, ProfileContext } from "../../context";
 import CommentNotification from "./CommentNotification";
 import FollowNotification from "./FollowNotification";
 import LikeNotification from "./LikeNotification";
-import {dummyData} from "./DummyData" 
 
 
 const NotificationsWrapper = styled.div`
@@ -68,7 +67,7 @@ const Notifications = () => {
         const data = await res.json();
 
         setProfileData(data);
-       
+
 
       } catch (e) {
         console.error(e);
