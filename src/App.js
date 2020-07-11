@@ -6,7 +6,7 @@ import { ProtectedRoute, AuthRoute } from "./Routes";
 import { UserContext, ProfileContext } from "./context";
 import Home from "./Pages/Home";
 import Profile from "./Pages/Profile";
-import Explore from "./components/Explore/Explore";
+import Explore from "./components/Explore/ExploreGrid";
 import Login from "./components/Login/Login";
 import Notifications from './components/Notifications/Notifications'
 import GlobalStyle from "./Styles/GlobalStyle";

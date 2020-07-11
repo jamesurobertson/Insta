@@ -1,10 +1,8 @@
-import React, { useState, useContext  } from "react";
+import React, { useState, useContext, useEffect  } from "react";
 import styled from "styled-components";
 import InfiniteScroll from "react-infinite-scroller";
 import { backendURL } from "../../config";
 import { UserContext } from "../../context";
-
-import { fadeIn } from "../../Styles/animations";
 
 
 import Loading from "../Loading/Loading";
@@ -36,7 +34,7 @@ const LoadingWrapper = styled.div`
   bottom: 55vh;
   opacity: 1;
   animation-name: fadeIn;
-  animation-duration: 3s;
+  animation-duration: 2s;
   animation-fill-mode: forwards;
 `;
 
@@ -46,11 +44,9 @@ const ExploreGridWrapper = styled.div`
   margin-bottom: 10vh;
   width: 95vw;
   max-width: 614px;
+  
 
-  & {
-    animation: ${fadeIn} 2s 0.25s forwards;
-    opacity: 0;
-  }
+  
 `;
 
 const ExploreGrid = (props) => {
@@ -68,7 +64,7 @@ const ExploreGrid = (props) => {
   }
 
   function getTemplate(toRender, photoArray) {
-    const randomInt = getRandomInt(0, 4);
+    const randomInt = getRandomInt(2, 4);
 
     if (
       toRender.length === 0 ||
@@ -82,34 +78,39 @@ const ExploreGrid = (props) => {
         />,
       ];
     }
-    if (toRender[toRender.length - 1].key.includes(`layout${randomInt}key`)) {
-      return getTemplate(toRender, photoArray);
+
+    if (
+      toRender.length === 1 || randomInt == 2
+    ) {
+      return [
+        <Layout2
+          key={`layout2key-${toRender.length}`}
+          componentPhotos={photoArray}
+        />,
+      ];
+    }
+
+    if (
+      toRender.length === 0 ||
+      photoArray.length < 3 ||
+      !toRender[toRender.length - 1].key.includes(`layout1key`)
+    ) {
+      return [
+        <Layout1
+          key={`layout1key-${toRender.length}`}
+          componentPhotos={photoArray}
+        />,
+      ];
     } else {
-      switch (randomInt) {
-        case 1:
-          return [
-            <Layout1
-              key={`layout1key-${toRender.length}`}
-              componentPhotos={photoArray}
-            />,
-          ];
-        case 2:
-          return [
-            <Layout2
-              key={`layout2key-${toRender.length}`}
-              componentPhotos={photoArray}
-            />,
-          ];
-        default:
-          console.log(toRender);
-          return [
+      return [
             <Layout3
               key={`layout3key-${toRender.length}`}
               componentPhotos={photoArray}
             />,
           ];
-      }
     }
+   
+   
   }
 
   const fetchMore = () => {
@@ -133,10 +134,10 @@ const ExploreGrid = (props) => {
     setLoading(false);
   };
 
-  if (!toRender) return
+  if (!toRender || !currentUserId) return null;
   return (
     <ExploreGridWrapper key="gridWrapper">
-      <InfiniteScroll pageStart={0} loadMore={fetchMore} hasMore={hasMore}>
+      <InfiniteScroll initialLoad={true} pageStart={4} loadMore={fetchMore} hasMore={hasMore}>
         {toRender}
       </InfiniteScroll>
       <LoadingWrapper
