@@ -24,17 +24,20 @@ const CommentNotification = (props) => {
         <a href={`/profile/${props.user.id}`}>
           <img
             className="avatar"
-            src={props.user.image_url}
-            alt={props.user.caption}
+            src={props.user.profile_image_url}
+            alt={props.user.full_name}
           />
         </a>
         <p>
-          <a href={`/profile/${props.user.id}`}>{props.user.name} </a>
+          <a href={`/profile/${props.user.id}`}>{props.user.username} </a>
           commented on your
           <a href={`/post/${props.post.id}`}> post</a>
         </p>
         <a href={`/post/${props.post.id}`}>
-          <img src={props.post.image_url} alt={props.post.caption} />
+          <img
+            src={props.post.image_url}
+            alt={props.post.caption}
+          />
         </a>
       </>
     </CommentNotificationWrapper>

@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { fadeIn } from "../../Styles/animations";
 
-const PostNotificationWrapper = styled.div`
+const LikeNotificationWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -16,27 +16,27 @@ const PostNotificationWrapper = styled.div`
   animation-fill-mode: forwards;
 `;
 
-const PostNotification = (props) => {
+const LikeNotification = (props) => {
   return (
-    <PostNotificationWrapper style={props.style}>
+    <LikeNotificationWrapper style={props.style}>
       <>
         <a href={`/profile/${props.user.id}`}>
           <img
             className="avatar"
-            src={props.user.image_url}
-            alt={props.user.caption}
+            src={props.user.profile_image_url}
+            alt={props.user.full_name}
           />
         </a>
         <p>
-          <a href={`/profile/${props.user.id}`}>{props.user.name} </a> posted a
-          <a href={`/post/${props.post.id}`}> photo</a>
+          <a href={`/profile/${props.user.id}`}>{props.user.username} </a> liked your
+          <a href={`/post/${props.post.id}`}> {props.type}</a>
         </p>
         <a href={`/post/${props.post.id}`}>
           <img src={props.post.image_url} alt={props.post.caption} />
         </a>
       </>
-    </PostNotificationWrapper>
+    </LikeNotificationWrapper>
   );
 };
 
-export default PostNotification;
+export default LikeNotification;

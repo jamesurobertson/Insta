@@ -5,7 +5,7 @@ import { backendURL } from "../../config";
 import { UserContext, ProfileContext } from "../../context";
 import CommentNotification from "./CommentNotification";
 import FollowNotification from "./FollowNotification";
-import PostNotification from "./PostNotification";
+import LikeNotification from "./LikeNotification";
 import {dummyData} from "./DummyData" 
 
 
@@ -80,17 +80,15 @@ const Notifications = () => {
     if (!currentUserId) return;
     (async () => {
       try {
-        // const res = await fetch(
-        //   `${backendURL}/post/${currentUserId}/scroll/${toRender.length}`
-        // );
+        const res = await fetch(
+          `${backendURL}/note/${currentUserId}/scroll/${toRender.length}`
+        );
 
-        // if (!res.ok) throw res;
+        if (!res.ok) throw res;
 
-        // const { posts } = await res.json();
+        const { notifications } = await res.json();
 
-        const response = dummyData.slice(toRender.length, toRender.length + 20)
-
-        const nodeList = response.map((notification, i) => {
+        const nodeList = notifications.map((notification, i) => {
           switch (notification.type) {
             case ('comment'):
               return (
@@ -101,9 +99,9 @@ const Notifications = () => {
                   key={`notification-${i}`}
                 />
               );
-            case ('post'):
+            case ('follow'):
               return (
-                <PostNotification
+                  <FollowNotification
                   style={{ animationDuration: `${1 + i * 0.25}s` }}
                   post={notification.post}
                   user={notification.user}
@@ -111,8 +109,10 @@ const Notifications = () => {
                 />
               );
             default:
+              console.log(notification, notification.likeable_type)
               return (
-                <FollowNotification
+                <LikeNotification
+                  type={notification.likeable_type}
                   style={{ animationDuration: `${1 + i * 0.25}s` }}
                   post={notification.post}
                   user={notification.user}
@@ -122,9 +122,10 @@ const Notifications = () => {
           }
         });
 
+
         setToRender([...toRender, ...nodeList]);
 
-        if (response.length < 20) {
+        if (notifications.length < 20) {
           setHasMore(false);
           console.log(toRender.length);
         }
