@@ -165,9 +165,9 @@ const UploadWrapper = styled.div`
   outline: 0;
 }
 .custom-file-input:active::before {
-  background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9); 
+  background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
 }
-  
+
 `;
 
 
@@ -192,14 +192,10 @@ const Upload = (props) => {
 
     const formData = new FormData()
     formData.append('file', picture)
-    
-    const body = {
-      currentUserId,
-      caption: captionInput.current.value,
-      formData
-    }
 
-    const res = await fetch(`${backendURL}/aws/post`, {
+    const caption = encodeURIComponent(captionInput.current.value)
+
+    const res = await fetch(`${backendURL}/aws/post/${currentUserId}/${caption}`, {
       method: "POST",
       body: formData
     })
@@ -207,9 +203,9 @@ const Upload = (props) => {
     if (!res.ok) {
       toast.error('Upload Error. Please try again!')
     } else {
-      const obj = await res.json()
+      const post = await res.json()
       toast.success('Upload Success!')
-      props.history.push(`/post/${obj.id}`)
+      props.history.push(`/post/${post.id}`)
 
     }
 
