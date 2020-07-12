@@ -57,14 +57,14 @@ const LoginFormWrapper = styled.div`
 
 
 const LoginForm = (props) => {
-    const {
-        setCurrentUserId, 
-        setCurrentUserFollowerCount, 
-        setCurrentUserFollowingCount, 
-        setCurrentUserProfilePic} = useContext(UserContext)
+  const {
+      setCurrentUserId, 
+      setCurrentUserFollowerCount, 
+      setCurrentUserFollowingCount, 
+      setCurrentUserProfilePic} = useContext(UserContext)
 
-    const [username, setUsername] = useState('johnH')
-    const [password, setPassword] = useState('password')
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
 
     const updateState = (e) => {
         if (e.target.getAttribute('name') === "username") {
@@ -105,6 +105,39 @@ const LoginForm = (props) => {
 
     }
 
+    const demoLogin = async (e) => {
+      e.preventDefault()
+      const data = { username: "DemoUser", password: "Test@1234" }
+
+      const res = await fetch(`${backendURL}/session`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      })
+
+      if (res.status !== 200) {
+        const { error } = await res.json()
+        toast.info(error, {
+          position: 'top-right',
+          autoClose: 5000,
+          closeOnClick: true,
+        })
+      } else {
+        const { user, access_token } = await res.json()
+        localStorage.setItem("Isntgram_access_token", access_token)
+        setCurrentUserId(user.id);
+        setCurrentUserProfilePic(user.profile_image_url);
+        setCurrentUserFollowerCount(user.numFollowers);
+        setCurrentUserFollowingCount(user.numFollowing);
+        props.history.push("/")
+      }
+
+
+    
+    } 
+
     return (
       <LoginFormWrapper>
         <form onSubmit={handleSubmit} className="form-wrapper">
@@ -114,7 +147,6 @@ const LoginForm = (props) => {
           </label>
 
           <input
-            // required
             placeholder="Username"
             name="username"
             id="username"
@@ -127,7 +159,6 @@ const LoginForm = (props) => {
           </label>
 
           <input
-            // required
             type="password"
             placeholder="Password"
             name="password"
@@ -138,7 +169,7 @@ const LoginForm = (props) => {
 
           <button style={{cursor:"pointer"}} type="submit">Log In</button>
         </form>
-        <button style={{ cursor: 'pointer', width: "80%" }}>Try Our Demo</button>
+        <button style={{ cursor: 'pointer', width: "80%" }} onClick={demoLogin}>Try Our Demo</button>
 
         <div>
           Don't have an account?
