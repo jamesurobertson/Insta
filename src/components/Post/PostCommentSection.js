@@ -78,7 +78,6 @@ const PostCommentSection = (props) => {
   function timeSince(timeStamp) {
     timeStamp = new Date(timeStamp)
     const  now = new Date()
-    console.log(timeStamp - now.getTime())
     const secondsPast = (now.getTime() - timeStamp) / 1000;
     if (secondsPast < 60) {
       return parseInt(secondsPast) + 's';

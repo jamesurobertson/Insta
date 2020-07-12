@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect  } from "react";
+import React, { useState, useContext  } from "react";
 import styled from "styled-components";
 import InfiniteScroll from "react-infinite-scroller";
 import { backendURL } from "../../config";
@@ -40,7 +40,7 @@ const LoadingWrapper = styled.div`
 
 const ExploreGridWrapper = styled.div`
   margin: auto;
-  margin-top: 10vh;
+  
   margin-bottom: 10vh;
   width: 95vw;
   max-width: 614px;
@@ -63,48 +63,48 @@ const ExploreGrid = (props) => {
     return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
   }
 
-  function getTemplate(toRender, photoArray) {
+  function getTemplate(len, photoArray) {
     const randomInt = getRandomInt(2, 4);
 
     if (
-      toRender.length === 0 ||
+      len === 0 ||
       photoArray.length < 3 ||
-      !toRender[toRender.length - 1].key.includes(`layout1key`)
+      !toRender[len - 1].key.includes(`layout1key`)
     ) {
       return [
         <Layout1
-          key={`layout1key-${toRender.length}`}
+          key={`layout1key-${len}`}
           componentPhotos={photoArray}
         />,
       ];
     }
 
     if (
-      toRender.length === 1 || randomInt == 2
+      len === 1 || randomInt === 2
     ) {
       return [
         <Layout2
-          key={`layout2key-${toRender.length}`}
+          key={`layout2key-${len}`}
           componentPhotos={photoArray}
         />,
       ];
     }
 
     if (
-      toRender.length === 0 ||
+      len === 0 ||
       photoArray.length < 3 ||
-      !toRender[toRender.length - 1].key.includes(`layout1key`)
+      !toRender[len - 1].key.includes(`layout1key`)
     ) {
       return [
         <Layout1
-          key={`layout1key-${toRender.length}`}
+          key={`layout1key-${len}`}
           componentPhotos={photoArray}
         />,
       ];
     } else {
       return [
             <Layout3
-              key={`layout3key-${toRender.length}`}
+              key={`layout3key-${len}`}
               componentPhotos={photoArray}
             />,
           ];
@@ -115,24 +115,36 @@ const ExploreGrid = (props) => {
 
   const fetchMore = () => {
     if (!currentUserId) return;
-    setLoading(true);
 
-    fetch(`${backendURL}/post/scroll/${toRender.length * 3}`, {
-      Authorization: localStorage.getItem("Isntgram_access_token"),
-    })
-      .then((res) => {
-        return res.json();
+   
+
+    (async ()=>{
+       const len = toRender.length;
+      try {
+      const res = await fetch(`${backendURL}/post/scroll/${len * 3}`, {
+        Authorization: localStorage.getItem("Isntgram_access_token"),
       })
-      .then((obj) => {
-        let photoArray = obj.posts;
-        if (photoArray.length < 3) {
-          setHasMore(false);
-        }
-        const componentToRender = getTemplate(toRender, photoArray);
-        setToRender([...toRender, ...componentToRender]);
-      });
-    setLoading(false);
-  };
+      const obj = await res.json();
+      
+      let photoArray = obj.posts
+
+      if(photoArray.length < 3) {
+        setHasMore(false)
+      }
+
+      const componentToRender = getTemplate(len, photoArray);
+       setToRender([...toRender, ...componentToRender]);
+    } catch {
+       setHasMore(false);
+       setToRender([]);
+       setLoading(false);
+    }
+  
+    })()
+   
+  }
+  
+  
 
   if (!toRender || !currentUserId) return null;
   return (
