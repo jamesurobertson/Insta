@@ -104,7 +104,7 @@ const UploadWrapper = styled.div`
     height: 400px;
     width: 100%;
     margin-bottom: 20px;
-    
+
   }
 
   .fileUploader {
@@ -177,6 +177,7 @@ const Upload = (props) => {
   const [imagePreview, setImagePreview] = useState()
   const captionInput = useRef();
 
+
   const onDrop = (e) => {
     setPicture(e.target.files[0]);
     setImagePreview(URL.createObjectURL(e.target.files[0]))
@@ -188,8 +189,8 @@ const Upload = (props) => {
   };
 
   const handleUpload = async () =>{
+
     const formData = new FormData()
-    console.log(picture)
     formData.append('file', picture)
     
     const body = {
@@ -198,14 +199,9 @@ const Upload = (props) => {
       formData
     }
 
-    console.log(body)
-    const res = await fetch(`${backendURL}/post/upload`, {
+    const res = await fetch(`${backendURL}/aws/post`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: localStorage.getItem("Isntgram_access_token")
-      },
-      body: JSON.stringify(body)
+      body: formData
     })
 
     if (!res.ok) {
