@@ -104,7 +104,7 @@ const UploadWrapper = styled.div`
     height: 400px;
     width: 100%;
     margin-bottom: 20px;
-    
+
   }
 
   .fileUploader {
@@ -133,7 +133,7 @@ const UploadWrapper = styled.div`
   width: 500px;
   border-radius: 3px;
   }
-  
+
 `;
 
 
@@ -144,6 +144,7 @@ const Upload = (props) => {
 
   const onDrop = (e, picture) => {
     setPicture(picture);
+    console.log(picture)
   };
 
   const goBack = (e) => {
@@ -152,18 +153,14 @@ const Upload = (props) => {
   };
 
   const handleUpload = async () =>{
-    const body = {
-      currentUserId,
-      caption: captionInput.current.value,
-      imageURL: picture[0]
-    }
-    const res = await fetch(`${backendURL}/post/upload`, {
+      console.log(picture)
+    const formData = new FormData();
+    formData.append("file", picture[0]);
+    const caption = captionInput.current.value
+
+    const res = await fetch(`${backendURL}/aws/post/${currentUserId}/${caption}`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: localStorage.getItem("Isntgram_access_token")
-      },
-      body: JSON.stringify(body)
+      body: formData
     })
 
     if (!res.ok) {
