@@ -36,7 +36,6 @@ const FollowNotification = (props) => {
 
     useEffect(()=>{
         if(!profileData) return
-        console.log('updated following list')
          const resFollowingList = profileData.followingList.map((followingEntry) => {
            return followingEntry.user_followed_id;
          });
@@ -44,7 +43,7 @@ const FollowNotification = (props) => {
 
     },[profileData, setFollowingList])
 
-    
+
 
      const followUser = async () => {
        const body = { userId: currentUserId, userFollowedId: props.user.id };
@@ -57,7 +56,7 @@ const FollowNotification = (props) => {
            body: JSON.stringify(body),
          });
 
-         
+
 
          if (!res.ok) throw res;
 
@@ -72,7 +71,6 @@ const FollowNotification = (props) => {
 
 
       const unfollowUser = async () => {
-        console.log("unfollow user!");
         const body = { userId: currentUserId, userFollowedId: props.user.id };
         try {
           const res = await fetch(`${backendURL}/follow`, {
@@ -86,9 +84,8 @@ const FollowNotification = (props) => {
           if (!res.ok) throw res;
 
           const response = await res.json();
-          console.log(response)
-          
-         
+
+
           const { user_followed_id: deletedId } = response;
 
 
@@ -105,7 +102,6 @@ const FollowNotification = (props) => {
       };
 
     if (!followingList) return null
-    console.log(followingList)
     return (
       <FollowNotificationWrapper style={props.style}>
         <>

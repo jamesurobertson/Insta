@@ -52,7 +52,7 @@ const ExploreGridWrapper = styled.div`
 const ExploreGrid = (props) => {
   const { currentUserId } = useContext(UserContext);
 
-  
+
   const [toRender, setToRender] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -102,6 +102,7 @@ const ExploreGrid = (props) => {
         />,
       ];
     } else {
+
       return [
             <Layout3
               key={`layout3key-${len}`}

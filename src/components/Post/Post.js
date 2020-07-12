@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
 import PostHeader from "./PostHeader";
 import PhotoImagePost from "./PhotoImagePost";
@@ -19,26 +19,25 @@ const PostWrapper = styled.div`
   }
 `;
 
-const Post = ({ post }) => {
-  const {
-    id: postId,
-    user_info: userInfo,
-    comments: {commentsList, total},
-    created_at: createdAt,
-    caption,
-    image_url: postImg,
-    likeCount,
-    user_id: userId,
-  } = post;
-
+const Post = (props) => {
+    console.log(props)
+  const [postId, setPostId] = useState(props.post.id)
+  const [userInfo, setUserInfo] = useState(props.post.user_info)
+  const [commentsList, setCommentsList] = useState(props.post.comments.commentsList)
+  const [total, setTotal] = useState(props.post.comments.total)
+  const [createdAt, setCreatedAt] = useState(props.post.created_at)
+  const [caption, setCaption] = useState(props.post.caption)
+  const [postImg, setPostImg] = useState(props.post.image_url)
+  const [userId, setUserId] = useState(props.post.user_id)
+  const [likesList, setLikesList] = useState(props.post.likesList)
 
   return (
     <div className="Pst"style={{ dispaly: "flex", flexFlow: "column" }}>
       <PostWrapper>
         <PostHeader userPic={userInfo.profilePic} username={userInfo.username} postId={postId} userId={userId}/>
         <PhotoImagePost postImg={postImg} />
-        <IconPost postId={postId} post={post}/>
-        <PostCommentSection postId={postId} username={userInfo.username} postUserId={userId} caption={caption} createdAt={createdAt} likeCount={likeCount} commentsList={commentsList} total={total}/>
+        <IconPost postId={postId} likesList={likesList} setLikes={setLikesList}/>
+        <PostCommentSection postId={postId} username={userInfo.username} postUserId={userId} caption={caption} createdAt={createdAt} likeCount={likesList.length} commentsList={commentsList} total={total}/>
         <CommentInputField />
       </PostWrapper>
     </div>

@@ -247,7 +247,6 @@ const ProfileHeader = (props) => {
   };
 
   const unfollowUser = async (e) => {
-    console.log("follow user!");
     e.preventDefault();
     const body = { userId: currentUserId, userFollowedId: profileId };
     try {

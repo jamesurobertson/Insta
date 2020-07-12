@@ -1,7 +1,7 @@
-import React, {useState, useContext, useRef, useEffect} from "react";
+import React, {useState, useContext, useEffect} from "react";
 import {backendURL} from '../../config'
 import styled from "styled-components";
-import {UserContext} from '../../context'
+import {UserContext, PostContext} from '../../context'
 
 
 const CommentInputWrapper = styled.section`
@@ -48,9 +48,9 @@ const CommentInputWrapper = styled.section`
 const CommentInputField = (props) => {
     const [content, setContent] = useState('');
     const { currentUserId } = useContext(UserContext)
-    const { postId, isSinglePage } = props
+    const {setPostData, postData} = useContext(PostContext)
+    const { postId, isSinglePost } = props
 
-    const inputField = useRef(null)
 
 
     const updateCommentState = (e) => {
@@ -60,33 +60,28 @@ const CommentInputField = (props) => {
     const handleSubmit = async (event) => {
         event.preventDefault()
         const data = { content, userId: currentUserId, postId }
-        console.log(data)
         const res = await fetch(`${backendURL}/comment`, {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         })
 
-        if (res.status !== 200) {
-            console.log("Error, comment was not posted")
-        }
-        else {
-            const content = await res.json()
-            setContent('')
-        }
+        if (!res.ok) throw res
+        const comment = await res.json()
+
+
+        const updatedComments = [...postData.comments, comment]
+        setPostData({...postData, comments: updatedComments});
+
+        setContent('')
     }
 
-    useEffect(() => {
-        inputField.current.focus()
-      })
-
     return (
-        <CommentInputWrapper style={{display: `${isSinglePage ? 'block' : 'none'}`}}>
+        <CommentInputWrapper style={{display: `${isSinglePost ? 'block' : 'none'}`}}>
             <form className='form-post' onSubmit={handleSubmit}>
                 <div style={{display: 'flex', alignItems: 'center', width: '100%'}}>
                 <input
                     className='comment-post'
-                    ref={inputField}
                     placeholder="Add a comment..."
                     onChange={updateCommentState}
                     value={content} />

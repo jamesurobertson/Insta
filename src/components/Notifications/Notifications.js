@@ -108,7 +108,6 @@ const Notifications = () => {
                 />
               );
             default:
-              console.log(notification, notification.likeable_type)
               return (
                 <LikeNotification
                   type={notification.likeable_type}
@@ -126,7 +125,6 @@ const Notifications = () => {
 
         if (notifications.length < 20) {
           setHasMore(false);
-          console.log(toRender.length);
         }
       } catch (e) {
         console.error(e);

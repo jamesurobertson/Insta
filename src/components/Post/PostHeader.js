@@ -1,9 +1,10 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
 import styled from "styled-components";
 import ModalPost from "./ModalPost";
 import Modal from "react-modal";
 import { AiOutlineEllipsis } from "react-icons/ai";
 import { Link } from "react-router-dom";
+import {PostContext} from '../../context'
 
 const PostHeaderWrapper = styled.div`
   display: flex;
@@ -48,8 +49,19 @@ const PostHeaderWrapper = styled.div`
 const PostHeader = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const outside = useRef();
+  const {postData} = useContext(PostContext)
 
-  const { userPic, username, postId, userId } = props;
+
+  let { userPic, username, postId, userId, isSinglePost } = props;
+  if (isSinglePost) {
+      if (!postData) return null
+    const {post} = postData
+    userPic = post.user.profile_image_url
+    username = post.user.username
+    postId = post.id
+    userId = post.user.id
+
+  }
 
   Modal.setAppElement("#root");
 
