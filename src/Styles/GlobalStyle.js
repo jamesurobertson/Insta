@@ -53,6 +53,8 @@ const GlobalStyle = createGlobalStyle`
       background-color: #fafafa;
     }
 
+    
+
 `;
 
 export default GlobalStyle
