@@ -89,8 +89,10 @@ const PostCommentSection = (props) => {
   };
 
   function timeSince(timeStamp) {
+
     timeStamp = new Date(timeStamp);
     const now = new Date();
+    
     const secondsPast = (now.getTime() - timeStamp) / 1000;
     if (secondsPast < 60) {
       return parseInt(secondsPast) + "s";
@@ -103,14 +105,8 @@ const PostCommentSection = (props) => {
     }
     if (secondsPast > 86400) {
       const day = timeStamp.getDate();
-      const month = timeStamp
-        .toDateString()
-        .match(/ [a-zA-Z]*/)[0]
-        .replace(" ", "");
-      const year =
-        timeStamp.getFullYear() == now.getFullYear()
-          ? ""
-          : " " + timeStamp.getFullYear();
+      const month = timeStamp.toDateString().match(/ [a-zA-Z]*/)[0].replace(" ", "");
+      const year = timeStamp.getFullYear() === now.getFullYear() ? "" : " " + timeStamp.getFullYear();
       return day + " " + month + year;
     }
   }

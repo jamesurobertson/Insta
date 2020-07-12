@@ -61,16 +61,17 @@ const Profile = (props) => {
       })()
   }, [userId, setProfileData])
 
-  if (!profileData) return null
-  if (profileData.user.id !== parseInt(props.location.pathname.match(/(\d+)$/))) return <LoadingPage/>
+  if (!profileData || !currentUserId) return null
+
+  if (profileData.user.id !== parseInt(props.location.pathname.match(/(\d+)$/)[0])) return <LoadingPage style={{animationDuration: '1s'}}/>
   return (
     <ProfileWrapper>
       <ProfileHeader windowSize={windowSize} />
-      {currentUserId === profileData.user.id ?
-      <ProfileMiddle windowSize={windowSize} /> :
-      ''
-      }
-      <ProfilePosts/>
+      {parseInt(props.location.pathname.match(/(\d+)$/)[0]) ===
+      currentUserId ? (
+        <ProfileMiddle windowSize={windowSize} />
+      ) : null}
+      <ProfilePosts />
     </ProfileWrapper>
   );
 };

@@ -4,8 +4,6 @@ import InfiniteScroll from "react-infinite-scroller";
 import { backendURL } from "../../config";
 import { UserContext } from "../../context";
 
-import { fadeIn } from "../../Styles/animations";
-
 
 import Loading from "../Loading/Loading";
 import Layout1 from "./Layout1";
@@ -36,21 +34,19 @@ const LoadingWrapper = styled.div`
   bottom: 55vh;
   opacity: 1;
   animation-name: fadeIn;
-  animation-duration: 3s;
+  animation-duration: 2s;
   animation-fill-mode: forwards;
 `;
 
 const ExploreGridWrapper = styled.div`
   margin: auto;
-  margin-top: 10vh;
+  
   margin-bottom: 10vh;
   width: 95vw;
   max-width: 614px;
+  
 
-  & {
-    animation: ${fadeIn} 2s 0.25s forwards;
-    opacity: 0;
-  }
+  
 `;
 
 const ExploreGrid = (props) => {
@@ -67,75 +63,94 @@ const ExploreGrid = (props) => {
     return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
   }
 
-  function getTemplate(toRender, photoArray) {
-    const randomInt = getRandomInt(0, 4);
+  function getTemplate(len, photoArray) {
+    const randomInt = getRandomInt(2, 4);
 
     if (
-      toRender.length === 0 ||
+      len === 0 ||
       photoArray.length < 3 ||
-      !toRender[toRender.length - 1].key.includes(`layout1key`)
+      !toRender[len - 1].key.includes(`layout1key`)
     ) {
       return [
         <Layout1
-          key={`layout1key-${toRender.length}`}
+          key={`layout1key-${len}`}
           componentPhotos={photoArray}
         />,
       ];
     }
-    if (toRender[toRender.length - 1].key.includes(`layout${randomInt}key`)) {
-      return getTemplate(toRender, photoArray);
-    } else {
-      switch (randomInt) {
-        case 1:
-          return [
-            <Layout1
-              key={`layout1key-${toRender.length}`}
-              componentPhotos={photoArray}
-            />,
-          ];
-        case 2:
-          return [
-            <Layout2
-              key={`layout2key-${toRender.length}`}
-              componentPhotos={photoArray}
-            />,
-          ];
-        default:
-          return [
-            <Layout3
-              key={`layout3key-${toRender.length}`}
-              componentPhotos={photoArray}
-            />,
-          ];
-      }
+
+    if (
+      len === 1 || randomInt === 2
+    ) {
+      return [
+        <Layout2
+          key={`layout2key-${len}`}
+          componentPhotos={photoArray}
+        />,
+      ];
     }
+
+    if (
+      len === 0 ||
+      photoArray.length < 3 ||
+      !toRender[len - 1].key.includes(`layout1key`)
+    ) {
+      return [
+        <Layout1
+          key={`layout1key-${len}`}
+          componentPhotos={photoArray}
+        />,
+      ];
+    } else {
+
+      return [
+            <Layout3
+              key={`layout3key-${len}`}
+              componentPhotos={photoArray}
+            />,
+          ];
+    }
+   
+   
   }
 
   const fetchMore = () => {
     if (!currentUserId) return;
-    setLoading(true);
 
-    fetch(`${backendURL}/post/scroll/${toRender.length * 3}`, {
-      Authorization: localStorage.getItem("Isntgram_access_token"),
-    })
-      .then((res) => {
-        return res.json();
+   
+
+    (async ()=>{
+       const len = toRender.length;
+      try {
+      const res = await fetch(`${backendURL}/post/scroll/${len * 3}`, {
+        Authorization: localStorage.getItem("Isntgram_access_token"),
       })
-      .then((obj) => {
-        let photoArray = obj.posts;
-        if (photoArray.length < 3) {
-          setHasMore(false);
-        }
-        const componentToRender = getTemplate(toRender, photoArray);
-        setToRender([...toRender, ...componentToRender]);
-      });
-    setLoading(false);
-  };
+      const obj = await res.json();
+      
+      let photoArray = obj.posts
 
-  if (!toRender) return
+      if(photoArray.length < 3) {
+        setHasMore(false)
+      }
+
+      const componentToRender = getTemplate(len, photoArray);
+       setToRender([...toRender, ...componentToRender]);
+    } catch {
+       setHasMore(false);
+       setToRender([]);
+       setLoading(false);
+    }
+  
+    })()
+   
+  }
+  
+  
+
+  if (!toRender || !currentUserId) return null;
   return (
     <ExploreGridWrapper key="gridWrapper">
-      <InfiniteScroll pageStart={0} loadMore={fetchMore} hasMore={hasMore}>
+      <InfiniteScroll initialLoad={true} pageStart={4} loadMore={fetchMore} hasMore={hasMore}>
         {toRender}
       </InfiniteScroll>
       <LoadingWrapper

@@ -1,15 +1,84 @@
-import React from 'react'
-import Nav from "../Nav"
+import React, { useState }from 'react'
+import styled from 'styled-components'
+import {backendURL} from "../../config"
+
 import ExploreGrid from "./ExploreGrid"
+import SearchGrid from "./SearchGrid"
+
+const ExploreWrapper = styled.div`
+  margin-top: 54px;
+  padding-top: 10px;
+
+  h1 {
+  }
+
+  .searchBox {
+    margin: auto;
+    margin-bottom: 10px;
+    width: 95vw;
+    max-width: 614px;
+  }
+
+  input {
+    width: 200px;
+  }
+
+  @media screen and (max-width: 614px){
+      .searchBox {
+          display: flex;
+          justify-content: center;
+      }
+  }
+`;
 
 
 const Explore = () => {
-    return (
-        <>
-           <ExploreGrid/>
-        </>
+    const [query, setQuery] = useState("")
+    const [queryRes, setQueryRes] = useState([])
 
-    )
+   
+
+    const handleSubmit= async (e) => {
+
+        e.preventDefault();
+
+        if(e.target.value === '') {
+            setQuery(e.target.value)
+            setQueryRes([])
+            return
+        }
+
+        setQuery(e.target.value)
+        console.log('handleSubmit', e.target.value, query)
+        const queryLower = encodeURIComponent(e.target.value.toLowerCase())
+
+        const res = await fetch(`${backendURL}/search?query=${queryLower}`)
+
+        const {results} = await res.json()
+
+        console.log(results)
+
+        setQueryRes(results)
+    }
+    
+    return (
+      <ExploreWrapper>
+          <div className={'searchBox'}>
+          <input
+            name="search"
+            placeholder="Search"
+            onChange={handleSubmit}
+          ></input>
+          </div>
+     
+
+        {queryRes.length === 0 && query === '' ? <ExploreGrid /> : 
+        <>
+        <h1>{queryRes.length === 0 ? "No Results Found" : `Search Results for: ${query}`}</h1>
+        <SearchGrid queryRes={queryRes} query={query}/>
+        </>}
+      </ExploreWrapper>
+    );
 }
 
 

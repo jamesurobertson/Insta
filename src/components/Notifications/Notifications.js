@@ -13,12 +13,12 @@ const NotificationsWrapper = styled.div`
   align-items: center;
   flex-flow: column;
   margin: auto;
-  height: calc(100% - 55px);
+  height: calc(100vh - 54px);
   width: 100%;
   max-width: 614px;
   margin-top: 54px;
   padding-top: 20px;
-  padding-bottom: 50px;
+  padding-bottom: 54px;
   object-fit: cover;
   border: solid 1px #dfdfdf;
 

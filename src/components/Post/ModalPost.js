@@ -32,7 +32,7 @@ const ModalStyle = styled.div`
         outline: none;
     }
 
-}
+
    `;
 
 const ModalPost = ({ postId, userId, closeModal }) => {
