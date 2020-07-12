@@ -78,7 +78,7 @@ const UploadWrapper = styled.div`
     font-size: 14px;
   }
 
-  .fileContainer button, button {
+  button {
     background-color: #0095f6;
     font-weight: bold;
     color: white;
@@ -89,7 +89,7 @@ const UploadWrapper = styled.div`
     margin: 0;
   }
 
-  .fileContainer button:hover, button:hover {
+  button:hover {
       background-color: #545972;
       color: white;
       border: none;
@@ -133,17 +133,53 @@ const UploadWrapper = styled.div`
   width: 500px;
   border-radius: 3px;
   }
+
+.custom-file-input {
+  color: transparent;
+  width: 100%;
+  height: 30px;
+  margin-top: 20px;
+}
+.custom-file-input::-webkit-file-upload-button {
+  visibility: hidden;
+}
+.custom-file-input::before {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  content: 'Upload Photo';
+  color: white;
+  height: 30px;
+  background: #0095f6;
+  border-radius: 5px;
+  outline: none;
+  white-space: nowrap;
+  cursor: pointer;
+  font-weight: 700;
+}
+.custom-file-input:hover::before {
+  border-color: black;
+}
+.custom-file-input:active {
+  outline: 0;
+}
+.custom-file-input:active::before {
+  background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9); 
+}
   
 `;
 
 
 const Upload = (props) => {
   const {currentUserId} = useContext(UserContext)
-  const [picture, setPicture] = useState([]);
+  const [picture, setPicture] = useState(null);
+  const [imagePreview, setImagePreview] = useState()
   const captionInput = useRef();
 
-  const onDrop = (e, picture) => {
-    setPicture(picture);
+  const onDrop = (e) => {
+    setPicture(e.target.files[0]);
+    setImagePreview(URL.createObjectURL(e.target.files[0]))
   };
 
   const goBack = (e) => {
@@ -152,11 +188,17 @@ const Upload = (props) => {
   };
 
   const handleUpload = async () =>{
+    const formData = new FormData()
+    console.log(picture)
+    formData.append('file', picture)
+    
     const body = {
       currentUserId,
       caption: captionInput.current.value,
-      imageURL: picture[0]
+      formData
     }
+
+    console.log(body)
     const res = await fetch(`${backendURL}/post/upload`, {
       method: "POST",
       headers: {
@@ -183,33 +225,24 @@ const Upload = (props) => {
   return (
     <UploadWrapper>
       <div className="imageWrapper">
-        {picture.length === 0 ? (
+        {!picture ? (
           <div className="labelWrapper">
             <RiImageAddLine fill={"#262626"} stroke={"#262626"} />
             <p>Upload a Photo</p>
           </div>
         ) : (
-          <img src={picture[0]} draggable={false} alt="User's Upload" />
+          <img src={imagePreview} draggable={false} alt="User's Upload" />
         )}
       </div>
-      {picture[0] ? (
+      {picture ? (
         <>
           <label htmlFor='caption'>Add a Caption:</label>
           <textarea ref={captionInput} id="caption" placeholder="Tell us about your photo..." />
           <button style={{marginBottom: "6px"}} onClick={handleUpload}>Upload</button>
         </>
       ) : null}
-      <ImageUploader
-        {...props}
-        className="uploader"
-        buttonText={picture[0] ? "Change Photo" : "Choose a Photo"}
-        singleImage={true}
-        withIcon={false}
-        onChange={onDrop}
-        label=""
-        imgExtension={[".jpg", ".gif", ".png", ".gif"]}
-        maxFileSize={5242880}
-      />
+      <input className="custom-file-input" type='file' multiple={false} accept='.jpg, .gif, .png, .gif' onChange={onDrop}/>
+
       <button className="goback-button" onClick={goBack}>
         Go back
       </button>
