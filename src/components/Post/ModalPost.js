@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Link } from 'react-router-dom';
-import { AiOutlineConsoleSql } from "react-icons/ai";
-
+import {toast} from 'react-toastify'
 
 
 const ModalStyle = styled.div`
@@ -52,7 +51,8 @@ const ModalPost = ({ postId, userId, closeModal }) => {
                 <button onClick={({ target: { value } }) => {
                     setValue(value);
                     setCopied(false);
-                    alert("copied to clipboard")
+                    toast.info('copied to clipboard!')
+                    closeModal()
                 }} className='button-post'>Copy Link</button>
             </CopyToClipboard>
             <button onClick={closeModal} id='button-cancel' className='button-post'>Cancel</button>
@@ -61,31 +61,3 @@ const ModalPost = ({ postId, userId, closeModal }) => {
 }
 
 export default ModalPost;
-
-// import React, { Component } from "react"
-
-// export default class YourComponent extends Component {
-//     copyCodeToClipboard = () => {
-//         const el = this.textArea
-//         el.select()
-//         document.execCommand("copy")
-//     }
-
-//     render() {
-//         return (
-//             <div>
-//                 <div>
-//                     <textarea
-//                         ref={(textarea) => this.textArea = textarea}
-//                         value={window.location.href}
-//                     />
-//                 </div>
-//                 <div>
-//                     <button onClick={() => this.copyCodeToClipboard()}>
-//                         Copy to Clipboard
-//           </button>
-//                 </div>
-//             </div>
-//         )
-//     }
-// }

@@ -22,6 +22,11 @@ const ProfileMiddleDataWrapper = styled.section`
     flex-direction: column;
     align-items: center;
   }
+
+  .profile-data__type {
+      font-size: 14px;
+      color: #aaa;
+  }
   @media screen and (min-width: 735px) {
     border-top: none;
     height: 0;
@@ -34,6 +39,7 @@ const ProfileMiddleDataWrapper = styled.section`
 
   .profile-data__number {
     font-weight: bold;
+    font-size: 14px;
   }
 `;
 
@@ -66,6 +72,7 @@ const ProfileMiddleIcons = styled.section`
   @media screen and (min-width: 735px) {
     border-bottom: none;
   }
+
 `;
 
 const ProfileMiddle = (props) => {
@@ -109,7 +116,7 @@ const ProfileMiddle = (props) => {
       <ProfileMiddleDataWrapper>
         <div className="profile-middle__data">
           <div className="profile-data__number">{numPosts}</div>
-          <div>posts</div>
+          <div className="profile-data__type">posts</div>
         </div>
         <div
           style={{ cursor: "pointer" }}
@@ -117,7 +124,7 @@ const ProfileMiddle = (props) => {
           className="profile-middle__data"
         >
           <div className="profile-data__number">{profileData.followersList.length}</div>
-          <div>followers</div>
+          <div className="profile-data__type">followers</div>
         </div>
         <div
           style={{ cursor: "pointer" }}
@@ -125,7 +132,7 @@ const ProfileMiddle = (props) => {
           className="profile-middle__data"
         >
           <div className="profile-data__number">{profileData.followingList.length}</div>
-          <div>following</div>
+          <div className="profile-data__type">following</div>
         </div>
       </ProfileMiddleDataWrapper>
       <ProfileMiddleIcons>

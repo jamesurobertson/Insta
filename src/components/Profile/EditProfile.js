@@ -200,7 +200,6 @@ const EditProfile = (props) => {
   };
 
   const goBack = (e) => {
-      console.log('go back')
       props.history.push(`/profile/${currentUserId}`);
   }
   return (

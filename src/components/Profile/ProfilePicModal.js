@@ -78,7 +78,6 @@ const ProfilePicModal = (props) => {
       formData = new FormData();
       formData.append("img", file);
     }
-    console.log(formData.get('img'))
     postImage(formData);
   };
 

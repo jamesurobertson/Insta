@@ -45,7 +45,7 @@ const Home = () => {
                 if (!res.ok) throw res
 
                 const {posts} = await res.json()
-              
+
                 const nodeList = posts.map(post=>{
                   return <Post key={`feedPost-${post.id}`} post={post}/>
                 })
@@ -55,7 +55,6 @@ const Home = () => {
 
                 if (posts.length < 3) {
                   setHasMore(false);
-                  console.log(feedPosts.length)
                 }
             } catch (e) {
                 console.error(e)

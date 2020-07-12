@@ -7,6 +7,6 @@ export const UserContext = createContext({
 
 });
 
-export const ProfileContext = createContext({
+export const ProfileContext = createContext()
 
-})
+export const PostContext = createContext()

@@ -7,8 +7,8 @@ import {ProfileContext} from '../../context'
 const ProfilePostWrapper = styled.section`
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    grid-row-gap: .125rem;
-    grid-column-gap: .125rem;
+    grid-row-gap: .25rem;
+    grid-column-gap: .25rem;
     padding-bottom: 53px;
     cursor: pointer;
 

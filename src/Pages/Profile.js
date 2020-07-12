@@ -3,7 +3,7 @@ import styled from "styled-components";
 import ProfileHeader from "../components/Profile/ProfileHeader";
 import ProfileMiddle from "../components/Profile/ProfileMiddle";
 import ProfilePosts from "../components/Profile/ProfilePosts";
-import {ProfileContext} from '../context'
+import {ProfileContext, UserContext} from '../context'
 import LoadingPage from '../components/Loading/LoadingPage'
 
 
@@ -26,6 +26,7 @@ const ProfileWrapper = styled.div`
 const Profile = (props) => {
   const [windowSize, setWindowSize] = useState(window.innerWidth);
   const {profileData, setProfileData} = useContext(ProfileContext)
+  const {currentUserId} = useContext(UserContext)
 
   const [userId, setUserId] = useState(null)
 
@@ -51,7 +52,6 @@ const Profile = (props) => {
               if (!res.ok) throw res
 
               const data = await res.json()
-              console.log(data)
               setProfileData(data)
 
 
@@ -62,13 +62,14 @@ const Profile = (props) => {
   }, [userId, setProfileData])
 
   if (!profileData) return null
-  console.log(props.location.pathname)
-  console.log( profileData.user.id === 7)
   if (profileData.user.id !== parseInt(props.location.pathname.match(/(\d+)$/))) return <LoadingPage/>
   return (
     <ProfileWrapper>
       <ProfileHeader windowSize={windowSize} />
-      <ProfileMiddle windowSize={windowSize} />
+      {currentUserId === profileData.user.id ?
+      <ProfileMiddle windowSize={windowSize} /> :
+      ''
+      }
       <ProfilePosts/>
     </ProfileWrapper>
   );

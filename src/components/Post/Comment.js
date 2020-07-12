@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { RiHeartLine } from "react-icons/ri";
+import { PostContext, UserContext } from "../../context";
+import { backendURL } from "../../config";
+import { toast } from "react-toastify";
 
 const CommentWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   font-size: 14px;
-  padding: 5px 16px 0;
+  padding: 5px 16px 0 0;
   line-height: 18px;
 
   .comment_username {
@@ -23,16 +26,109 @@ const CommentWrapper = styled.div`
   }
 
   .unliked-comment {
-    color: #8E8E8E;
+    color: #8e8e8e;
   }
 `;
 
-const Comment = ({username, likesComment, content, userId }) => {
+const Comment = ({ username, likesCommentList, content, userId, commentId }) => {
+  const { postData, setPostData } = useContext(PostContext);
+  const { currentUserId } = useContext(UserContext);
+  const [likesCommentArr, setLikesCommentArr] = useState(likesCommentList)
 
-    const likeComment = () => {
-        console.log('like comment!')
+  const likeComment = async () => {
+
+    const body = {
+      userId: currentUserId,
+      likeableType: "comment",
+      id: commentId,
+    };
+    try {
+      const res = await fetch(`${backendURL}/like`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (!res.ok) throw res;
+
+      const response = await res.json();
+      toast.info("Liked comment!", { autoClose: 1500 });
+
+      console.log(`hjiii`, likesCommentList)
+      const newLikes = [...likesCommentList, response]
+      setLikesCommentArr(newLikes)
+      console.log(likesCommentArr)
+
+      let commentIdx
+      const newComment = postData.comments.filter((comment, idx) => {
+
+          if (comment.id === commentId) {
+            commentIdx = idx
+            return comment.id === commentId
+          }
+      })[0]
+
+      newComment.likes_comment = newLikes
+
+      const newPostData = {...postData}
+
+      setPostData(newPostData)
+
+
+    } catch (e) {
+      console.error(e);
     }
+  };
 
+  const unlikeComment = async () => {
+
+    const body = {
+      userId: currentUserId,
+      likeableType: "comment",
+      id: commentId,
+    };
+    console.log(likesCommentArr)
+    try {
+      const res = await fetch(`${backendURL}/like`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (!res.ok) throw res;
+
+      const response = await res.json();
+      toast.info("Unliked comment!", { autoClose: 1500 });
+
+
+      let commentIdx
+      for (let i = 0; i < postData.comments.length; i++) {
+          if (postData.comments[i].id === commentId) {
+              commentIdx = i
+              break
+          }
+      }
+
+      console.log(likesCommentArr, commentId)
+      const newList = postData.comments[commentIdx].likes_comment.filter(user => user.id !== currentUserId)
+
+      const newPostData = {...postData}
+      newPostData.comments[commentIdx].likes_comment = newList
+
+      setPostData(newPostData)
+
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+
+  if (!likesCommentList) return null;
+  console.log(likesCommentArr)
   return (
     <CommentWrapper>
       <div>
@@ -42,7 +138,11 @@ const Comment = ({username, likesComment, content, userId }) => {
         {content}
       </div>
       <div>
-        <RiHeartLine onClick={likeComment} className={true ? 'liked-comment' : 'unliked-comment'} />
+        {likesCommentArr.some((user) => user.id === currentUserId) ? (
+          <RiHeartLine onClick={unlikeComment} className="liked-comment" />
+        ) : (
+          <RiHeartLine onClick={likeComment} className="unliked-comment" />
+        )}
       </div>
     </CommentWrapper>
   );

@@ -11,6 +11,7 @@ const PostImageWrapper = styled.div`
 `;
 
 const PhotoImagePost = ({postImg}) => {
+
   return (
     <PostImageWrapper>
       <img
