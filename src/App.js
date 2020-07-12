@@ -47,6 +47,7 @@ function App() {
   return (
     <UserContext.Provider value={userContextValue}>
       <ProfileContext.Provider value={profileContextValue}>
+          <PostContext.Provider value={postContextValue}>
         <ToastContainer autoClose={5000} />
         <GlobalStyle />
         <BrowserRouter>
@@ -62,6 +63,8 @@ function App() {
             <ProtectedRoute path='/post/:id' component ={SinglePost}/>
           </Switch>
         </BrowserRouter>
+
+          </PostContext.Provider>
       </ProfileContext.Provider>
     </UserContext.Provider>
   );

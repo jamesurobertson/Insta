@@ -49,7 +49,6 @@ const SinglePost = (props) => {
     console.log(postData)
     return (
         <>
-        <Nav/>
         <SinglePostWrapper>
         <PostHeader isSinglePost={true}/>
         <PhotoImagePost postImg={postData.post.image_url} />

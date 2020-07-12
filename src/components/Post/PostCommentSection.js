@@ -57,6 +57,7 @@ const PostCommentSection = (props) => {
 
   if (isSinglePost) {
     if (!postData) return null;
+    console.log('aaaa',postData)
     likeCount = postData.likes_post.length;
     caption = postData.post.caption;
     createdAt = postData.post.created_at;
@@ -92,7 +93,7 @@ const PostCommentSection = (props) => {
 
     timeStamp = new Date(timeStamp);
     const now = new Date();
-    
+
     const secondsPast = (now.getTime() - timeStamp) / 1000;
     if (secondsPast < 60) {
       return parseInt(secondsPast) + "s";
