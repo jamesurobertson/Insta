@@ -97,13 +97,13 @@ const MobileNav = () => {
             </NavLink>
           </li>
           <li>
-            <NavLink activeClassName="active" to="/upload">
-              <RiCamera2Line className="nav-icon" />
+            <NavLink activeClassName="active" to="/explore">
+              <RiSearchLine className="nav-icon" />
             </NavLink>
           </li>
           <li>
-            <NavLink activeClassName="active" to="/explore">
-              <RiSearchLine className="nav-icon" />
+            <NavLink activeClassName="active" to="/upload">
+              <RiCamera2Line className="nav-icon" />
             </NavLink>
           </li>
           <li>

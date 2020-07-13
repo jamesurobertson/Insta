@@ -25,8 +25,11 @@ const LoginFormWrapper = styled.div`
 
   .form-wrapper {
     display: flex;
+    height: 20vh;
     flex-flow: column;
+    justify-content: space-between;
     align-items: center;
+    ;
   }
 
   input {
@@ -34,7 +37,7 @@ const LoginFormWrapper = styled.div`
     height: 32px;
     border: #dfdfdf 1px solid;
     border-radius: 5px;
-    margin-bottom: 30px;
+   
     text-align: left;
   }
 
