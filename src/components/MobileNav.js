@@ -75,11 +75,12 @@ const NavProfileContainer = styled.div`
   align-items: center;
   width: 25px;
   height: 25px;
+  border-radius: 400px;
+  overflow: hidden;
 
   .navProfilePic {
     width: inherit;
     height: inherit;
-    border-radius: 12px;
     object-fit: cover;
   }
 `;

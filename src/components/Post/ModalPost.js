@@ -7,7 +7,8 @@ import {frontendURL} from '../../config'
 
 
 const ModalStyle = styled.div`
-    width: 400px;
+    width: 80vw;
+    max-width: 400px;
     height: 100%;
     display: flex;
     flex-direction: column;

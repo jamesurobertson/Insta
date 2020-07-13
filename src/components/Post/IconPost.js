@@ -53,10 +53,9 @@ const IconPost = ({ postId, likesList, isSinglePost, setLikes }) => {
         if (!res.ok) throw res
 
         const response = await res.json()
-        console.log(response)
         const newList = [...likesArray, response]
         if (setLikes) setLikes(newList)
-        console.log(postData)
+        toast.info("Liked post!", { autoClose: 1500 });
         setLikesArray(newList)
         if (isSinglePost) {
             setPostData({...postData, likes_post: newList})
