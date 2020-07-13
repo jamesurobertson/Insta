@@ -70,18 +70,17 @@ const NavContainer = styled.div`
 `;
 
 const NavProfileContainer = styled.div`
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 25px;
+  height: 25px;
 
   .navProfilePic {
-    width: 23px;
-    height: 23px;
-    object-fit: contain;
+    width: inherit;
+    height: inherit;
     border-radius: 12px;
+    object-fit: cover;
   }
 `;
 

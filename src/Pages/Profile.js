@@ -67,10 +67,7 @@ const Profile = (props) => {
   return (
     <ProfileWrapper>
       <ProfileHeader windowSize={windowSize} />
-      {parseInt(props.location.pathname.match(/(\d+)$/)[0]) ===
-      currentUserId ? (
-        <ProfileMiddle windowSize={windowSize} />
-      ) : null}
+    <ProfileMiddle windowSize={windowSize} />
       <ProfilePosts />
     </ProfileWrapper>
   );

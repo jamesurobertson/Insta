@@ -124,9 +124,9 @@ const IconPost = ({ postId, likesList, isSinglePost, setLikes }) => {
           </Link>
         )}
       </div>
-      <div className="right-post-icons">
+      {/* <div className="right-post-icons">
         <FaRegBookmark onClick={savePost} size={24} />
-      </div>
+      </div> */}
     </IconWrapper>
   );
 };
