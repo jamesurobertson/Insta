@@ -184,7 +184,6 @@ const Upload = (props) => {
   };
 
   const goBack = (e) => {
-    console.log("go back");
     props.history.push(`/`);
   };
 

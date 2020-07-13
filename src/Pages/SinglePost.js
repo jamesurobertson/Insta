@@ -46,7 +46,6 @@ const SinglePost = (props) => {
     }, [])
 
     if (!postData || postData.post.id !== parseInt(window.location.href.match(/(\d+)$/))) return null
-    console.log(postData)
     return (
         <>
         <SinglePostWrapper>

@@ -73,8 +73,6 @@ const ProfilePicModal = (props) => {
   const {currentUserId, setCurrentUserProfilePic} = useContext(UserContext)
   const changePhoto = (e) => {
     const file = e.currentTarget.files[0];
-    console.log(file)
-    console.log(file)
     let formData;
 
     if (file) {

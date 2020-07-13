@@ -49,7 +49,6 @@ const ModalPost = ({ postId, userId, closeModal }) => {
     const [copied, setCopied] = useState(false);
 
     const unfollowUser = (e) => {
-        console.log(`Unfollowed user!`)
     }
 
     return (

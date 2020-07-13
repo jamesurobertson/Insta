@@ -8,6 +8,8 @@ import Post from "../components/Post/Post";
 import { backendURL } from "../config";
 import { UserContext } from "../context";
 import NoFollows from "../components/NoFollows";
+import Loading from '../components/Loading/Loading'
+import LoadingPage from '../components/Loading/LoadingPage'
 
 const Feed = styled.div`
   display: flex;
@@ -26,15 +28,44 @@ const Feed = styled.div`
   }
 `;
 
+const LoadingWrapper = styled.div`
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  z-index: 2;
+  position: fixed;
+  opacity: 1;
+  animation-name: fadeIn;
+  animation-duration: .5s;
+  animation-fill-mode: forwards;
+`;
+
 const Home = () => {
   const { currentUserId, currentUserFollowingCount } = useContext(UserContext);
   const [feedPosts, setFeedPosts] = useState([]);
   const [hasMore, setHasMore] = useState(true);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const loadMore = () => {
     if (!currentUserId) return;
+
     (async () => {
+      setLoading(true)
       try {
         const res = await fetch(
           `${backendURL}/post/${currentUserId}/scroll/${feedPosts.length}`
@@ -52,25 +83,34 @@ const Home = () => {
 
         if (posts.length < 3) {
           setHasMore(false);
+          setLoading(false)
         }
+
+        setLoading(false)
       } catch (e) {
         console.error(e);
       }
     })();
   };
 
-  if (!feedPosts) return;
-  console.log(feedPosts)
+  if (!feedPosts) return null
   return (
-    <Feed>
-      {currentUserFollowingCount !== 0 ? (
-        <InfiniteScroll pageStart={0} loadMore={loadMore} hasMore={hasMore}>
-        {feedPosts}
-      </InfiniteScroll>
-      ) : (
-        <NoFollows/>
-      )}
-    </Feed>
+    <>
+      <LoadingWrapper
+        style={{ animationName: `${loading ? "fadeIn" : "fadeOut"}` }}
+      >
+        <Loading />
+      </LoadingWrapper>
+      <Feed>
+        {currentUserFollowingCount !== 0 ? (
+          <InfiniteScroll pageStart={0} loadMore={loadMore} hasMore={hasMore}>
+            {feedPosts}
+          </InfiniteScroll>
+        ) : (
+          <NoFollows />
+        )}
+      </Feed>
+    </>
   );
 };
 

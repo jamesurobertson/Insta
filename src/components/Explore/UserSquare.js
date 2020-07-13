@@ -43,7 +43,6 @@ const UserSquareWrapper = styled.div`
 
 const UserSquare = (props) => {
   const {result} = props
-  console.log(result)
   return (
     <UserSquareWrapper>
           <Link
@@ -54,7 +53,7 @@ const UserSquare = (props) => {
           >
             <div className={`search-image-overlay`}>
              <h3>{result.full_name}</h3>
-              
+
             </div>
             <img
               className={`result-${result.id}`}

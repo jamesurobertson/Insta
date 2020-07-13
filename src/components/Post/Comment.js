@@ -56,10 +56,8 @@ const Comment = ({ username, likesCommentList, content, userId, commentId }) => 
       const response = await res.json();
       toast.info("Liked comment!", { autoClose: 1500 });
 
-      console.log(`hjiii`, likesCommentList)
       const newLikes = [...likesCommentList, response]
       setLikesCommentArr(newLikes)
-      console.log(likesCommentArr)
 
       let commentIdx
       const newComment = postData.comments.filter((comment, idx) => {
@@ -89,7 +87,6 @@ const Comment = ({ username, likesCommentList, content, userId, commentId }) => 
       likeableType: "comment",
       id: commentId,
     };
-    console.log(likesCommentArr)
     try {
       const res = await fetch(`${backendURL}/like`, {
         method: "DELETE",
@@ -113,7 +110,6 @@ const Comment = ({ username, likesCommentList, content, userId, commentId }) => 
           }
       }
 
-      console.log(likesCommentArr, commentId)
       const newList = postData.comments[commentIdx].likes_comment.filter(user => user.id !== currentUserId)
 
       const newPostData = {...postData}
@@ -128,7 +124,6 @@ const Comment = ({ username, likesCommentList, content, userId, commentId }) => 
 
 
   if (!likesCommentList) return null;
-  console.log(likesCommentArr)
   return (
     <CommentWrapper>
       <div>

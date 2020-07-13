@@ -57,7 +57,6 @@ const PostCommentSection = (props) => {
 
   if (isSinglePost) {
     if (!postData) return null;
-    console.log('aaaa',postData)
     likeCount = postData.likes_post.length;
     caption = postData.post.caption;
     createdAt = postData.post.created_at;

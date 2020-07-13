@@ -53,14 +53,13 @@ const Explore = () => {
         }
 
         setQuery(e.target.value)
-        console.log('handleSubmit', e.target.value, query)
         const queryLower = encodeURIComponent(e.target.value.toLowerCase())
 
         const res = await fetch(`${backendURL}/search?query=${queryLower}`)
 
         const {results} = await res.json()
 
-        console.log(results)
+        (results)
 
         setQueryRes(results)
     }

@@ -14,19 +14,19 @@ export const fadeIn = keyframes`
 
 export const yTranslate = keyframes`
     0% {
-       transform: translateY(37.5vh);
+       transform: translateY(15vh);
     }
     100% {
-        transform: translateY(25.5vh); 
+        transform: translateY(10.2vh);
     }
 `
 
 export const yTranslateRev = keyframes`
     0% {
-       transform: translateY(37.5vh);
+       transform: translateY(15vh);
     }
     100% {
-        transform: translateY(50vh); 
+        transform: translateY(20vh);
     }
 `
 
@@ -63,8 +63,3 @@ export const rotate135 = keyframes`
        transform: rotateZ(315deg);
    }
 `
-
-
-
-
-

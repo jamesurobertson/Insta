@@ -50,12 +50,20 @@ const ModalWrapper = styled.div`
     border: none;
   }
   .dynamic-modal__username {
+    width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     font-size: 14px;
     font-weight: bold;
     color: #262626;
   }
 
   .dynamic-modal__fullName {
+    width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     font-size: 14px;
     color: #8e8e8e;
   }

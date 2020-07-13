@@ -36,14 +36,11 @@ const ExploreGridScratch = () => {
       }
       setToRender([...toRender, photoArray]);
 
-      console.log(toRender);
     };
 
     useEffect(()=>{
       if (!infiniteScroll.current) return
-      console.log(infiniteScroll.current)
       infiniteScroll.current.addEventListener("scroll", () => {
-        console.log(toRender);
         if ((infiniteScroll.current.scrollTop + infiniteScroll.current.clientHeight >=
             infiniteScroll.current.scrollHeight - 1) && hasMore === true) {
           loadMore();
@@ -51,7 +48,7 @@ const ExploreGridScratch = () => {
       });
 
     },[toRender])
-    
+
     useEffect(()=>{
       loadInit()
     },[])
@@ -73,7 +70,7 @@ const ExploreGridScratch = () => {
           }
         });
         setToRender(setOfTwelve);
-  
+
       };
 
       const renderLayout = () => {
@@ -88,9 +85,8 @@ const ExploreGridScratch = () => {
         return result;
       };
 
-      
 
-      console.log(infiniteScroll)
+
       if(!toRender) return null
     return (
       <ExploreGridWrapper style={{ height: '100vh', overflow: "auto" }} ref={infiniteScroll}>

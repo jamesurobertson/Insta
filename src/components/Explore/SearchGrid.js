@@ -16,15 +16,14 @@ const SearchGridWrapper = styled.div`
 `;
 
 const SearchGrid = (props) => {
-  
 
 
- 
-  console.log("search", props.queryRes, props.query)
+
+
   return (
     <SearchGridWrapper key="gridWrapper">
-     
-      
+
+
       {props.queryRes.map(result => {
           return <UserSquare key={`userSquare-${result.id}`}result={result}/>
       })}

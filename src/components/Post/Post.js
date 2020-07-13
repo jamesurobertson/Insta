@@ -20,7 +20,6 @@ const PostWrapper = styled.div`
 `;
 
 const Post = (props) => {
-    console.log(props)
   const [postId, setPostId] = useState(props.post.id)
   const [userInfo, setUserInfo] = useState(props.post.user_info)
   const [commentsList, setCommentsList] = useState(props.post.comments.commentsList)

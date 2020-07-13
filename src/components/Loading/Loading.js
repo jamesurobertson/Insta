@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 
-import { 
-    yTranslate, 
+import {
+    yTranslate,
     yTranslateRev,
-    rotate0, 
+    rotate0,
     rotate45,
     rotate90,
     rotate135,
@@ -14,23 +14,27 @@ import {
 const LoadingWrapper = styled.div`
   .positioner {
       position: fixed;
-      z-index: -5
-  }
-  
-  .positioner * {
-    z-index: -5;
+      top: calc(50% - 20vh);
+      left: calc(50% - 12.5vh);
+      z-index: 12;
+      width: 40vh;
+      height: 40vh;
+
+
   }
 
+
+
   .box {
-    position: fixed;
-    height: 100vh;
-    width: 25vh;
+    position: absolute;
+    height: 40vh;
+    width: 10vh;
     left: calc(50% - 12.5vh);
   }
 
   .color {
-    height: 25vh;
-    width: 25vh;
+    height: 10vh;
+    width: 10vh;
     opacity: 0.5;
     border-radius: 50%;
   }
@@ -96,12 +100,12 @@ const LoadingWrapper = styled.div`
   .blue2 {
     background-color: blue;
   }
-`; 
+`;
 
 const Loading = (props) => {
   return (
-    <LoadingWrapper>
-    <div className='positioner' style={props.position}>
+    <LoadingWrapper style={props.positioner}>
+    <div className='positioner'>
         <div className="box red-box">
             <div className="color for-color red"></div>
         </div>

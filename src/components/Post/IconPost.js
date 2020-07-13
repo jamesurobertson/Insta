@@ -39,7 +39,6 @@ const IconPost = ({ postId, likesList, isSinglePost, setLikes }) => {
   const [likesArray, setLikesArray] = useState(likesList)
 
   const likePost = async () => {
-      console.log('like post')
     try {
         const body = {userId: currentUserId, id: postId, likeableType: 'post' }
         const res = await fetch(`${backendURL}/like`, {
@@ -66,7 +65,6 @@ const IconPost = ({ postId, likesList, isSinglePost, setLikes }) => {
   };
 
   const unlikePost = async () => {
-    console.log('unlike post')
 
     const body = {
         userId: currentUserId,
