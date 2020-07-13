@@ -9,7 +9,7 @@ const LoginCardWrapper = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  height: 85vh;
+  height: 80vh;
   width: 100%;
   padding: 16px;
   object-fit: cover;
