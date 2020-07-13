@@ -9,17 +9,17 @@ const GitIconsWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: row;
   height: 10vh;
   width: 100%;
   padding: 16px;
-  object-fit: cover;
+  
 
  img {
      width: 20vw;
      max-width: 100px;
      border-radius: 50%;
      margin: 0 20px;
+     object-fit: cover;
  }
     
 
@@ -38,8 +38,6 @@ const GitIcons = () => {
             <a href="https://github.com/zachary-henderson/">
             <img src={MyloAvatar} alt="Zachary Henderson also known as Mylo"/>
             </a>
-          
-
         </GitIconsWrapper>
     );
 };

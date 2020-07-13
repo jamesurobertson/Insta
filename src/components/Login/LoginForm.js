@@ -11,7 +11,7 @@ const LoginFormWrapper = styled.div`
   justify-content: space-evenly;
   align-items: center;
   flex-direction: column;
-  height: 80vh;
+  height: 60vh;
   width: 100%;
   max-width: 500px;
   padding: 16px;
@@ -25,7 +25,7 @@ const LoginFormWrapper = styled.div`
 
   .form-wrapper {
     display: flex;
-    height: 20vh;
+    height: 70%;;
     flex-flow: column;
     justify-content: space-between;
     align-items: center;
@@ -171,13 +171,14 @@ const LoginForm = (props) => {
           />
 
           <button style={{cursor:"pointer"}} type="submit">Log In</button>
-        </form>
-        <button style={{ cursor: 'pointer', width: "80%" }} onClick={demoLogin}>Try Our Demo</button>
+          <button style={{ cursor: 'pointer' }} onClick={demoLogin}>Try Our Demo</button>
 
-        <div>
-          Don't have an account?
+          <div>
+            Don't have an account?
           <a href="/auth/register"> Sign up</a>
-        </div>
+          </div>
+        </form>
+       
       </LoginFormWrapper>
     );
 };

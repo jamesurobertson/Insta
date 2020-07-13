@@ -29,6 +29,23 @@ export const yTranslateRev = keyframes`
         transform: translateY(20vh);
     }
 `
+export const yTranslate2 = keyframes`
+    0% {
+       transform: translateY(37.5vh);
+    }
+    100% {
+        transform: translateY(25.5vh);
+    }
+`
+
+export const yTranslateRev2 = keyframes`
+    0% {
+       transform: translateY(37.5vh);
+    }
+    100% {
+        transform: translateY(50vh);
+    }
+`
 
 
 export const rotate0 = keyframes`

@@ -1,13 +1,13 @@
 import React from 'react'
 import LoginCard from "./LoginCard"
-import Loading from "../Loading/Loading"
+import LoadingPage from "../Loading/LoadingPage"
 import GitIcons from "./GitIcons"
 
 
 const LogIn = () => {
     return (
       <>
-        <Loading position={{ top: "-40vh" }} />
+        <LoadingPage />
         <LoginCard />
         <GitIcons />
       </>
