@@ -204,7 +204,7 @@ const Upload = (props) => {
       toast.error('Upload Error. Please try again!')
     } else {
       const post = await res.json()
-      toast.success('Upload Success!')
+      toast.info('Upload Success!')
       props.history.push(`/post/${post.id}`)
 
     }

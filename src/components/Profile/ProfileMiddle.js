@@ -135,7 +135,7 @@ const ProfileMiddle = (props) => {
           <div className="profile-data__type">following</div>
         </div>
       </ProfileMiddleDataWrapper>
-      <ProfileMiddleIcons>
+      {/* <ProfileMiddleIcons>
         <NavLink exact to={`/profile/${profileData.user.id}`} activeClassName="active-profile-link">
           {windowSize < 735 ? (
             <GrGrid size="1.5em" style={{ color: "red" }} />
@@ -156,7 +156,7 @@ const ProfileMiddle = (props) => {
             </>
           )}
         </NavLink>
-      </ProfileMiddleIcons>
+      </ProfileMiddleIcons> */}
       <Modal
         isOpen={isFollowersOpen}
         onRequestClose={closeFollowersModal}

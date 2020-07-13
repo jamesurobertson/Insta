@@ -5,6 +5,7 @@ import { Redirect } from "react-router-dom";
 import { UserContext, ProfileContext } from "../../context";
 import Nav from "../Nav";
 import { toast } from "react-toastify";
+import ProfilePicModal from './ProfilePicModal'
 
 const EditProfileWrapper = styled.div`
   display: flex;
@@ -78,6 +79,7 @@ const EditProfileWrapper = styled.div`
     height: auto;
     border-radius: 50%;
     cursor: pointer;
+    object-fit: cover;
   }
 
   .editProfile__user-details {
@@ -118,6 +120,7 @@ const EditProfile = (props) => {
   const [email, setEmail] = useState("");
   const [fullName, setFullName] = useState("");
   const [bio, setBio] = useState("");
+  const [isEditProfilePicOpen, setIsEditProfilePicOpen] = useState(false);
 
   const {
     currentUserId,
@@ -126,6 +129,31 @@ const EditProfile = (props) => {
   } = useContext(UserContext);
 
   const { profileData } = useContext(ProfileContext);
+
+  const closeEditPicModal = () => {
+    setIsEditProfilePicOpen(false);
+  };
+
+  const customStyles = {
+    content: {
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      padding: "0",
+      borderRadius: "5px",
+      transform: "translate(-50%, -50%)",
+    },
+    overlay: {
+      backgroundColor: "rgba(0, 0, 0, 0.6)",
+      zIndex: "500",
+    },
+  };
+
+  const changeProfilePic = () => {
+      setIsEditProfilePicOpen(true)
+  }
 
   useEffect(() => {
     if (!profileData) return;
@@ -195,10 +223,6 @@ const EditProfile = (props) => {
 
   };
 
-  const changeProfilePic = (e) => {
-    console.log("change Profile picture!");
-  };
-
   const goBack = (e) => {
       props.history.push(`/profile/${currentUserId}`);
   }
@@ -261,6 +285,14 @@ const EditProfile = (props) => {
           <button type="submit">Submit</button>
         </form>
           <button className='goback-button' onClick={goBack}>Go back</button>
+          {isEditProfilePicOpen ? (
+            <ProfilePicModal
+              openModal={isEditProfilePicOpen}
+              closeModal={closeEditPicModal}
+            />
+          ) : (
+            ""
+          )}
       </EditProfileWrapper>
     </>
   );

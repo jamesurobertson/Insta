@@ -13,7 +13,7 @@ const NotificationsWrapper = styled.div`
   align-items: center;
   flex-flow: column;
   margin: auto;
-  height: calc(100vh - 54px);
+  height: calc(100% - 54px);
   width: 100%;
   max-width: 614px;
   margin-top: 54px;

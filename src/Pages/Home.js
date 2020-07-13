@@ -1,13 +1,13 @@
-import React, {useState, useEffect, useContext} from "react";
+import React, { useState, useEffect, useContext } from "react";
 // import { toast } from "react-toastify";
 // import { Route, Switch } from "react-router-dom";
 // import Explore from "./Explore";
 import InfiniteScroll from "react-infinite-scroller";
 import styled from "styled-components";
-import Post from "../components/Post/Post"
-import {backendURL} from '../config'
-import {UserContext} from '../context'
-
+import Post from "../components/Post/Post";
+import { backendURL } from "../config";
+import { UserContext } from "../context";
+import NoFollows from "../components/NoFollows";
 
 const Feed = styled.div`
   display: flex;
@@ -19,55 +19,57 @@ const Feed = styled.div`
 
   @media screen and (min-width: 640px) {
     padding-top: 75px;
-}
+  }
 
-@media screen and (min-width: 475px) {
+  @media screen and (min-width: 475px) {
     padding-bottom: 0;
-
   }
 `;
 
-
 const Home = () => {
+  const { currentUserId, currentUserFollowingCount } = useContext(UserContext);
+  const [feedPosts, setFeedPosts] = useState([]);
+  const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(false);
 
-    const {currentUserId} = useContext(UserContext)
-    const [feedPosts, setFeedPosts] = useState([])
-    const [hasMore, setHasMore] = useState(true)
-    const [loading, setLoading] = useState(false)
+  const loadMore = () => {
+    if (!currentUserId) return;
+    (async () => {
+      try {
+        const res = await fetch(
+          `${backendURL}/post/${currentUserId}/scroll/${feedPosts.length}`
+        );
 
-    const loadMore = () => {
-        if (!currentUserId) return
-        (async () => {
+        if (!res.ok) throw res;
 
-            try {
-                const res = await fetch(`${backendURL}/post/${currentUserId}/scroll/${feedPosts.length}`)
+        const { posts } = await res.json();
 
-                if (!res.ok) throw res
+        const nodeList = posts.map((post) => {
+          return <Post key={`feedPost-${post.id}`} post={post} />;
+        });
 
-                const {posts} = await res.json()
+        setFeedPosts([...feedPosts, ...nodeList]);
 
-                const nodeList = posts.map(post=>{
-                  return <Post key={`feedPost-${post.id}`} post={post}/>
-                })
+        if (posts.length < 3) {
+          setHasMore(false);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    })();
+  };
 
-
-                setFeedPosts([...feedPosts, ...nodeList])
-
-                if (posts.length < 3) {
-                  setHasMore(false);
-                }
-            } catch (e) {
-                console.error(e)
-            }
-        })()
-    }
-
-  if (!feedPosts) return
+  if (!feedPosts) return;
+  console.log(feedPosts)
   return (
     <Feed>
-      <InfiniteScroll pageStart={0} loadMore={loadMore} hasMore={hasMore}>
+      {currentUserFollowingCount !== 0 ? (
+        <InfiniteScroll pageStart={0} loadMore={loadMore} hasMore={hasMore}>
         {feedPosts}
       </InfiniteScroll>
+      ) : (
+        <NoFollows/>
+      )}
     </Feed>
   );
 };

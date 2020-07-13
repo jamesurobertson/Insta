@@ -12,7 +12,7 @@ const ExploreWrapper = styled.div`
   h1 {
   }
 
-  .searchBox {
+  .searchBox, .searchResult {
     margin: auto;
     margin-bottom: 10px;
     width: 95vw;
@@ -20,6 +20,9 @@ const ExploreWrapper = styled.div`
   }
 
   input {
+      padding: 4px 8px;
+      border: 1px solid #dfdfdf;
+      border-radius: 3px;
     width: 200px;
   }
 
@@ -28,6 +31,7 @@ const ExploreWrapper = styled.div`
           display: flex;
           justify-content: center;
       }
+
   }
 `;
 
@@ -36,7 +40,7 @@ const Explore = () => {
     const [query, setQuery] = useState("")
     const [queryRes, setQueryRes] = useState([])
 
-   
+
 
     const handleSubmit= async (e) => {
 
@@ -60,7 +64,7 @@ const Explore = () => {
 
         setQueryRes(results)
     }
-    
+
     return (
       <ExploreWrapper>
           <div className={'searchBox'}>
@@ -70,11 +74,14 @@ const Explore = () => {
             onChange={handleSubmit}
           ></input>
           </div>
-     
 
-        {queryRes.length === 0 && query === '' ? <ExploreGrid /> : 
+
+        {queryRes.length === 0 && query === '' ? <ExploreGrid /> :
         <>
+        <div className='searchResult'>
         <h1>{queryRes.length === 0 ? "No Results Found" : `Search Results for: ${query}`}</h1>
+        </div>
+
         <SearchGrid queryRes={queryRes} query={query}/>
         </>}
       </ExploreWrapper>

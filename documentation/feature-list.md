@@ -23,9 +23,10 @@
     - Ability to follow and be followed.
     - Your feed is made up of posts from users you follow
 
-7. Searchable tags
+# Future Updates
+1. Searchable tags
     - adding a string after a '#' allows that post to be searchable by that hashtag.
     - adding a string after a '@' allows user ability to tag another user.
 
-8. Direct Messaging
+2. Direct Messaging
     - Slide into those Dm's

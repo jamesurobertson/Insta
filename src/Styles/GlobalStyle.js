@@ -7,7 +7,6 @@ const GlobalStyle = createGlobalStyle`
 
   .ReactModal__Body--open {
   overflow-y: hidden;
-  margin-right: 15px;
   }
 
   html, body, div, span, object, iframe,
@@ -53,7 +52,7 @@ const GlobalStyle = createGlobalStyle`
       background-color: #fafafa;
     }
 
-    
+
 
 `;
 

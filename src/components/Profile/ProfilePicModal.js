@@ -3,6 +3,7 @@ import Modal from "react-modal";
 import { ProfileContext, UserContext } from "../../context";
 import styled from "styled-components";
 import { toast } from "react-toastify";
+import {backendURL} from '../../config'
 
 Modal.setAppElement("#root");
 
@@ -69,7 +70,7 @@ const ProfilePicModal = (props) => {
   const [imageUrl, setImageUrl] = useState("");
 
   const { profileData, setProfileData } = useContext(ProfileContext);
-  const {currentUserId} = useContext(UserContext)
+  const {currentUserId, setCurrentUserProfilePic} = useContext(UserContext)
   const changePhoto = (e) => {
     const file = e.currentTarget.files[0];
     console.log(file)
@@ -101,9 +102,10 @@ const ProfilePicModal = (props) => {
       const newProfileData = {...profileData}
 
       newProfileData.user.profile_image_url = img
+      setProfileData(newProfileData)
       toast.info("Photo upload Success!");
       closeModal();
-      setProfileData(newProfileData)
+      setCurrentUserProfilePic(img)
     } catch (e) {
       console.error(e);
     }
@@ -126,6 +128,18 @@ const ProfilePicModal = (props) => {
     },
   };
 
+  const removeProfilePic = async () => {
+      try {
+          const res = await fetch(`${backendURL}/user/${currentUserId}/resetImg`)
+
+          if (!res.ok) throw res
+
+          toast.info('Image Remove!')
+      } catch (e) {
+          console.error(e)
+      }
+  }
+
   return (
     <Modal
       isOpen={openModal}
@@ -146,7 +160,7 @@ const ProfilePicModal = (props) => {
             Upload Photo
           </label>
         </div>
-        <div className="removeCurrentPhoto">Remove Current Photo</div>
+        <div onClick={removeProfilePic} className="removeCurrentPhoto">Remove Current Photo</div>
         <div className="cancel" onClick={() => closeModal(false)}>
           Cancel
         </div>

@@ -36,7 +36,6 @@ const NavContainer = styled.div`
 
   .navImage {
     margin-top: 9px;
-
     height: 40px;
   }
 
@@ -78,19 +77,19 @@ const NavContainer = styled.div`
   }
 `;
 
-const NavProfileContainer = styled.div`
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
+const NavProfilePic = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 25px;
+  height: 25px;
 
   .navProfilePic {
-    width: 23px;
-    height: 23px;
-    object-fit: contain;
+    width: inherit;
+    height: inherit;
     border-radius: 12px;
+    object-fit: cover;
+
   }
 `;
 
@@ -129,13 +128,13 @@ const Nav = () => {
               activeClassName="activeAvatar"
               to={`/profile/${currentUserId}`}
             >
-              <NavProfileContainer>
+              <NavProfilePic>
                 <img
                   className="navProfilePic"
                   src={currentUserProfilePic}
                   alt="avatar"
                 />
-              </NavProfileContainer>
+              </NavProfilePic>
             </NavLink>
           </li>
         </ul>

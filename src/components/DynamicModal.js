@@ -171,12 +171,16 @@ const DynamicModal = (props) => {
       let currentUserFollowsCopy = [...currentUserFollows];
       const index = currentUserFollowsCopy.indexOf(id);
       currentUserFollowsCopy.splice(index, 1);
+
+
       setCurrentUserFollows(currentUserFollowsCopy);
 
+
+
     } catch (e) {
-      console.error(e);
+        console.error(e);
     }
-  };
+};
   if (!profileData) return null;
   return (
     <ModalWrapper>

@@ -9,6 +9,7 @@ const ProfilePostWrapper = styled.section`
     grid-template-columns: 1fr 1fr 1fr;
     grid-row-gap: .25rem;
     grid-column-gap: .25rem;
+    margin-top: 20px;
     padding-bottom: 53px;
     cursor: pointer;
 
