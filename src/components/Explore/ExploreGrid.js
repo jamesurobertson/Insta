@@ -40,13 +40,13 @@ const LoadingWrapper = styled.div`
 
 const ExploreGridWrapper = styled.div`
   margin: auto;
-  
+
   margin-bottom: 10vh;
   width: 95vw;
   max-width: 614px;
-  
 
-  
+
+
 `;
 
 const ExploreGrid = (props) => {
@@ -110,14 +110,14 @@ const ExploreGrid = (props) => {
             />,
           ];
     }
-   
-   
+
+
   }
 
   const fetchMore = () => {
     if (!currentUserId) return;
 
-   
+
 
     (async ()=>{
        const len = toRender.length;
@@ -126,7 +126,7 @@ const ExploreGrid = (props) => {
         Authorization: localStorage.getItem("Isntgram_access_token"),
       })
       const obj = await res.json();
-      
+
       let photoArray = obj.posts
 
       if(photoArray.length < 3) {
@@ -140,12 +140,12 @@ const ExploreGrid = (props) => {
        setToRender([]);
        setLoading(false);
     }
-  
+
     })()
-   
+
   }
-  
-  
+
+
 
   if (!toRender || !currentUserId) return null;
   return (

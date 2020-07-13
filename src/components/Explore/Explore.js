@@ -59,8 +59,6 @@ const Explore = () => {
 
         const {results} = await res.json()
 
-        (results)
-
         setQueryRes(results)
     }
 
