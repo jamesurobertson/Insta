@@ -3,7 +3,7 @@ import Modal from "react-modal";
 import { ProfileContext, UserContext } from "../../context";
 import styled from "styled-components";
 import { toast } from "react-toastify";
-import {backendURL} from '../../config'
+import { backendURL } from "../../config";
 
 Modal.setAppElement("#root");
 
@@ -70,7 +70,7 @@ const ProfilePicModal = (props) => {
   const [imageUrl, setImageUrl] = useState("");
 
   const { profileData, setProfileData } = useContext(ProfileContext);
-  const {currentUserId, setCurrentUserProfilePic} = useContext(UserContext)
+  const { currentUserId, setCurrentUserProfilePic } = useContext(UserContext);
   const changePhoto = (e) => {
     const file = e.currentTarget.files[0];
     let formData;
@@ -85,7 +85,7 @@ const ProfilePicModal = (props) => {
   const postImage = async (formData) => {
     if (!formData) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/aws/${currentUserId}`, {
+      const res = await fetch(`${backendURL}/aws/${currentUserId}`, {
         method: "POST",
         body: formData,
       });
@@ -95,15 +95,15 @@ const ProfilePicModal = (props) => {
         throw res;
       }
 
-      const {img} = await res.json();
+      const { img } = await res.json();
 
-      const newProfileData = {...profileData}
+      const newProfileData = { ...profileData };
 
-      newProfileData.user.profile_image_url = img
-      setProfileData(newProfileData)
+      newProfileData.user.profile_image_url = img;
+      setProfileData(newProfileData);
       toast.info("Photo upload Success!");
       closeModal();
-      setCurrentUserProfilePic(img)
+      setCurrentUserProfilePic(img);
     } catch (e) {
       console.error(e);
     }
@@ -127,16 +127,16 @@ const ProfilePicModal = (props) => {
   };
 
   const removeProfilePic = async () => {
-      try {
-          const res = await fetch(`${backendURL}/user/${currentUserId}/resetImg`)
+    try {
+      const res = await fetch(`${backendURL}/user/${currentUserId}/resetImg`);
 
-          if (!res.ok) throw res
+      if (!res.ok) throw res;
 
-          toast.info('Image Remove!')
-      } catch (e) {
-          console.error(e)
-      }
-  }
+      toast.info("Image Remove!");
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   return (
     <Modal
@@ -158,7 +158,9 @@ const ProfilePicModal = (props) => {
             Upload Photo
           </label>
         </div>
-        <div onClick={removeProfilePic} className="removeCurrentPhoto">Remove Current Photo</div>
+        <div onClick={removeProfilePic} className="removeCurrentPhoto">
+          Remove Current Photo
+        </div>
         <div className="cancel" onClick={() => closeModal(false)}>
           Cancel
         </div>

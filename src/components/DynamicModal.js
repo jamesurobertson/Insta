@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { UserContext, ProfileContext } from "../context";
-
+import { backendURL } from "../config";
 const ModalWrapper = styled.div`
   width: 260px;
   max-height: 400px;
@@ -74,25 +74,22 @@ const ModalWrapper = styled.div`
 `;
 
 const DynamicModal = (props) => {
-  const {
-    title,
-    closeModal,
-    type,
-
-  } = props;
+  const { title, closeModal, type } = props;
   const [userArray, setUserArray] = useState([]);
   const [currentUserFollows, setCurrentUserFollows] = useState([]);
   const [endpoint, setEndpoint] = useState("");
 
   const { currentUserId } = useContext(UserContext);
-  const {profileData} = useContext(ProfileContext);
-  const {user: {id}} = profileData
+  const { profileData } = useContext(ProfileContext);
+  const {
+    user: { id },
+  } = profileData;
   useEffect(() => {
     if (!currentUserId) return;
     (async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/follow/${currentUserId}/following`
+          `${backendURL}/follow/${currentUserId}/following`
         );
 
         if (!res.ok) throw res;
@@ -106,7 +103,6 @@ const DynamicModal = (props) => {
     })();
   }, [currentUserId]);
 
-
   useEffect(() => {
     let url;
     if (title === "Likes" && type === "post") {
@@ -114,18 +110,18 @@ const DynamicModal = (props) => {
     } else if (title === "Likes" && type === "comment") {
       url = `comment/${id}`;
     } else if (title === "Followers") {
-      url = `api/follow/${id}`;
+      url = `follow/${id}`;
     } else {
-      url = `api/follow/${id}/following`;
+      url = `follow/${id}/following`;
     }
     setEndpoint(url);
   }, [id, title, type]);
 
   useEffect(() => {
-    if (!endpoint) return
+    if (!endpoint) return;
     (async () => {
       try {
-        const res = await fetch(`http://localhost:5000/${endpoint}`);
+        const res = await fetch(`${backendURL}/${endpoint}`);
 
         if (!res.ok) throw res;
 
@@ -141,7 +137,7 @@ const DynamicModal = (props) => {
     e.preventDefault();
     const body = { userId: currentUserId, userFollowedId };
     try {
-      const res = await fetch(`http://localhost:5000/api/follow`, {
+      const res = await fetch(`${backendURL}/follow`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -152,7 +148,7 @@ const DynamicModal = (props) => {
       if (!res.ok) throw res;
 
       const response = await res.json();
-      const { user_followed_id: id } = response
+      const { user_followed_id: id } = response;
 
       setCurrentUserFollows([...currentUserFollows, id]);
     } catch (e) {
@@ -164,7 +160,7 @@ const DynamicModal = (props) => {
     e.preventDefault();
     const body = { userId: currentUserId, userFollowedId };
     try {
-      const res = await fetch(`http://localhost:5000/api/follow`, {
+      const res = await fetch(`${backendURL}/follow`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -174,21 +170,17 @@ const DynamicModal = (props) => {
 
       if (!res.ok) throw res;
 
-      const {user_followed_id: id} = await res.json();
+      const { user_followed_id: id } = await res.json();
 
       let currentUserFollowsCopy = [...currentUserFollows];
       const index = currentUserFollowsCopy.indexOf(id);
       currentUserFollowsCopy.splice(index, 1);
 
-
       setCurrentUserFollows(currentUserFollowsCopy);
-
-
-
     } catch (e) {
-        console.error(e);
+      console.error(e);
     }
-};
+  };
   if (!profileData) return null;
   return (
     <ModalWrapper>
