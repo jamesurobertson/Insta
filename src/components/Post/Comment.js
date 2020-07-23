@@ -60,19 +60,22 @@ const Comment = ({ username, likesCommentList, content, userId, commentId }) => 
       setLikesCommentArr(newLikes)
 
       let commentIdx
-      const newComment = postData.comments.filter((comment, idx) => {
+      if (postData) {
 
-          if (comment.id === commentId) {
-            commentIdx = idx
-            return comment.id === commentId
-          }
-      })[0]
+          const newComment = postData.comments.filter((comment, idx) => {
 
-      newComment.likes_comment = newLikes
+              if (comment.id === commentId) {
+                commentIdx = idx
+                return comment.id === commentId
+              }
+          })[0]
 
-      const newPostData = {...postData}
+          newComment.likes_comment = newLikes
 
-      setPostData(newPostData)
+          const newPostData = {...postData}
+
+          setPostData(newPostData)
+      }
 
 
     } catch (e) {
@@ -98,24 +101,30 @@ const Comment = ({ username, likesCommentList, content, userId, commentId }) => 
 
       if (!res.ok) throw res;
 
+
       const response = await res.json();
       toast.info("Unliked comment!", { autoClose: 1500 });
 
+      console.log(likesCommentArr)
+      const updatedList = likesCommentArr.filter(user => user.id !== currentUserId)
+      setLikesCommentArr(updatedList)
+      if (postData) {
 
-      let commentIdx
-      for (let i = 0; i < postData.comments.length; i++) {
-          if (postData.comments[i].id === commentId) {
-              commentIdx = i
-              break
+          let commentIdx
+          for (let i = 0; i < postData.comments.length; i++) {
+              if (postData.comments[i].id === commentId) {
+                  commentIdx = i
+                  break
+              }
           }
+
+          const newList = postData.comments[commentIdx].likes_comment.filter(user => user.id !== currentUserId)
+
+          const newPostData = {...postData}
+          newPostData.comments[commentIdx].likes_comment = newList
+
+          setPostData(newPostData)
       }
-
-      const newList = postData.comments[commentIdx].likes_comment.filter(user => user.id !== currentUserId)
-
-      const newPostData = {...postData}
-      newPostData.comments[commentIdx].likes_comment = newList
-
-      setPostData(newPostData)
 
     } catch (e) {
       console.error(e);

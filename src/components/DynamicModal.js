@@ -80,7 +80,7 @@ const DynamicModal = (props) => {
   const [endpoint, setEndpoint] = useState("");
 
   const { currentUserId } = useContext(UserContext);
-  const { profileData } = useContext(ProfileContext);
+  const { profileData, setProfileData } = useContext(ProfileContext);
   const {
     user: { id },
   } = profileData;
@@ -151,6 +151,11 @@ const DynamicModal = (props) => {
       const { user_followed_id: id } = response;
 
       setCurrentUserFollows([...currentUserFollows, id]);
+
+      if (profileData.user.id === currentUserId) {
+        const updatedFollowingList = [...profileData.followingList, response]
+        setProfileData({...profileData, followingList: updatedFollowingList})
+      }
     } catch (e) {
       console.error(e);
     }
@@ -177,6 +182,12 @@ const DynamicModal = (props) => {
       currentUserFollowsCopy.splice(index, 1);
 
       setCurrentUserFollows(currentUserFollowsCopy);
+
+      if (profileData.user.id === currentUserId) {
+          console.log(id)
+        const updatedFollowingList = profileData.followingList.filter(user => user.user_followed_id !== id)
+        setProfileData({...profileData, followingList: updatedFollowingList})
+      }
     } catch (e) {
       console.error(e);
     }
