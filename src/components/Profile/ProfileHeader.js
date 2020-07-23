@@ -211,6 +211,7 @@ const ProfileHeader = (props) => {
   };
 
   const changeProfImg = () => {
+      if (currentUserId !== profileId) return
     setIsEditProfilePicOpen(true);
   };
 

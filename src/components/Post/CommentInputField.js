@@ -57,8 +57,9 @@ const CommentInputField = (props) => {
         setContent(e.target.value)
     }
 
-    const handleSubmit = async (event) => {
-        event.preventDefault()
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        if (content === '') return
         const data = { content, userId: currentUserId, postId }
         const res = await fetch(`${backendURL}/comment`, {
             method: "POST",
