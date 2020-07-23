@@ -31,10 +31,10 @@ const Profile = (props) => {
   const [userId, setUserId] = useState(null);
 
   useEffect(() => {
-    let url = window.location.href.split("/");
+    let url = props.location.pathname.split("/");
     const userId = url[url.length - 1];
     setUserId(userId);
-  }, []);
+  }, [props.location.pathname]);
 
   useEffect(() => {
     window.addEventListener("resize", () => {
