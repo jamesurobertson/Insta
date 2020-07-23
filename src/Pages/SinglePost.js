@@ -1,11 +1,10 @@
-import React, {useEffect, useContext, useState} from 'react'
+import React, {useEffect, useContext} from 'react'
 import styled from "styled-components";
 import PostHeader from "../components/Post/PostHeader";
 import PhotoImagePost from "../components/Post/PhotoImagePost";
 import IconPost from "../components/Post/IconPost";
 import PostCommentSection from "../components/Post/PostCommentSection";
 import CommentInputField from "../components/Post/CommentInputField";
-import Nav from "../components/Nav"
 import {backendURL} from "../config"
 
 import {PostContext} from '../context'
@@ -43,7 +42,7 @@ const SinglePost = (props) => {
                 console.error(e)
             }
         })()
-    }, [])
+    }, [props.location.pathname, setPostData])
 
     if (!postData || postData.post.id !== parseInt(window.location.href.match(/(\d+)$/))) return null
     return (

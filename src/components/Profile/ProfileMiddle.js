@@ -1,8 +1,5 @@
 import React, { useState, useContext} from "react";
 import styled from "styled-components";
-import { NavLink } from "react-router-dom";
-import { GrGrid } from "react-icons/gr";
-import { FaRegBookmark } from "react-icons/fa";
 import DynamicModal from "../DynamicModal";
 import Modal from "react-modal";
 import {ProfileContext} from '../../context'
@@ -43,37 +40,6 @@ const ProfileMiddleDataWrapper = styled.section`
   }
 `;
 
-const ProfileMiddleIcons = styled.section`
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  height: 44px;
-  border-bottom: 1px solid #dfdfdf;
-
-  .middle-icon-label {
-    padding-left: 5px;
-    font-size: 14px;
-    font-weight: bold;
-    color: grey;
-    text-align: center;
-  }
-
-  & a {
-    height: 100%;
-    display: flex;
-    align-items: center;
-    flex: 0;
-  }
-
-  .active-profile-link .middle-icon-label {
-    color: #262626;
-  }
-
-  @media screen and (min-width: 735px) {
-    border-bottom: none;
-  }
-
-`;
 
 const ProfileMiddle = (props) => {
   const {profileData} = useContext(ProfileContext)
@@ -81,10 +47,6 @@ const ProfileMiddle = (props) => {
 
   const [isFollowersOpen, setIsFollowersOpen] = useState(false);
   const [isFollowingOpen, setIsFollowingOpen] = useState(false);
-  const {
-    windowSize
-  } = props;
-
 
   const closeFollowersModal = () => {
     setIsFollowersOpen(false);
@@ -135,28 +97,6 @@ const ProfileMiddle = (props) => {
           <div className="profile-data__type">following</div>
         </div>
       </ProfileMiddleDataWrapper>
-      {/* <ProfileMiddleIcons>
-        <NavLink exact to={`/profile/${profileData.user.id}`} activeClassName="active-profile-link">
-          {windowSize < 735 ? (
-            <GrGrid size="1.5em" style={{ color: "red" }} />
-          ) : (
-            <>
-              <GrGrid size="1em" />
-              <span className="middle-icon-label">POSTS</span>
-            </>
-          )}
-        </NavLink>
-        <NavLink to={`/profile/${profileData.user.id}/saved`} activeClassName="active-profile-link">
-          {windowSize < 735 ? (
-            <FaRegBookmark size="1.5em" />
-          ) : (
-            <>
-              <FaRegBookmark size="1em" />
-              <span className="middle-icon-label">SAVED</span>
-            </>
-          )}
-        </NavLink>
-      </ProfileMiddleIcons> */}
       <Modal
         isOpen={isFollowersOpen}
         onRequestClose={closeFollowersModal}

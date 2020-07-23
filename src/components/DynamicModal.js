@@ -184,7 +184,6 @@ const DynamicModal = (props) => {
       setCurrentUserFollows(currentUserFollowsCopy);
 
       if (profileData.user.id === currentUserId) {
-          console.log(id)
         const updatedFollowingList = profileData.followingList.filter(user => user.user_followed_id !== id)
         setProfileData({...profileData, followingList: updatedFollowingList})
       }

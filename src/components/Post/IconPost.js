@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import { RiHeartLine } from "react-icons/ri";
 import { FaRegComment } from "react-icons/fa";
-import { FaRegBookmark } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { PostContext, UserContext } from "../../context";
 import {backendURL} from '../../config'
@@ -82,7 +81,6 @@ const IconPost = ({ postId, likesList, isSinglePost, setLikes }) => {
 
         if (!res.ok) throw res;
 
-        const response = await res.json();
         toast.info("Unliked post!", { autoClose: 1500 });
 
         const newList = likesArray.filter(user => user.id !== currentUserId)
@@ -99,13 +97,13 @@ const IconPost = ({ postId, likesList, isSinglePost, setLikes }) => {
     };
 
   const commentPost = () => {};
-  const savePost = async () => {
-    try {
-        const res = await fetch(`${backendURL}/${postId}/save`)
-    } catch (e) {
-        console.error(e)
-    }
-  };
+//   const savePost = async () => {
+//     try {
+//         const res = await fetch(`${backendURL}/${postId}/save`)
+//     } catch (e) {
+//         console.error(e)
+//     }
+//   };
 
   return (
     <IconWrapper>

@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect} from "react";
+import React, {useState, useContext} from "react";
 import {backendURL} from '../../config'
 import styled from "styled-components";
 import {UserContext, PostContext} from '../../context'

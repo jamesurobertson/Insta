@@ -1,7 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
-// import { toast } from "react-toastify";
-// import { Route, Switch } from "react-router-dom";
-// import Explore from "./Explore";
+import React, { useState, useContext } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import styled from "styled-components";
 import Post from "../components/Post/Post";
@@ -9,7 +6,6 @@ import { backendURL } from "../config";
 import { UserContext } from "../context";
 import NoFollows from "../components/NoFollows";
 import Loading from '../components/Loading/Loading'
-import LoadingPage from '../components/Loading/LoadingPage'
 
 const Feed = styled.div`
   display: flex;

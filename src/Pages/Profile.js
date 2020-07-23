@@ -34,7 +34,7 @@ const Profile = (props) => {
     let url = window.location.href.split("/");
     const userId = url[url.length - 1];
     setUserId(userId);
-  });
+  }, []);
 
   useEffect(() => {
     window.addEventListener("resize", () => {

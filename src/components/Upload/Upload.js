@@ -1,5 +1,4 @@
 import React, { useState, useContext, useRef} from "react";
-import ImageUploader from "react-images-upload";
 import styled from "styled-components"
 import {UserContext} from '../../context'
 import {backendURL} from '../../config'

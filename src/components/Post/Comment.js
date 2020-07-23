@@ -59,13 +59,11 @@ const Comment = ({ username, likesCommentList, content, userId, commentId }) => 
       const newLikes = [...likesCommentList, response]
       setLikesCommentArr(newLikes)
 
-      let commentIdx
       if (postData) {
 
           const newComment = postData.comments.filter((comment, idx) => {
 
               if (comment.id === commentId) {
-                commentIdx = idx
                 return comment.id === commentId
               }
           })[0]
@@ -105,7 +103,6 @@ const Comment = ({ username, likesCommentList, content, userId, commentId }) => 
       const response = await res.json();
       toast.info("Unliked comment!", { autoClose: 1500 });
 
-      console.log(likesCommentArr)
       const updatedList = likesCommentArr.filter(user => user.id !== currentUserId)
       setLikesCommentArr(updatedList)
       if (postData) {
