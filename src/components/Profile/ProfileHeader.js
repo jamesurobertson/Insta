@@ -4,11 +4,10 @@ import Modal from "react-modal";
 import DynamicModal from "../DynamicModal";
 import { ProfileContext, UserContext } from "../../context";
 import ProfilePicModal from "./ProfilePicModal";
-import { backendURL } from "../../config";
 import { RiLogoutBoxRLine } from "react-icons/ri";
-import {EditProfile} from "./EditProfile";
-import {Link} from 'react-router-dom'
-
+import { EditProfile } from "./EditProfile";
+import { Link } from "react-router-dom";
+import { backendURL } from "../../config";
 const ProfileHeaderWrapper = styled.div`
   display: flex;
   height: 82px;
@@ -196,7 +195,6 @@ const ProfileHeader = (props) => {
     setIsFollowingOpen(false);
   };
 
-
   const customStyles = {
     content: {
       top: "50%",
@@ -227,7 +225,7 @@ const ProfileHeader = (props) => {
     e.preventDefault();
     const body = { userId: currentUserId, userFollowedId: profileId };
     try {
-      const res = await fetch(`http://localhost:5000/api/follow`, {
+      const res = await fetch(`${backendURL}/follow`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -250,7 +248,7 @@ const ProfileHeader = (props) => {
     e.preventDefault();
     const body = { userId: currentUserId, userFollowedId: profileId };
     try {
-      const res = await fetch(`http://localhost:5000/api/follow`, {
+      const res = await fetch(`${backendURL}/follow`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -272,8 +270,9 @@ const ProfileHeader = (props) => {
     }
   };
 
-  if (!profileData) return null
-  if (profileData.user.id !== parseInt(window.location.href.match(/(\d+)$/))) return null
+  if (!profileData) return null;
+  if (profileData.user.id !== parseInt(window.location.href.match(/(\d+)$/)))
+    return null;
 
   return (
     <>
@@ -302,9 +301,9 @@ const ProfileHeader = (props) => {
               )}
             </div>
             {currentUserId === profileId ? (
-                <Link to='/accounts/edit'>
-                    <button>Edit Profile</button>
-                </Link>
+              <Link to="/accounts/edit">
+                <button>Edit Profile</button>
+              </Link>
             ) : currentUserFollowingList.includes(profileId) ? (
               <button style={{ width: "85px" }} onClick={unfollowUser}>
                 Following{" "}
@@ -341,15 +340,11 @@ const ProfileHeader = (props) => {
             <div className="big-profile-details__header">
               <div className="big-profile__username">{username}</div>
               {currentUserId === profileId ? (
-                <Link to='/accounts/edit'>
-                <button
-                  className="big-profile__editProfile-button"
-                >
-                  Edit Profile
-                </button>
-
+                <Link to="/accounts/edit">
+                  <button className="big-profile__editProfile-button">
+                    Edit Profile
+                  </button>
                 </Link>
-
               ) : currentUserFollowingList.includes(profileId) ? (
                 <button
                   className="big-profile__editProfile-button"

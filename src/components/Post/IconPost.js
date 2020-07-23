@@ -88,7 +88,9 @@ const IconPost = ({ postId, likesList, isSinglePost, setLikes }) => {
         const newList = likesArray.filter(user => user.id !== currentUserId)
         if(setLikes) setLikes(newList)
         setLikesArray(newList)
-
+        if (isSinglePost) {
+            setPostData({...postData, likes_post: newList})
+        }
 
 
       } catch (e) {
