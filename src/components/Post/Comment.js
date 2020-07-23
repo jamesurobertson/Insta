@@ -30,13 +30,18 @@ const CommentWrapper = styled.div`
   }
 `;
 
-const Comment = ({ username, likesCommentList, content, userId, commentId }) => {
+const Comment = ({
+  username,
+  likesCommentList,
+  content,
+  userId,
+  commentId,
+}) => {
   const { postData, setPostData } = useContext(PostContext);
   const { currentUserId } = useContext(UserContext);
-  const [likesCommentArr, setLikesCommentArr] = useState(likesCommentList)
+  const [likesCommentArr, setLikesCommentArr] = useState(likesCommentList);
 
   const likeComment = async () => {
-
     const body = {
       userId: currentUserId,
       likeableType: "comment",
@@ -56,33 +61,27 @@ const Comment = ({ username, likesCommentList, content, userId, commentId }) => 
       const response = await res.json();
       toast.info("Liked comment!", { autoClose: 1500 });
 
-      const newLikes = [...likesCommentList, response]
-      setLikesCommentArr(newLikes)
+      const newLikes = [...likesCommentList, response];
+      setLikesCommentArr(newLikes);
 
       if (postData) {
+        const newComment = postData.comments.filter(
+          (comment, idx) => comment.id === commentId
+        );
+        if (newComment.length > 0) {
+          newComment[0].likes_comment = newLikes;
+        }
 
-          const newComment = postData.comments.filter((comment, idx) => {
+        const newPostData = { ...postData };
 
-              if (comment.id === commentId) {
-                return comment.id === commentId
-              }
-          })[0]
-
-          newComment.likes_comment = newLikes
-
-          const newPostData = {...postData}
-
-          setPostData(newPostData)
+        setPostData(newPostData);
       }
-
-
     } catch (e) {
       console.error(e);
     }
   };
 
   const unlikeComment = async () => {
-
     const body = {
       userId: currentUserId,
       likeableType: "comment",
@@ -99,35 +98,36 @@ const Comment = ({ username, likesCommentList, content, userId, commentId }) => 
 
       if (!res.ok) throw res;
 
-
-      const response = await res.json();
       toast.info("Unliked comment!", { autoClose: 1500 });
 
-      const updatedList = likesCommentArr.filter(user => user.id !== currentUserId)
-      setLikesCommentArr(updatedList)
+      const updatedList = likesCommentArr.filter(
+        (user) => user.id !== currentUserId
+      );
+      setLikesCommentArr(updatedList);
       if (postData) {
-
-          let commentIdx
-          for (let i = 0; i < postData.comments.length; i++) {
-              if (postData.comments[i].id === commentId) {
-                  commentIdx = i
-                  break
-              }
+        let commentIdx;
+        for (let i = 0; i < postData.comments.length; i++) {
+          if (postData.comments[i].id === commentId) {
+            commentIdx = i;
+            break;
           }
+        }
 
-          const newList = postData.comments[commentIdx].likes_comment.filter(user => user.id !== currentUserId)
+        if (postData.comments[commentIdx].length > 0) {
+          const newList = postData.comments[commentIdx].likes_comment.filter(
+            (user) => user.id !== currentUserId
+          );
+          const newPostData = { ...postData };
 
-          const newPostData = {...postData}
-          newPostData.comments[commentIdx].likes_comment = newList
+          newPostData.comments[commentIdx].likes_comment = newList;
+          setPostData(newPostData);
+        }
 
-          setPostData(newPostData)
       }
-
     } catch (e) {
       console.error(e);
     }
   };
-
 
   if (!likesCommentList) return null;
   return (

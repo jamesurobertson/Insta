@@ -59,9 +59,3 @@ const SinglePost = (props) => {
 }
 
 export default SinglePost
-
-{/* <PostHeader isSinglePost={true}/>
-        <PhotoImagePost isSinglePost={true}/>
-        <IconPost isSinglePost={true}/>
-        <PostCommentSection isSinglePost={true}/>
-        <CommentInputField isSinglePage={true}/> */}

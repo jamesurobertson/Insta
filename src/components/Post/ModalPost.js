@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Link } from 'react-router-dom';
@@ -45,16 +45,12 @@ const ModalStyle = styled.div`
    `;
 
 const ModalPost = ({ postId, userId, closeModal }) => {
-    const [value, setValue] = useState('');
-    const [copied, setCopied] = useState(false);
 
     return (
         <ModalStyle>
             <Link to={`/post/${postId}`} className='button-post'>Go To Post</Link>
-            <CopyToClipboard text={`${frontendURL}/post/${postId}`} onCopy={() => setCopied(true)}>
-                <button onClick={({ target: { value } }) => {
-                    setValue(value);
-                    setCopied(false);
+            <CopyToClipboard text={`${frontendURL}/post/${postId}`}>
+                <button onClick={() => {
                     toast.info('Copied to clipboard!')
                     closeModal()
                 }} className='button-post'>Copy Link</button>

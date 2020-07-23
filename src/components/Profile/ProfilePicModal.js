@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, {useContext } from "react";
 import Modal from "react-modal";
 import { ProfileContext, UserContext } from "../../context";
 import styled from "styled-components";
@@ -67,7 +67,6 @@ const EditProfilePicWrapper = styled.div`
 const ProfilePicModal = (props) => {
   const { openModal, closeModal } = props;
 
-  const [imageUrl, setImageUrl] = useState("");
 
   const { profileData, setProfileData } = useContext(ProfileContext);
   const { currentUserId, setCurrentUserProfilePic } = useContext(UserContext);
@@ -132,7 +131,9 @@ const ProfilePicModal = (props) => {
 
       if (!res.ok) throw res;
 
-      toast.info("Image Remove!");
+      toast.info("Image Removed!");
+      setProfileData({...setProfileData, user: res})
+      closeModal()
     } catch (e) {
       console.error(e);
     }

@@ -5,7 +5,6 @@ import DynamicModal from "../DynamicModal";
 import { ProfileContext, UserContext } from "../../context";
 import ProfilePicModal from "./ProfilePicModal";
 import { RiLogoutBoxRLine } from "react-icons/ri";
-import { EditProfile } from "./EditProfile";
 import { Link } from "react-router-dom";
 import { backendURL } from "../../config";
 const ProfileHeaderWrapper = styled.div`
@@ -152,7 +151,6 @@ const ProfileHeader = (props) => {
   const { profileData, setProfileData } = useContext(ProfileContext);
   const {
     num_posts: numPosts,
-    followingList,
     user: {
       id: profileId,
       bio,
@@ -182,7 +180,7 @@ const ProfileHeader = (props) => {
         console.error(e);
       }
     })();
-  }, [profileData]);
+  }, [profileData, currentUserId]);
 
   const closeEditPicModal = () => {
     setIsEditProfilePicOpen(false);

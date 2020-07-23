@@ -20,14 +20,14 @@ const PostWrapper = styled.div`
 `;
 
 const Post = (props) => {
-  const [postId, setPostId] = useState(props.post.id)
-  const [userInfo, setUserInfo] = useState(props.post.user_info)
-  const [commentsList, setCommentsList] = useState(props.post.comments.commentsList)
-  const [total, setTotal] = useState(props.post.comments.total)
-  const [createdAt, setCreatedAt] = useState(props.post.created_at)
-  const [caption, setCaption] = useState(props.post.caption)
-  const [postImg, setPostImg] = useState(props.post.image_url)
-  const [userId, setUserId] = useState(props.post.user_id)
+  const [postId] = useState(props.post.id)
+  const [userInfo] = useState(props.post.user_info)
+  const [commentsList] = useState(props.post.comments.commentsList)
+  const [total] = useState(props.post.comments.total)
+  const [createdAt] = useState(props.post.created_at)
+  const [caption] = useState(props.post.caption)
+  const [postImg] = useState(props.post.image_url)
+  const [userId] = useState(props.post.user_id)
   const [likesList, setLikesList] = useState(props.post.likesList)
 
   return (

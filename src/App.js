@@ -48,7 +48,7 @@ function App() {
     <UserContext.Provider value={userContextValue}>
       <ProfileContext.Provider value={profileContextValue}>
           <PostContext.Provider value={postContextValue}>
-        <ToastContainer autoClose={5000} />
+        <ToastContainer autoClose={5000} limit={3} />
         <GlobalStyle />
         <BrowserRouter>
           <Switch>
