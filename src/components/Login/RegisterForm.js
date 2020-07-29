@@ -1,24 +1,21 @@
-import React, {useContext, useState} from "react";
-import {backendURL} from "../../config"
-import {UserContext} from '../../context'
-import {toast} from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import React, { useContext, useState } from "react";
+import { backendURL } from "../../config";
+import { UserContext } from "../../context";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 
 const RegisterFormWrapper = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
   align-items: center;
   flex-direction: column;
-  height: 80vh;
+  height: 70vh;
   width: 100%;
-  max-width: 500px;
-  padding: 16px;
-  object-fit: cover;
 
   * {
-    width: 90%;
+    width: 80%;
     font-size: 0.9rem;
     text-align: center;
   }
@@ -26,7 +23,9 @@ const RegisterFormWrapper = styled.div`
   .form-wrapper {
     display: flex;
     flex-flow: column;
+    justify-content: space-between;
     align-items: center;
+    height: 60%;
   }
 
   input {
@@ -50,6 +49,7 @@ const RegisterFormWrapper = styled.div`
     border-radius: 5px;
     height: 30px;
     margin-bottom: 10px;
+    color: white;
   }
 
   a {
@@ -62,153 +62,143 @@ const RegisterFormWrapper = styled.div`
   }
 `;
 
-
-
-
 const RegisterForm = (props) => {
+  const {
+    setCurrentUserId,
+    setCurrentUserFollowerCount,
+    setCurrentUserFollowingCount,
+    setCurrentUserProfilePic,
+  } = useContext(UserContext);
 
-    const {
-      setCurrentUserId,
-      setCurrentUserFollowerCount,
-      setCurrentUserFollowingCount,
-      setCurrentUserProfilePic,
-    } = useContext(UserContext);
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  // const [birthday, setBirthday] = useState("");
 
-    const [username, setUsername] = useState("");
-    const [email, setEmail] = useState("");
-    const [fullName, setFullName] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    // const [birthday, setBirthday] = useState("");
+  const updateState = (e) => {
+    const value = e.target.value;
+    switch (e.target.getAttribute("name")) {
+      case "username":
+        setUsername(value);
+        break;
+      case "email":
+        setEmail(value);
+        break;
+      case "fullName":
+        setFullName(value);
+        break;
+      case "password":
+        setPassword(value);
+        break;
+      case "confirmPassword":
+        setConfirmPassword(value);
+        break;
+      // case('birthday'):
+      //     setBirthday(value)
+      //     break
+      default:
+        return;
+    }
+  };
 
-    const updateState = (e) => {
-      const value = e.target.value
-      switch (e.target.getAttribute('name')){
-        case ('username'):
-            setUsername(value)
-            break
-        case ('email'):
-            setEmail(value)
-            break
-        case ('fullName'):
-            setFullName(value)
-            break
-        case ('password'):
-            setPassword(value)
-            break
-        case ('confirmPassword'):
-            setConfirmPassword(value)
-            break
-        // case('birthday'):
-        //     setBirthday(value)
-        //     break
-        default:
-            return
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const data = { username, email, fullName, password, confirmPassword };
 
-      }
+    const res = await fetch(`${backendURL}/session/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
 
-    };
-
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-      const data = { username, email, fullName, password, confirmPassword };
-
-      const res = await fetch(`${backendURL}/session/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
+    if (res.status !== 200) {
+      const { error } = await res.json();
+      toast.info(error, {
+        position: "top-right",
+        autoClose: 5000,
+        closeOnClick: true,
       });
+    } else {
+      const { user, access_token } = await res.json();
+      localStorage.setItem("Isntgram_access_token", access_token);
+      setCurrentUserId(user.id);
+      setCurrentUserProfilePic(user.profile_image_url);
+      setCurrentUserFollowerCount(user.numFollowers);
+      setCurrentUserFollowingCount(user.numFollowing);
+      props.history.push("/");
+    }
+  };
 
-      if (res.status !== 200) {
+  return (
+    <RegisterFormWrapper>
+      <form onSubmit={handleSubmit} className="form-wrapper">
+        <label style={{ display: "none" }} htmlFor="username">
+          Username
+        </label>
+        <input
+          name="username"
+          id="username"
+          placeholder="Username"
+          onChange={updateState}
+        />
 
-        const {error} = await res.json()
-        toast.info(error, {
-            position: 'top-right',
-            autoClose: 5000,
-            closeOnClick: true,
+        <label style={{ display: "none" }} htmlFor="email">
+          Email
+        </label>
 
+        <input
+          name="email"
+          id="email"
+          placeholder="Email"
+          onChange={updateState}
+        />
 
-        })
+        <label style={{ display: "none" }} htmlFor="fullName">
+          Full Name
+        </label>
 
-      } else {
-        const { user, access_token } = await res.json();
-        localStorage.setItem("Isntgram_access_token", access_token);
-        setCurrentUserId(user.id);
-        setCurrentUserProfilePic(user.profile_image_url);
-        setCurrentUserFollowerCount(user.numFollowers);
-        setCurrentUserFollowingCount(user.numFollowing);
-        props.history.push("/");
-      }
-    };
+        <input
+          name="fullName"
+          id="fullName"
+          placeholder="Full Name"
+          onChange={updateState}
+        />
 
-    return (
-      <RegisterFormWrapper>
-        <form onSubmit={handleSubmit} className="form-wrapper">
-          <label style={{ display: "none" }} htmlFor="username">
-            Username
-          </label>
-          <input
-            name="username"
-            id="username"
-            placeholder="Username"
-            onChange={updateState}
-          />
+        <label style={{ display: "none" }} htmlFor="password">
+          Password
+        </label>
 
-          <label style={{ display: "none" }} htmlFor="email">
-            Email
-          </label>
+        <input
+          name="password"
+          id="password"
+          type="password"
+          placeholder="Password"
+          onChange={updateState}
+        />
+        <label style={{ display: "none" }} htmlFor="confirmPassword">
+          Confirm Password
+        </label>
 
-          <input
-            name="email"
-            id="email"
-            placeholder="Email"
-            onChange={updateState}
-          />
+        <input
+          name="confirmPassword"
+          id="confirmPassword"
+          type="password"
+          placeholder="Confirm Password"
+          onChange={updateState}
+        />
 
-          <label style={{ display: "none" }} htmlFor="fullName">
-            Full Name
-          </label>
-
-          <input
-            name="fullName"
-            id="fullName"
-            placeholder="Full Name"
-            onChange={updateState}
-          />
-
-          <label style={{ display: "none" }} htmlFor="password">
-            Password
-          </label>
-
-          <input
-            name="password"
-            id="password"
-            type="password"
-            placeholder="Password"
-            onChange={updateState}
-          />
-          <label style={{ display: "none" }} htmlFor="confirmPassword">
-            Confirm Password
-          </label>
-
-          <input
-            name="confirmPassword"
-            id="confirmPassword"
-            type="password"
-            placeholder="Confirm Password"
-            onChange={updateState}
-          />
-
-          <button type="submit">Register</button>
-        </form>
+        <button type="submit">Register</button>
         <div>
           Have an account?
           <a href="/auth/login"> Login</a>
         </div>
-      </RegisterFormWrapper>
-    );
+      </form>
+    </RegisterFormWrapper>
+  );
 };
 
 export default withRouter(RegisterForm);

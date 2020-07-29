@@ -1,36 +1,48 @@
 import React from "react";
-import navImage from "../../Images/logo.svg"
-import LoginForm from './LoginForm'
-import RegisterForm from "./RegisterForm"
-import styled from "styled-components";
+import navImage from "../../Images/logo.svg";
+import LoginForm from "./LoginForm";
+import GitIcons from "./GitIcons";
+import RegisterForm from "./RegisterForm";
+import styled, { keyframes } from "styled-components";
 
-const LoginCardWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  height: 80vh;
-  width: 100%;
-  padding: 16px;
-  object-fit: cover;
+const slideIn = keyframes`
+  from {
+    transform: translateX(400px);
+  } 
 
-
-
- .navImage {
-     margin-top: 4vh;
-     width: 25vh;
-     max-width: 200px;
-     object-fit: contain;
- }
+  to {
+    transform: translateX(0px);
+  }
 `;
 
+const LoginCardWrapper = styled.div`
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  max-width: 400px;
+  border: 1px #dfdfdf solid;
+  background-color: white;
+  transform: translateX(400px);
+  animation: ${slideIn} 2s 3s forwards;
+
+  .navImage {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    max-width: 200px;
+    margin: auto;
+    margin-top: 20%;
+    object-fit: contain;
+  }
+`;
 
 const LoginCard = (props) => {
   return (
-      <LoginCardWrapper>
-        <img className="navImage" src={navImage} alt="logo" />
-        {window.location.href.match(/login/) ? <LoginForm/> : <RegisterForm/>}
-      </LoginCardWrapper>
+    <LoginCardWrapper>
+      <img className="navImage" src={navImage} alt="logo" />
+      {window.location.href.match(/login/) ? <LoginForm /> : <RegisterForm />}
+      <GitIcons />
+    </LoginCardWrapper>
   );
 };
 

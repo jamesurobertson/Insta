@@ -2,28 +2,23 @@ import React from "react";
 import styled from "styled-components";
 
 import {
-    yTranslate2,
-    yTranslateRev2,
-    rotate0,
-    rotate45,
-    rotate90,
-    rotate135,
-
+  yTranslate2,
+  yTranslateRev2,
+  rotate0,
+  rotate45,
+  rotate90,
+  rotate135,
 } from "../../Styles/animations";
 
 const LoadingWrapper = styled.div`
   .positioner {
-      position: fixed;
-      bottom: 100vh;
-      left: calc(50% - 20vh);
-      z-index: -2;
-      width: 40vh;
-      height: 40vh;
-
-
+    position: absolute;
+    bottom: 100vh;
+    left: calc(50% - 20vh);
+    z-index: -2;
+    width: 40vh;
+    height: 40vh;
   }
-
-
 
   .box {
     position: absolute;
@@ -103,36 +98,36 @@ const LoadingWrapper = styled.div`
 `;
 
 const Loading = (props) => {
-    return (
-        <LoadingWrapper style={props.positioner}>
-            <div className='positioner'>
-                <div className="box red-box">
-                    <div className="color for-color red"></div>
-                </div>
-                <div className="box yellow-box">
-                    <div className="color for-color yellow"></div>
-                </div>
-                <div className="box green-box">
-                    <div className="color for-color green"></div>
-                </div>
-                <div className="box blue-box">
-                    <div className="color for-color blue"></div>
-                </div>
-                <div className="box red2-box">
-                    <div className="color rev-color red2"></div>
-                </div>
-                <div className="box yellow2-box">
-                    <div className="color  rev-color yellow2"></div>
-                </div>
-                <div className="box green2-box">
-                    <div className="color  rev-color green2"></div>
-                </div>
-                <div className="box blue2-box">
-                    <div className="color  rev-color blue2"></div>
-                </div>
-            </div>
-        </LoadingWrapper>
-    );
+  return (
+    <LoadingWrapper style={props.positioner}>
+      <div className="positioner">
+        <div className="box red-box">
+          <div className="color for-color red"></div>
+        </div>
+        <div className="box yellow-box">
+          <div className="color for-color yellow"></div>
+        </div>
+        <div className="box green-box">
+          <div className="color for-color green"></div>
+        </div>
+        <div className="box blue-box">
+          <div className="color for-color blue"></div>
+        </div>
+        <div className="box red2-box">
+          <div className="color rev-color red2"></div>
+        </div>
+        <div className="box yellow2-box">
+          <div className="color  rev-color yellow2"></div>
+        </div>
+        <div className="box green2-box">
+          <div className="color  rev-color green2"></div>
+        </div>
+        <div className="box blue2-box">
+          <div className="color  rev-color blue2"></div>
+        </div>
+      </div>
+    </LoadingWrapper>
+  );
 };
 
 export default Loading;
