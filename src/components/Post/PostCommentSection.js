@@ -1,5 +1,5 @@
-import React, { useState, useContext } from "react";
-import DynamicModal from "../DynamicModal";
+import React, { useContext } from "react";
+// import DynamicModal from "../DynamicModal";
 import Modal from "react-modal";
 import styled from "styled-components";
 import Comment from "./Comment";
@@ -28,7 +28,7 @@ const CommentWrapper = styled.div`
   }
 
   .comments__view-all {
-  padding: 5px 16px 0 0;
+    padding: 5px 16px 0 0;
 
     color: #0095f6;
 
@@ -40,7 +40,7 @@ const CommentWrapper = styled.div`
 Modal.setAppElement("#root");
 
 const PostCommentSection = (props) => {
-  const [isOpen, setIsOpen] = useState(false);
+  // const [isOpen, setIsOpen] = useState(false);
   const { postData } = useContext(PostContext);
 
   let {
@@ -67,29 +67,28 @@ const PostCommentSection = (props) => {
     total = postData.comments.length;
   }
 
-  const closeModal = () => {
-    setIsOpen(false);
-  };
+  // const closeModal = () => {
+  //   setIsOpen(false);
+  // };
 
-  const customStyles = {
-    content: {
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      marginRight: "-50%",
-      padding: "0",
-      borderRadius: "5px",
-      transform: "translate(-50%, -50%)",
-    },
-    overlay: {
-      backgroundColor: "rgba(0, 0, 0, 0.6)",
-      zIndex: "10000",
-    },
-  };
+  // const customStyles = {
+  //   content: {
+  //     top: "50%",
+  //     left: "50%",
+  //     right: "auto",
+  //     bottom: "auto",
+  //     marginRight: "-50%",
+  //     padding: "0",
+  //     borderRadius: "5px",
+  //     transform: "translate(-50%, -50%)",
+  //   },
+  //   overlay: {
+  //     backgroundColor: "rgba(0, 0, 0, 0.6)",
+  //     zIndex: "10000",
+  //   },
+  // };
 
   function timeSince(timeStamp) {
-
     timeStamp = new Date(timeStamp);
     const now = new Date();
 
@@ -105,15 +104,22 @@ const PostCommentSection = (props) => {
     }
     if (secondsPast > 86400) {
       const day = timeStamp.getDate();
-      const month = timeStamp.toDateString().match(/ [a-zA-Z]*/)[0].replace(" ", "");
-      const year = timeStamp.getFullYear() === now.getFullYear() ? "" : " " + timeStamp.getFullYear();
+      const month = timeStamp
+        .toDateString()
+        .match(/ [a-zA-Z]*/)[0]
+        .replace(" ", "");
+      const year =
+        timeStamp.getFullYear() === now.getFullYear()
+          ? ""
+          : " " + timeStamp.getFullYear();
       return day + " " + month + year;
     }
   }
 
   return (
     <CommentWrapper>
-      <button className="like-button" onClick={() => setIsOpen(true)}>
+      <div className="like-button">{likeCount} likes</div>
+      {/* <button className="like-button" onClick={() => setIsOpen(true)}>
         {likeCount} likes
       </button>
       <Modal
@@ -123,7 +129,7 @@ const PostCommentSection = (props) => {
         contentLabel="Example Modal"
       >
         <DynamicModal closeModal={closeModal} title={"Likes"} type={"post"} />
-      </Modal>
+      </Modal> */}
       <Caption
         userId={postUserId}
         username={username}
@@ -148,7 +154,8 @@ const PostCommentSection = (props) => {
               likesCommentList={likes_comment}
               content={content}
             ></Comment>
-          )})
+          );
+        })
       ) : total > 2 ? (
         <div className="comments__view-all">
           <Link to={`/post/${postId}`}>{`View all ${total} comments`}</Link>

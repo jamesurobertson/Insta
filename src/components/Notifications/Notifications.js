@@ -7,13 +7,13 @@ import CommentNotification from "./CommentNotification";
 import FollowNotification from "./FollowNotification";
 import LikeNotification from "./LikeNotification";
 
-
 const NotificationsWrapper = styled.div`
   display: flex;
   align-items: center;
   flex-flow: column;
   margin: auto;
   height: calc(100% - 54px);
+  min-height: calc(100vh - 54px);
   width: 100%;
   max-width: 614px;
   margin-top: 54px;
@@ -44,17 +44,16 @@ const NotificationsWrapper = styled.div`
     text-align: left;
   }
 
-  h1{
+  h1 {
     padding-bottom: 5px;
   }
 `;
 
-
 const Notifications = () => {
   const { currentUserId } = useContext(UserContext);
   const { profileData, setProfileData } = useContext(ProfileContext);
-  const [toRender, setToRender] = useState([])
-  const [hasMore, setHasMore] = useState(true)
+  const [toRender, setToRender] = useState([]);
+  const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
     if (!currentUserId) return;
@@ -67,8 +66,6 @@ const Notifications = () => {
         const data = await res.json();
 
         setProfileData(data);
-
-
       } catch (e) {
         console.error(e);
       }
@@ -89,22 +86,22 @@ const Notifications = () => {
 
         const nodeList = notifications.map((notification, i) => {
           switch (notification.type) {
-            case ('comment'):
+            case "comment":
               return (
                 <CommentNotification
-                  style={{ animationDuration: `${1 + (i * 0.25)}s` }}
-                  post={notification.post}
-                  user={notification.user}
-                  key={`notification-${i}`}
-                />
-              );
-            case ('follow'):
-              return (
-                  <FollowNotification
                   style={{ animationDuration: `${1 + i * 0.25}s` }}
                   post={notification.post}
                   user={notification.user}
-                  key={`notification-${i}`}
+                  key={`${notification.type}-${notification.id}`}
+                />
+              );
+            case "follow":
+              return (
+                <FollowNotification
+                  style={{ animationDuration: `${1 + i * 0.25}s` }}
+                  post={notification.post}
+                  user={notification.user}
+                  key={`${notification.type}-${notification.id}`}
                 />
               );
             default:
@@ -114,12 +111,11 @@ const Notifications = () => {
                   style={{ animationDuration: `${1 + i * 0.25}s` }}
                   post={notification.post}
                   user={notification.user}
-                  key={`notification-${i}`}
+                  key={`${notification.type}}-${notification.id}`}
                 />
               );
           }
         });
-
 
         setToRender([...toRender, ...nodeList]);
 
@@ -131,11 +127,16 @@ const Notifications = () => {
       }
     })();
   };
-  if (!profileData) return null
+  if (!profileData) return null;
   return (
     <NotificationsWrapper>
       <h1>Notifications</h1>
-      <InfiniteScroll pageStart={0} loadMore={loadMore} hasMore={hasMore} initialLoad={true}>
+      <InfiniteScroll
+        pageStart={0}
+        loadMore={loadMore}
+        hasMore={hasMore}
+        initialLoad={true}
+      >
         {toRender}
       </InfiniteScroll>
     </NotificationsWrapper>
