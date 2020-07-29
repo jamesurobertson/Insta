@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import PostHeader from "./PostHeader";
 import PhotoImagePost from "./PhotoImagePost";
@@ -20,23 +20,41 @@ const PostWrapper = styled.div`
 `;
 
 const Post = (props) => {
-  const [postId] = useState(props.post.id)
-  const [userInfo] = useState(props.post.user_info)
-  const [commentsList] = useState(props.post.comments.commentsList)
-  const [total] = useState(props.post.comments.total)
-  const [createdAt] = useState(props.post.created_at)
-  const [caption] = useState(props.post.caption)
-  const [postImg] = useState(props.post.image_url)
-  const [userId] = useState(props.post.user_id)
-  const [likesList, setLikesList] = useState(props.post.likesList)
+  const [postId] = useState(props.post.id);
+  const [userInfo] = useState(props.post.user_info);
+  const [commentsList] = useState(props.post.comments.commentsList);
+  const [total] = useState(props.post.comments.total);
+  const [createdAt] = useState(props.post.created_at);
+  const [caption] = useState(props.post.caption);
+  const [postImg] = useState(props.post.image_url);
+  const [userId] = useState(props.post.user_id);
+  const [likesList, setLikesList] = useState(props.post.likesList);
 
   return (
-    <div className="Pst"style={{ dispaly: "flex", flexFlow: "column" }}>
+    <div className="Pst" style={{ dispaly: "flex", flexFlow: "column" }}>
       <PostWrapper>
-        <PostHeader userPic={userInfo.profilePic} username={userInfo.username} postId={postId} userId={userId}/>
+        <PostHeader
+          userPic={userInfo.profile_image_url}
+          username={userInfo.username}
+          postId={postId}
+          userId={userId}
+        />
         <PhotoImagePost postImg={postImg} />
-        <IconPost postId={postId} likesList={likesList} setLikes={setLikesList}/>
-        <PostCommentSection postId={postId} username={userInfo.username} postUserId={userId} caption={caption} createdAt={createdAt} likeCount={likesList.length} commentsList={commentsList} total={total}/>
+        <IconPost
+          postId={postId}
+          likesList={likesList}
+          setLikes={setLikesList}
+        />
+        <PostCommentSection
+          postId={postId}
+          username={userInfo.username}
+          postUserId={userId}
+          caption={caption}
+          createdAt={createdAt}
+          likeCount={likesList.length}
+          commentsList={commentsList}
+          total={total}
+        />
         <CommentInputField />
       </PostWrapper>
     </div>

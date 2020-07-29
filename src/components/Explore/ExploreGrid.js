@@ -1,9 +1,8 @@
-import React, { useState, useContext  } from "react";
+import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import InfiniteScroll from "react-infinite-scroller";
 import { backendURL } from "../../config";
 import { UserContext } from "../../context";
-
 
 import Loading from "../Loading/Loading";
 import Layout1 from "./Layout1";
@@ -44,14 +43,10 @@ const ExploreGridWrapper = styled.div`
   margin-bottom: 10vh;
   width: 95vw;
   max-width: 614px;
-
-
-
 `;
 
 const ExploreGrid = (props) => {
   const { currentUserId } = useContext(UserContext);
-
 
   const [toRender, setToRender] = useState([]);
   const [hasMore, setHasMore] = useState(true);
@@ -72,21 +67,13 @@ const ExploreGrid = (props) => {
       !toRender[len - 1].key.includes(`layout1key`)
     ) {
       return [
-        <Layout1
-          key={`layout1key-${len}`}
-          componentPhotos={photoArray}
-        />,
+        <Layout1 key={`layout1key-${len}`} componentPhotos={photoArray} />,
       ];
     }
 
-    if (
-      len === 1 || randomInt === 2
-    ) {
+    if (len === 1 || randomInt === 2) {
       return [
-        <Layout2
-          key={`layout2key-${len}`}
-          componentPhotos={photoArray}
-        />,
+        <Layout2 key={`layout2key-${len}`} componentPhotos={photoArray} />,
       ];
     }
 
@@ -96,66 +83,56 @@ const ExploreGrid = (props) => {
       !toRender[len - 1].key.includes(`layout1key`)
     ) {
       return [
-        <Layout1
-          key={`layout1key-${len}`}
-          componentPhotos={photoArray}
-        />,
+        <Layout1 key={`layout1key-${len}`} componentPhotos={photoArray} />,
       ];
     } else {
-
       return [
-            <Layout3
-              key={`layout3key-${len}`}
-              componentPhotos={photoArray}
-            />,
-          ];
+        <Layout3 key={`layout3key-${len}`} componentPhotos={photoArray} />,
+      ];
     }
-
-
   }
 
   const fetchMore = () => {
     if (!currentUserId) return;
 
-
-
-    (async ()=>{
-       const len = toRender.length;
+    (async () => {
+      const len = toRender.length;
       try {
-      const res = await fetch(`${backendURL}/post/scroll/${len * 3}`, {
-        Authorization: localStorage.getItem("Isntgram_access_token"),
-      })
-      const obj = await res.json();
+        const res = await fetch(`${backendURL}/post/scroll/${len * 3}`, {
+          Authorization: localStorage.getItem("Isntgram_access_token"),
+        });
+        const obj = await res.json();
 
-      let photoArray = obj.posts
+        let photoArray = obj.posts;
 
-      if(photoArray.length < 3) {
-        setHasMore(false)
+        if (photoArray.length < 3) {
+          setHasMore(false);
+        }
+
+        const componentToRender = getTemplate(len, photoArray);
+        setToRender([...toRender, ...componentToRender]);
+      } catch {
+        setHasMore(false);
+        setToRender([]);
+        setLoading(false);
       }
-
-      const componentToRender = getTemplate(len, photoArray);
-       setToRender([...toRender, ...componentToRender]);
-    } catch {
-       setHasMore(false);
-       setToRender([]);
-       setLoading(false);
-    }
-
-    })()
-
-  }
-
-
+    })();
+  };
 
   if (!toRender || !currentUserId) return null;
   return (
     <ExploreGridWrapper key="gridWrapper">
-      <InfiniteScroll initialLoad={true} pageStart={4} loadMore={fetchMore} hasMore={hasMore}>
+      <InfiniteScroll
+        initialLoad={true}
+        pageStart={4}
+        loadMore={fetchMore}
+        hasMore={hasMore}
+      >
         {toRender}
       </InfiniteScroll>
       <LoadingWrapper
         style={{ animationName: `${loading ? "fadeIn" : "fadeOut"}` }}
-        >
+      >
         <Loading />
       </LoadingWrapper>
     </ExploreGridWrapper>

@@ -5,7 +5,7 @@ import Post from "../components/Post/Post";
 import { backendURL } from "../config";
 import { UserContext } from "../context";
 import NoFollows from "../components/NoFollows";
-import Loading from '../components/Loading/Loading'
+import Loading from "../components/Loading/Loading";
 
 const Feed = styled.div`
   display: flex;
@@ -47,7 +47,7 @@ const LoadingWrapper = styled.div`
   position: fixed;
   opacity: 1;
   animation-name: fadeIn;
-  animation-duration: .5s;
+  animation-duration: 0.5s;
   animation-fill-mode: forwards;
 `;
 
@@ -61,7 +61,7 @@ const Home = () => {
     if (!currentUserId) return;
 
     (async () => {
-      setLoading(true)
+      setLoading(true);
       try {
         const res = await fetch(
           `${backendURL}/post/${currentUserId}/scroll/${feedPosts.length}`
@@ -71,6 +71,8 @@ const Home = () => {
 
         const { posts } = await res.json();
 
+        console.log(posts);
+
         const nodeList = posts.map((post) => {
           return <Post key={`feedPost-${post.id}`} post={post} />;
         });
@@ -79,17 +81,17 @@ const Home = () => {
 
         if (posts.length < 3) {
           setHasMore(false);
-          setLoading(false)
+          setLoading(false);
         }
 
-        setLoading(false)
+        setLoading(false);
       } catch (e) {
         console.error(e);
       }
     })();
   };
 
-  if (!feedPosts) return null
+  if (!feedPosts) return null;
   return (
     <>
       <LoadingWrapper

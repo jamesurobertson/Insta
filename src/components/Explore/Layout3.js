@@ -8,6 +8,7 @@ import { fadeIn } from "../../Styles/animations";
 const Layout3Wrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr 2fr;
+  grid-template-rows: 1fr 1fr;
   grid-template-areas:
     "img1 big"
     "img2 big";
@@ -64,43 +65,41 @@ const Layout3Wrapper = styled.div`
   }
 `;
 
-const Layout3= (props) => {
-    return (
-      <Layout3Wrapper>
-        {props.componentPhotos.map((photo, i) => {
-          return (
-            <Link
-              key={`img${i + 1}`}
-              className={`img${i + 1}`}
-              style={{ position: "relative" }}
-              to={`/post/${photo.id}`}
-            >
-              <div className={`explore-image-overlay`}>
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <RiHeartLine />
-                  <div style={{ paddingLeft: "1vw" }}>
-                    {photo["like_count"]}
-                  </div>
-                </div>
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <FaRegComment />
-                  <div style={{ paddingLeft: "1vw" }}>
-                    {" "}
-                    {photo["comment_count"]}
-                  </div>
+const Layout3 = (props) => {
+  return (
+    <Layout3Wrapper>
+      {props.componentPhotos.map((photo, i) => {
+        return (
+          <Link
+            key={`img${i + 1}`}
+            className={`img${i + 1}`}
+            style={{ position: "relative" }}
+            to={`/post/${photo.id}`}
+          >
+            <div className={`explore-image-overlay`}>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <RiHeartLine />
+                <div style={{ paddingLeft: "1vw" }}>{photo["like_count"]}</div>
+              </div>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <FaRegComment />
+                <div style={{ paddingLeft: "1vw" }}>
+                  {" "}
+                  {photo["comment_count"]}
                 </div>
               </div>
-              <img
-                className={`img${i + 1}`}
-                draggable={false}
-                src={photo.image_url}
-                alt={photo.caption}
-              />
-            </Link>
-          );
-        })}
-      </Layout3Wrapper>
-    );
+            </div>
+            <img
+              className={`img${i + 1}`}
+              draggable={false}
+              src={photo.image_url}
+              alt={photo.caption}
+            />
+          </Link>
+        );
+      })}
+    </Layout3Wrapper>
+  );
 };
 
 export default Layout3;

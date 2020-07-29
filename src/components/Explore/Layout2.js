@@ -8,6 +8,7 @@ import { fadeIn } from "../../Styles/animations";
 const Layout2Wrapper = styled.div`
   display: grid;
   grid-template-columns: 2fr 1fr;
+  grid-template-rows: 1fr 1fr;
   grid-template-areas:
     "big img2"
     "big img3";
@@ -65,44 +66,41 @@ const Layout2Wrapper = styled.div`
 `;
 
 const Layout2 = (props) => {
-
-    return (
-      <Layout2Wrapper>
-        {props.componentPhotos.map((photo, i) => {
-          return (
-            <Link
-              key={`img${i + 1}`}
-              className={`img${i + 1}`}
-              style={{ position: "relative" }}
-              to={`/post/${photo.id}`}
-            >
-              <div className={`explore-image-overlay img${i + 1}`}>
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <RiHeartLine />
-                  <div style={{ paddingLeft: "1vw" }}>
-                    {photo["like_count"]}
-                  </div>
-                </div>
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <FaRegComment />
-                  <div style={{ paddingLeft: "1vw" }}>
-                    {" "}
-                    {}
-                    {photo["comment_count"]}
-                  </div>
+  return (
+    <Layout2Wrapper>
+      {props.componentPhotos.map((photo, i) => {
+        return (
+          <Link
+            key={`img${i + 1}`}
+            className={`img${i + 1}`}
+            style={{ position: "relative" }}
+            to={`/post/${photo.id}`}
+          >
+            <div className={`explore-image-overlay img${i + 1}`}>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <RiHeartLine />
+                <div style={{ paddingLeft: "1vw" }}>{photo["like_count"]}</div>
+              </div>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <FaRegComment />
+                <div style={{ paddingLeft: "1vw" }}>
+                  {" "}
+                  {}
+                  {photo["comment_count"]}
                 </div>
               </div>
-              <img
-                className={`img${i + 1}`}
-                draggable={false}
-                src={photo.image_url}
-                alt={photo.caption}
-              />
-            </Link>
-          );
-        })}
-      </Layout2Wrapper>
-    );
+            </div>
+            <img
+              className={`img${i + 1}`}
+              draggable={false}
+              src={photo.image_url}
+              alt={photo.caption}
+            />
+          </Link>
+        );
+      })}
+    </Layout2Wrapper>
+  );
 };
 
 export default Layout2;
