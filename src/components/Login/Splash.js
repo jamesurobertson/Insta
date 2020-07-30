@@ -14,13 +14,13 @@ const SplashImg = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-  animation: ${fadeIn} 2s 2s forwards;
+  animation: ${fadeIn} 2s 3s forwards;
 `;
 
 const Splash = () => {
   return (
     <SplashWrapper>
-      <SplashImg src="https://picsum.photos/1000/1500" />
+      <SplashImg src="https://picsum.photos/2000/3000" />
     </SplashWrapper>
   );
 };

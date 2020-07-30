@@ -7,7 +7,7 @@ import styled, { keyframes } from "styled-components";
 
 const slideIn = keyframes`
   from {
-    transform: translateX(400px);
+    transform: translateX(500px);
   } 
 
   to {
@@ -19,11 +19,11 @@ const LoginCardWrapper = styled.div`
   position: relative;
   height: 100vh;
   width: 100%;
-  max-width: 400px;
+  max-width: 500px;
   border: 1px #dfdfdf solid;
   background-color: white;
-  transform: translateX(400px);
-  animation: ${slideIn} 2s 3s forwards;
+  transform: translateX(500px);
+  animation: ${slideIn} 2s 4s forwards;
 
   .navImage {
     display: flex;
