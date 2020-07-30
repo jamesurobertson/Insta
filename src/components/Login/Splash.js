@@ -14,7 +14,7 @@ const SplashImg = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-  animation: ${fadeIn} 2s 3s forwards;
+  animation: ${fadeIn} 5s 3s forwards;
 `;
 
 const Splash = () => {
