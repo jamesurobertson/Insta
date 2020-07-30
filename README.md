@@ -1,19 +1,25 @@
-# Isn'tgram
-
-By Zach Henderson, Aaron Pierskalla, and JamesRobertson
-
-### Table of Contents
-
-**[Isn'tgram at a Glance](#Isn'tgram-at-a-Glance)**<br>
-**[Key Features](#Key-Features)**<br>
-**[Future Updates](#Future-Updates)**<br>
-**[Technologies Used](#Technologies-Used)**
 
 
-## Isn'tgram at a Glance
-Isn'tgram is a fullstack photo sharing app modeled after Instagram that is built with a React frontend and a Flask Python backend.
-Users can share and upload photos, follow other users
+# Isntgram
+*By James Robertson, Zachary Henderson and Aaron Pierskalla - [Visit Isntgram](http://isntgram.herokuapp.com/)*
 
+**Table of Contents**
+* [Technologies Used](#technologies-used)
+* [Key Features](#key-features)
+* [Isntgram Intro](#Isntgram)
+* [Software Arcitecture](#software-architecture)
+* [Frontend Technologies](#frontend-overview)
+* [Backend Technologies](#backend-overview)
+* [Conclusion](#conclusion-and-next-steps)
+* [Future Implementations](#future-implementations)
+
+## Technologies Used
+* React
+* Postgress
+* Flask
+* SQLAlchemy
+* AWS S3
+* JSON Web Tokens
 
 ## Key Features
 
@@ -37,43 +43,11 @@ Users can share and upload photos, follow other users
     - Ability to follow and be followed.
     - Your feed is made up of posts from users you follow
 
-## Future Updates
-1. Save Posts
-    - Save posts for ability to go back and look at posts you've saved
-
-2. Searchable tags
-    - adding a string after a '#' allows that post to be searchable by that hashtag.
-    - adding a string after a '@' allows user ability to tag another user.
-
-3. Direct Messaging
-    - Slide into those Dm's
 
 
-## Technologies Used
-
-* React
-* Postgress
-* Flask
-* SQLAlchemy
-* AWS S3
-* JSON Web Tokens
-
-
-
-# Isntgram
-*By James Robertson, Zachary Henderson and Aaron Pierskalla - [Visit Isntgram](http://isntgram.herokuapp.com/)*
-
-**Table of Contents**
-* [Isntgram](#Isntgram)
-* [Application Architecture & Technologies Used](#software-architecture)
-* [Frontend Overview](#frontend-overview)
-* [Backend Overview](#backend-overview)
-* [Conclusion & Next Steps](#conclusion-and-next-steps)
-
-## Isntgram
-Isntgram is a fullstack app that lets users post photos as well as comment and like other users posts.
-
-Users will be able to see each of their followed users' posted photos on the homepage. The explore page is an area for users to find random photos or search for other users.
+## Isntgram Intro
+Isn'tgram is a fullstack photo sharing app modeled after Instagram that is built with a React frontend and a Flask Python backend.
+Users can share and upload photos, follow other users
 
 
 ## Software Architecture
@@ -81,7 +55,7 @@ Isntgram was developed with Javascript and React on the frontend and Python, Fla
 
 The backend serves the frontend, responds to frontend requests, acts as an intermediary to serve Spotify data to the frontend, and fetches data from the MongoDB database.
 
-### Frontend Technologies Used:
+### Frontend Technologies:
 #### React
 Isntgram is a application that uses JSX, a React feature that makes it easier to render HTML with Javscript. JSX made it simple to recycle components and to render data dynamically. React also helps store components in an organized manner. Reacts ability to manipulate state of each components through hooks is another advantage. React hooks is a simple solution to controlling the varying information.
 
@@ -143,10 +117,10 @@ Another great feature of inifite scroll is the ability to navigate of the page a
 React [toast](https://www.npmjs.com/package/react-toastify) is a small library that renders small popup notifications with a little message for the user. A toast only lasts a couple seconds but gives the user insight on whether their action was successfully or unsuccessfully completed.
 
 
-## Backend Overview
+## Backend
 Isntgram uses a Python server with Postgres as the database. Compared to previous projects, the backend for Isntgram is much more complex due to the numerous relationships tables had with one another. Although, the backend is more complex, it was made easier using Python and Flask. Below is a more detailed description of our experience working on the backed.
 
-### Backend Technologies Used
+### Backend Technologies
 ##### Code for Python Backend
 ```Python
 @bp.route('/<post_id>')
@@ -198,6 +172,12 @@ The technologies used to create Instgram were challenging, complex and fun. Buil
 
 
 ## Future Implementations
-* A million users
-* A George W Bush User
-* Track who and who hasnt seen your page
+1. Save Posts
+    - Save posts for ability to go back and look at posts you've saved
+
+2. Searchable tags
+    - adding a string after a '#' allows that post to be searchable by that hashtag.
+    - adding a string after a '@' allows user ability to tag another user.
+
+3. Direct Messaging
+    - Slide into those Dm's
