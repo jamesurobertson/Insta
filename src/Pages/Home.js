@@ -71,8 +71,6 @@ const Home = () => {
 
         const { posts } = await res.json();
 
-        console.log(posts);
-
         const nodeList = posts.map((post) => {
           return <Post key={`feedPost-${post.id}`} post={post} />;
         });

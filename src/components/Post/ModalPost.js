@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { Link } from 'react-router-dom';
+import { Link} from 'react-router-dom';
 import {toast} from 'react-toastify'
 import {frontendURL} from '../../config'
 
@@ -34,6 +34,7 @@ const ModalStyle = styled.div`
     #button-cancel{
         border: none;
         color: #262626;
+        cursor: pointer;
     }
 
     button:active{
@@ -44,13 +45,15 @@ const ModalStyle = styled.div`
 
    `;
 
-const ModalPost = ({ postId, userId, closeModal }) => {
-
+const ModalPost = (props) => {
+    const { postId, closeModal } = props
     return (
+
         <ModalStyle>
-            <Link to={`/post/${postId}`} className='button-post'>Go To Post</Link>
-            <CopyToClipboard text={`${frontendURL}/post/${postId}`}>
-                <button onClick={() => {
+            {window.location.href.includes('/post/') ? '' :
+            <Link to={`/post/${postId}`} className='button-post'>Go To Post</Link> }
+            <CopyToClipboard style={{cursor: 'pointer'}} text={`${frontendURL}/post/${postId}`}>
+                <button  onClick={() => {
                     toast.info('Copied to clipboard!')
                     closeModal()
                 }} className='button-post'>Copy Link</button>

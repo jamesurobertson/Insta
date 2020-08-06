@@ -28,6 +28,7 @@ const CommentInputWrapper = styled.section`
         font-weight: 600;
         background-color: transparent;
         outline: 0;
+        cursor: pointer;
     }
 
     .form-post{

@@ -22,10 +22,12 @@ const CommentWrapper = styled.div`
   }
 
   .liked-comment {
+      cursor: pointer;
     color: rgb(237, 73, 86);
   }
 
   .unliked-comment {
+      cursor: pointer;
     color: #8e8e8e;
   }
 `;

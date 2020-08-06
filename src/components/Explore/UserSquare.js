@@ -11,7 +11,7 @@ const UserSquareWrapper = styled.div`
 
   img {
     opacity: 0;
-    height: 100%;
+    height: auto;
     width: calc(95vw / 3);
     max-width: calc(614px / 3);
 

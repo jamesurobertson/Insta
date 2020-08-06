@@ -24,9 +24,12 @@ const IconWrapper = styled.div`
 
     .liked-post {
       color: rgb(237, 73, 86);
+      cursor: pointer;
+
     }
 
     .unliked-post {
+        cursor: pointer;
       color: #262626;
     }
   }
@@ -96,15 +99,6 @@ const IconPost = ({ postId, likesList, isSinglePost, setLikes }) => {
       }
     };
 
-  const commentPost = () => {};
-//   const savePost = async () => {
-//     try {
-//         const res = await fetch(`${backendURL}/${postId}/save`)
-//     } catch (e) {
-//         console.error(e)
-//     }
-//   };
-
   return (
     <IconWrapper>
       <div className="left-post-icons">
@@ -114,7 +108,7 @@ const IconPost = ({ postId, likesList, isSinglePost, setLikes }) => {
           className={likesArray.some(user => user.id === currentUserId) ? "liked-post" : "unliked-post"}
         />
         {isSinglePost ? (
-          <FaRegComment className="comment" onClick={commentPost} size={24} />
+          ''
         ) : (
           <Link to={`/post/${postId}`} className="comment">
             <FaRegComment size={24} />

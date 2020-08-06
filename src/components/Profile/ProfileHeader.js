@@ -24,7 +24,6 @@ const ProfileImgWrapper = styled.div`
     width: 100%;
     height: 100%;
     object-fit: cover;
-    cursor: pointer;
   }
 `;
 
@@ -81,7 +80,6 @@ const ProfileHeaderBig = styled.section`
 const BigProfileImageWrapper = styled(ProfileImgWrapper)`
   height: 150px;
   width: 150px;
-  cursor: pointer;
 `;
 
 const BigProfileInfo = styled.section`
@@ -211,7 +209,6 @@ const ProfileHeader = (props) => {
   };
 
   const changeProfImg = () => {
-      if (currentUserId !== profileId) return
     setIsEditProfilePicOpen(true);
   };
 
@@ -278,8 +275,8 @@ const ProfileHeader = (props) => {
       {windowSize < 735 ? (
         <ProfileHeaderWrapper>
           <ProfileImgWrapper>
-            <ButtonWrapper onClick={changeProfImg}>
-              <img src={profileImg} alt="avatar" />
+            <ButtonWrapper style={{cursor: 'default'}} onClick={currentUserId === profileId ? changeProfImg : ''}>
+              <img style={{cursor: currentUserId === profileId ? 'pointer' : 'default' }} src={profileImg} alt="avatar" />
             </ButtonWrapper>
             {isEditProfilePicOpen ? (
               <ProfilePicModal
@@ -324,8 +321,8 @@ const ProfileHeader = (props) => {
         </ProfileHeaderWrapper>
       ) : (
         <ProfileHeaderBig>
-          <BigProfileImageWrapper onClick={changeProfImg}>
-            <img src={profileImg} alt="avatar" />
+          <BigProfileImageWrapper onClick={currentUserId === profileId ? changeProfImg : ''}>
+            <img style={{cursor: currentUserId === profileId ? 'pointer' : 'default' }} src={profileImg} alt="avatar" />
           </BigProfileImageWrapper>
           {isEditProfilePicOpen ? (
             <ProfilePicModal
