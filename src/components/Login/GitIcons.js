@@ -1,8 +1,8 @@
-import React from "react";
-import styled from "styled-components";
-import JamesAvatar from "../../Images/profile.jpeg";
-import AaronAvatar from "../../Images/aaron-profile.jpeg";
-import MyloAvatar from "../../Images/mylo-profile.jpg";
+import React from 'react';
+import styled from 'styled-components';
+import JamesAvatar from '../../Images/profile.jpeg';
+import AaronAvatar from '../../Images/aaron-profile.jpeg';
+import MyloAvatar from '../../Images/mylo-profile.jpg';
 
 const GitIconsWrapper = styled.div`
   position: absolute;
@@ -41,8 +41,8 @@ const GitIcons = () => {
       <a href="https://github.com/ajpierskalla3/">
         <img src={AaronAvatar} alt="Aaron Pierskalla" />
       </a>
-      <a href="https://github.com/zachary-henderson/">
-        <img src={MyloAvatar} alt="Zachary Henderson also known as Mylo" />
+      <a href="https://github.com/mylo-james/">
+        <img src={MyloAvatar} alt="Mylo James" />
       </a>
     </GitIconsWrapper>
   );
