@@ -1,0 +1,1 @@
+docker buildx build --platform linux/amd64 -t isntgram-app . && docker tag isntgram-app registry.heroku.com/isntgram-app/web && docker push registry.heroku.com/isntgram-app/web && heroku container:release web -a isntgram-app

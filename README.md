@@ -68,7 +68,7 @@ const fetchMore = () => {
     (async ()=>{
        const len = toRender.length;
       try {
-      const res = await fetch(`${backendURL}/post/scroll/${len * 3}`, {
+      const res = await fetch(`/api/post/scroll/${len * 3}`, {
         Authorization: localStorage.getItem("Isntgram_access_token"),
       })
       const obj = await res.json();
