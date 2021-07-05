@@ -5,20 +5,18 @@ from ..models import User
 search_routes = Blueprint("query", __name__)
 
 
-@search_routes.route('')
+@search_routes.route("")
 def query():
-    query = request.args.get('query')
-    print(query)
+    query = request.args.get("query")
 
-    userResults = User.query.filter(User.username.ilike(f'%{query}%')).all()
-    print(userResults)
+    results = {}
+    users = list(
+        map(
+            lambda user: user.to_dict(),
+            User.query.filter(User.username.ilike(f"%{query}%")).all(),
+        )
+    )
 
-    results = []
-    
-    for user in userResults:
-        user_dict = user.to_dict()
-        results.append(user_dict)
+    results["users"] = users
 
-    return {"results": results}
-
-
+    return {"resuts": results}

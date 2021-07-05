@@ -17,30 +17,30 @@ const CommentNotificationWrapper = styled.div`
     animation-fill-mode: forwards;
 `;
 
-const CommentNotification = (props) => {
+const CommentNotification = ({ post, user, style, id }) => {
     let { currentUser } = useContext(UserContext);
 
     return (
-        <CommentNotificationWrapper style={props.style}>
+        <CommentNotificationWrapper style={style}>
             <>
-                <a href={`/profile/${props.user.id}`}>
+                <a href={`/profile/${user.id}`}>
                     <img
                         className='avatar'
-                        src={props.user.profile_image_url}
-                        alt={props.user.full_name}
+                        src={user.profile_image_url}
+                        alt={user.full_name}
                     />
                 </a>
                 <p>
-                    <a href={`/profile/${props.user.id}`}>
-                        {props.user.username === currentUser.username
+                    <a href={`/profile/${user.id}`}>
+                        {user.username === currentUser.username
                             ? 'You'
-                            : props.user.username}{' '}
+                            : user.username}{' '}
                     </a>
                     commented on your
-                    <a href={`/post/${props.post.id}`}> post</a>
+                    <a href={`/post/${post.id}`}> post</a>
                 </p>
-                <a href={`/post/${props.post.id}`}>
-                    <img src={props.post.image_url} alt={props.post.caption} />
+                <a href={`/post/${id}`}>
+                    <img src={post.image_url} alt={post.caption} />
                 </a>
             </>
         </CommentNotificationWrapper>

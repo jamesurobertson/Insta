@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { RiHeartLine } from 'react-icons/ri';
-import { LikeContext, PostsContext, UserContext } from '../../Contexts';
+import { UserContext } from '../../Contexts';
 import { toast } from 'react-toastify';
 
 const CommentWrapper = styled.div`
@@ -32,30 +32,25 @@ const CommentWrapper = styled.div`
 `;
 
 const Comment = ({ username, content, postId, userId, id }) => {
-    const { currentUser } = useContext(UserContext);
-    const { likes, setLikes } = useContext(LikeContext);
-    const { setPosts } = useContext(PostsContext);
-    console.log(id);
+    const { currentUser, setCurrentUser } = useContext(UserContext);
 
     const likeComment = async () => {
-        const body = {
-            userId: currentUser.id,
-            likeableType: 'comment',
-            id,
-        };
         try {
-            const res = await fetch(`/api/like`, {
+            const res = await fetch(`/api/like/comment/${id}`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(body),
             });
 
             if (!res.ok) throw res;
 
             const { like } = await res.json();
-            setLikes({ ...likes, [`comment-${id}`]: like });
+            console.log(like);
+            setCurrentUser((currentUser) => ({
+                ...currentUser,
+                likes: {
+                    ...currentUser.likes,
+                    [`comment-${id}`]: like,
+                },
+            }));
             toast.info('Liked comment!', { autoClose: 1500 });
         } catch (e) {
             console.error(e);
@@ -63,31 +58,21 @@ const Comment = ({ username, content, postId, userId, id }) => {
     };
 
     const unlikeComment = async () => {
-        const like = likes[`comment-${id}`];
         try {
-            const res = await fetch(`/api/like`, {
+            const res = await fetch(`/api/like/comment/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(like),
             });
 
             if (!res.ok) throw res;
-            let newLikes = { ...likes };
+            let newLikes = { ...currentUser.likes };
             delete newLikes[`comment-${id}`];
-            setLikes(newLikes);
-
-            setPosts((posts) => {
-                let newPost = { ...posts[postId] };
-                let filtered = newPost.likes.filter(
-                    (ele) => ele.id !== like.id
-                );
-                return {
-                    ...posts,
-                    [postId]: { ...posts[postId], likes: filtered },
-                };
-            });
+            setCurrentUser((currentUser) => ({
+                ...currentUser,
+                likes: newLikes,
+            }));
 
             toast.info('Unliked comment!', { autoClose: 1500 });
         } catch (e) {
@@ -104,7 +89,7 @@ const Comment = ({ username, content, postId, userId, id }) => {
                 {content}
             </div>
             <div>
-                {likes[`comment-${id}`] ? (
+                {currentUser.likes[`comment-${id}`] ? (
                     <RiHeartLine
                         onClick={unlikeComment}
                         className='liked-comment'

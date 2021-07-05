@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import LoginCard from './LoginCard';
 import Splash from './Splash';
@@ -12,10 +12,11 @@ const LoginWrapper = styled.div`
 `;
 
 const LogIn = () => {
+    let [loaded, setLoaded] = useState(false);
     return (
         <LoginWrapper>
-            <Splash />
-            <LoginCard />
+            <Splash loaded={loaded} setLoaded={setLoaded} />
+            <LoginCard loaded={loaded} />
         </LoginWrapper>
     );
 };

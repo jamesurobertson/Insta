@@ -1,64 +1,83 @@
+from datetime import datetime
 from flask import Blueprint, request
-from sqlalchemy.orm import joinedload
+
 from ..models import db, Post, User, Follow, Like, Comment
+from flask_login import current_user
 
 note_routes = Blueprint("note", __name__)
 
 
-@note_routes.route('/<id>/scroll/<length>')
-def index(id, length):
-    length = int(length)
+@note_routes.route("/scroll/<length>")
+def index(length):
+    split = length.split("+")
+    count_obj = {
+        "comment": int(split[0]),
+        "follow": int(split[1]),
+        "post_like": int(split[2]),
+        "comment_like": int(split[3]),
+    }
 
-    follows_list = []
-    likes_list = []
-    comments_list = []
+    user = User.query.filter(User.id == current_user.id).first()
+    user_posts = Post.query.filter(Post.user_id == user.id).all()
+    user_comments = Comment.query.filter(Comment.user_id == user.id).all()
 
-    user = User.query.filter(User.id == id).first()
-    user_post_ids = list(map(lambda post: post.id, user.posts))
-    user_comment_ids = list(map(lambda comment: comment.id, user.comments))
+    note_list = []
 
-    follows = Follow.query.filter(Follow.user_followed_id == id).order_by(Follow.created_at.desc()).all()
+    while len(note_list) < 20:
+        follow = (
+            Follow.query.filter(Follow.user_followed_id == user.id)
+            .order_by(Follow.created_at.desc())
+            .offset(count_obj["follow"])
+            .first()
+        )
+        comment = (
+            Comment.query.filter(Comment.post.has(Post.user_id == user.id))
+            .order_by(Comment.created_at.desc())
+            .offset(count_obj["comment"])
+            .first()
+        )
 
-    for follow in follows:
-        follows_dict = follow.to_dict()
-        user = follow.user.to_dict()
-        follows_dict['user'] = user
-        follows_dict['type'] = "follow"
-        follows_list.append(follows_dict)
+        post_like = (
+            Like.query.filter(
+                Like.post_id.in_(list(map(lambda post: post.id, user_posts)))
+            )
+            .order_by(Like.created_at.desc())
+            .offset(count_obj["post_like"])
+            .first()
+        )
+        comment_like = (
+            Like.query.filter(
+                Like.comment_id.in_(
+                    list(map(lambda comment: comment.id, user_comments))
+                )
+            )
+            .order_by(Like.created_at.desc())
+            .offset(count_obj["comment_like"])
+            .first()
+        )
 
+        obj = {
+            "follow": follow,
+            "comment": comment,
+            "post_like": post_like,
+            "comment_like": comment_like,
+        }
 
-    all_likes_list = Like.query.filter(Like.likeable_id.in_(user_comment_ids)).order_by(Like.created_at.desc()).all()
-    
-    for like in all_likes_list:
-        like_dict = like.to_dict()
-        user = like.user.to_dict()
-        print("!!!!!!!!!!!!!!", like_dict['likeable_id'])
-        if like_dict['likeable_type'] == 'post':
-            post = Post.query.filter(Post.id == like_dict['likeable_id']).first()
-        else:
-            post = Post.query.filter(Comment.id == like_dict['likeable_id']).first()
-        like_dict['user'] = user
-        like_dict['post'] = post.to_dict()
-        like_dict['type'] = "like"
-        likes_list.append(like_dict)
+        if not any(obj.values()):
+            return {"notes": note_list, "count": count_obj}
 
-    # sorted_likes = sorted(likes_list, key = lambda like: like['created_at'])
-    # print(sorted_likes)
+        max = None
+        for (k, v) in obj.items():
+            if not v:
+                continue
+            elif not max:
+                max = k
+            elif v.created_at > obj[max].created_at:
+                max = k
+        res = obj[max].to_dict()
+        res["type"] = max
+        count_obj[max] += 1
+        print(count_obj)
+        note_list.append(res)
 
-    comments = Comment.query.filter(Comment.post_id.in_(user_post_ids)).order_by(Comment.created_at.desc()).all()
-
-    for comment in comments:
-        comment_dict = comment.to_dict()
-        user = comment.user.to_dict()
-        post = comment.post.to_dict()
-        comment_dict['user'] = user
-        comment_dict['post'] = post 
-        comment_dict['type'] = "comment"
-        comments_list.append(comment_dict)
-
-    note_list = follows_list + likes_list + comments_list
-    
-    sorted_note_list = sorted(note_list, key=lambda note: note['created_at'])
-    sorted_note_list.reverse()
-
-    return {"notes": sorted_note_list[length: length + 20]}
+    return {"notes": note_list, "count": count_obj}

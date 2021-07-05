@@ -17,29 +17,35 @@ const LikeNotificationWrapper = styled.div`
     animation-fill-mode: forwards;
 `;
 
-const LikeNotification = (props) => {
+const LikeNotification = ({ style, user, content_type, content }) => {
     let { currentUser } = useContext(UserContext);
     return (
-        <LikeNotificationWrapper style={props.style}>
+        <LikeNotificationWrapper style={style}>
             <>
-                <a href={`/profile/${props.user.id}`}>
+                <a href={`/profile/${user.id}`}>
                     <img
                         className='avatar'
-                        src={props.user.profile_image_url}
-                        alt={props.user.full_name}
+                        src={user.profile_image_url}
+                        alt={user.full_name}
                     />
                 </a>
                 <p>
-                    <a href={`/profile/${props.user.id}`}>
-                        {props.user.username === currentUser.username
+                    <a href={`/profile/${user.id}`}>
+                        {user.username === currentUser.username
                             ? 'You'
-                            : props.user.username}{' '}
+                            : user.username}{' '}
                     </a>{' '}
                     liked your
-                    <a href={`/post/${props.post.id}`}> {props.type}</a>
+                    <a href={`/post/${content.post?.id || content.id}`}>
+                        {' '}
+                        {content_type}
+                    </a>
                 </p>
-                <a href={`/post/${props.post.id}`}>
-                    <img src={props.post.image_url} alt={props.post.caption} />
+                <a href={`/post/${content.post?.id || content.id}`}>
+                    <img
+                        src={content.post?.image_url || content.image_url}
+                        alt={content.post?.caption || content.caption}
+                    />
                 </a>
             </>
         </LikeNotificationWrapper>

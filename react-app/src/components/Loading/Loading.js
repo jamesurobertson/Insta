@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import {
@@ -8,6 +8,7 @@ import {
     rotate45,
     rotate90,
     rotate135,
+    inOut,
 } from '../../Styles/animations';
 
 const LoadingWrapper = styled.div`
@@ -19,6 +20,8 @@ const LoadingWrapper = styled.div`
         width: 40vh;
         height: 40vh;
     }
+    opacity: 0;
+    animation: ${inOut} 2s linear 0s forwards;
 
     .box {
         position: absolute;
@@ -97,9 +100,27 @@ const LoadingWrapper = styled.div`
     }
 `;
 
-const Loading = (props) => {
+const Loading = ({ load, positioner }) => {
+    let [onScreen, setOnScreen] = useState(true);
+
+    useEffect(() => {
+        setOnScreen(true);
+        if (load) return;
+        let count = 2;
+        const clear = setInterval(() => {
+            count -= 1;
+            if (count <= 0) {
+                clearInterval(clear);
+                setOnScreen(false);
+            }
+
+            return () => clearInterval(clear);
+        }, 1000);
+    }, [load]);
+
+    if (!onScreen) return null;
     return (
-        <LoadingWrapper style={props.positioner}>
+        <LoadingWrapper style={positioner}>
             <div className='positioner'>
                 <div className='box red-box'>
                     <div className='color for-color red'></div>

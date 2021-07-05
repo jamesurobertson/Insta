@@ -21,13 +21,53 @@ class Post(db.Model):
 
     user = db.relationship("User", back_populates="posts")
     saved = db.relationship("Saved_Post", back_populates="post")
-    comments = db.relationship("Comment", back_populates="post")
+    comments = db.relationship(
+        "Comment", back_populates="post", order_by="Comment.created_at.asc()"
+    )
+    likes = db.relationship("Like", back_populates="post")
+
+    def to_like_dict(self):
+        return {
+            "id": self.id,
+            "user": self.user.to_dict(),
+            "image_url": self.image_url,
+            "caption": self.caption,
+            "created_at": self.created_at,
+            "comments": list(
+                map(lambda comment: comment.to_post_dict(), self.comments)
+            ),
+        }
+
+    def to_comment_dict(self):
+        return {
+            "id": self.id,
+            "user": self.user.to_dict(),
+            "image_url": self.image_url,
+            "caption": self.caption,
+            "created_at": self.created_at,
+        }
+
+    def to_profile_dict(self):
+        return {
+            "id": self.id,
+            "image_url": self.image_url,
+            "caption": self.caption,
+            "created_at": self.created_at,
+            "comments": list(
+                map(lambda comment: comment.to_post_dict(), self.comments)
+            ),
+            "likes": list(map(lambda like: like.to_content_dict(), self.likes)),
+        }
 
     def to_dict(self):
         return {
             "id": self.id,
-            "user_id": self.user_id,
             "image_url": self.image_url,
             "caption": self.caption,
             "created_at": self.created_at,
+            "user": self.user.to_dict(),
+            "comments": list(
+                map(lambda comment: comment.to_post_dict(), self.comments)
+            ),
+            "likes": list(map(lambda like: like.to_content_dict(), self.likes)),
         }

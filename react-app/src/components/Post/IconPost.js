@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import { RiHeartLine } from 'react-icons/ri';
 import { FaRegComment } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { LikeContext, PostsContext, UserContext } from '../../Contexts';
 import { toast } from 'react-toastify';
+import { PostsContext, UserContext } from '../../Contexts';
 
 const IconWrapper = styled.div`
   height: 40px;
@@ -34,37 +34,35 @@ const IconWrapper = styled.div`
 `;
 
 const IconPost = ({ id: postId, isSinglePost }) => {
-    const { currentUser } = useContext(UserContext);
-    const { likes, setLikes } = useContext(LikeContext);
-    const { setPosts } = useContext(PostsContext);
+    const { currentUser, setCurrentUser } = useContext(UserContext);
+    const { posts, setPosts } = useContext(PostsContext);
 
     const likePost = async () => {
         try {
-            const body = {
-                userId: currentUser.id,
-                id: postId,
-                likeableType: 'post',
-            };
-            console.log(body);
-            const res = await fetch(`/api/like`, {
+            const res = await fetch(`/api/like/post/${postId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(body),
             });
 
             if (!res.ok) throw res;
 
-            const { like, likeList } = await res.json();
+            const { like } = await res.json();
 
-            setLikes({
-                ...likes,
-                [`${like.likeable_type}-${like.likeable_id}`]: like,
-            });
+            setCurrentUser((currentUser) => ({
+                ...currentUser,
+                likes: { ...currentUser.likes, [`post-${postId}`]: like },
+            }));
+
+            console.log(postId);
+
             setPosts((posts) => ({
                 ...posts,
-                [postId]: { ...posts[postId], likes: likeList },
+                [postId]: {
+                    ...posts[postId],
+                    likes: [...posts[postId].likes, like],
+                },
             }));
 
             toast.info('Liked post!', { autoClose: 1500 });
@@ -74,41 +72,33 @@ const IconPost = ({ id: postId, isSinglePost }) => {
     };
 
     const unlikePost = async () => {
-        let like = likes[`post-${postId}`];
-        if (!like) return;
-        console.log(like);
         try {
-            const res = await fetch(`/api/like`, {
+            const res = await fetch(`/api/like/post/${postId}`, {
                 method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(like),
             });
 
             if (!res.ok) throw res;
 
-            let newLikes = { ...likes };
+            const { like } = await res.json();
+            let newLikes = { ...currentUser.likes };
             delete newLikes[`post-${postId}`];
 
-            setLikes(newLikes);
+            setCurrentUser((currentUser) => ({
+                ...currentUser,
+                likes: newLikes,
+            }));
 
-            setPosts((posts) => {
-                let newPost = { ...posts[postId] };
-                let filtered = newPost.likes.filter(
-                    (ele) => ele.id !== like.id
-                );
-                return {
-                    ...posts,
-                    [postId]: { ...posts[postId], likes: filtered },
-                };
-            });
+            setPosts((posts) => ({
+                ...posts,
+                [postId]: {
+                    ...posts[postId],
+                    likes: posts[postId].likes.filter(
+                        (likeI) => likeI.id !== like.id
+                    ),
+                },
+            }));
 
             toast.info('Unliked post!', { autoClose: 1500 });
-
-            // if (isSinglePost) {
-            //     setPostData({ ...postData, likes_post: newList });
-            // }
         } catch (e) {
             console.error(e);
         }
@@ -119,9 +109,15 @@ const IconPost = ({ id: postId, isSinglePost }) => {
             <div className='left-post-icons'>
                 <RiHeartLine
                     size={24}
-                    onClick={likes[`post-${postId}`] ? unlikePost : likePost}
+                    onClick={
+                        currentUser.likes[`post-${postId}`]
+                            ? unlikePost
+                            : likePost
+                    }
                     className={
-                        likes[`post-${postId}`] ? 'liked-post' : 'unliked-post'
+                        currentUser.likes[`post-${postId}`]
+                            ? 'liked-post'
+                            : 'unliked-post'
                     }
                 />
                 {isSinglePost ? (

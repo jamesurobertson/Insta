@@ -43,6 +43,8 @@ MarkupSafe = "==2.0.1"
 PyYAML = "==5.4.1"
 Werkzeug = "==2.0.1"
 email-validator = "*"
+dataclasses = "*"
+flask-jsontools = "*"
 
 [requires]
 python_version = "3.9.4"

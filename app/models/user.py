@@ -4,8 +4,9 @@ from sqlalchemy import func
 from sqlalchemy.orm import validates
 from flask_login import UserMixin
 
+
 class User(db.Model, UserMixin):
-    __tablename__ = 'users'
+    __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(255), nullable=False, unique=True)
@@ -14,34 +15,41 @@ class User(db.Model, UserMixin):
     hashed_password = db.Column(db.String(128), nullable=False)
     profile_image_url = db.Column(db.String(255))
     bio = db.Column(db.String(2000))
-    created_at = db.Column(db.DateTime(timezone=True),
-                           server_default=func.now(), nullable=False)
-    updated_at = db.Column(db.DateTime(timezone=True),
-                           server_default=func.now(), onupdate=func.now(),
-                           nullable=False)
+    created_at = db.Column(
+        db.DateTime(timezone=True), server_default=func.now(), nullable=False
+    )
+    updated_at = db.Column(
+        db.DateTime(timezone=True),
+        server_default=func.now(),
+        onupdate=func.now(),
+        nullable=False,
+    )
 
-    posts = db.relationship("Post", back_populates="user")
-    follows = db.relationship("Follow", back_populates="user")
+    posts = db.relationship(
+        "Post", back_populates="user", order_by="Post.created_at.desc()"
+    )
+    following = db.relationship("Follow", foreign_keys="[Follow.user_id]")
+    followers = db.relationship("Follow", foreign_keys="[Follow.user_followed_id]")
     messages = db.relationship("Message", back_populates="user")
     likes = db.relationship("Like", back_populates="user")
     saved = db.relationship("Saved_Post", back_populates="user")
-    comments = db.relationship("Comment", back_populates="user")
-    user_conversations = (db.relationship("User_Conversation",
-                                          back_populates="user"))
+    comments = db.relationship(
+        "Comment", back_populates="user", order_by="Comment.created_at.desc()"
+    )
+    user_conversations = db.relationship("User_Conversation", back_populates="user")
 
-    @validates('username', 'email')
+    @validates("username", "email")
     def validate_username(self, key, value):
-        if key == 'username':
+        if key == "username":
             if not value:
-                raise AssertionError('Must provide a username!')
+                raise AssertionError("Must provide a username!")
             if User.query.filter(User.username == value).first():
-                raise AssertionError('Username already exists!')
-        if key == 'email':
+                raise AssertionError("Username already exists!")
+        if key == "email":
             if not value:
-                raise AssertionError('Must provide an email!')
+                raise AssertionError("Must provide an email!")
             if User.query.filter(User.email == value).first():
-                raise AssertionError('Email already exists!')
-
+                raise AssertionError("Email already exists!")
 
         return value
 
@@ -57,6 +65,28 @@ class User(db.Model, UserMixin):
         return check_password_hash(self.hashed_password, password)
 
     def to_dict(self):
-        return {"id": self.id, "email": self.email, "full_name": self.full_name, "username": self.username,
-                "profile_image_url": self.profile_image_url,
-                "bio": self.bio}
+        return {
+            "id": self.id,
+            "email": self.email,
+            "full_name": self.full_name,
+            "username": self.username,
+            "profile_image_url": self.profile_image_url,
+            "bio": self.bio,
+        }
+
+    def to_profile_dict(self):
+        return {
+            "id": self.id,
+            "email": self.email,
+            "full_name": self.full_name,
+            "username": self.username,
+            "profile_image_url": self.profile_image_url,
+            "bio": self.bio,
+            "followers": list(
+                map(lambda follow: follow.to_follower_dict(), self.followers)
+            ),
+            "following": list(
+                map(lambda follow: follow.to_following_dict(), self.following)
+            ),
+            "likes": list(map(lambda like: like.to_user_dict(), self.likes)),
+        }

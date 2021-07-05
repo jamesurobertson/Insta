@@ -23,7 +23,7 @@ const LoginCardWrapper = styled.div`
     border: 1px #dfdfdf solid;
     background-color: white;
     transform: translateX(500px);
-    animation: ${slideIn} 2s 4s forwards;
+    animation: ${slideIn} 2s 2s forwards;
 
     .navImage {
         display: flex;
@@ -36,7 +36,8 @@ const LoginCardWrapper = styled.div`
     }
 `;
 
-const LoginCard = () => {
+const LoginCard = ({ loaded }) => {
+    if (!loaded) return null;
     return (
         <LoginCardWrapper>
             <img className='navImage' src={navImage} alt='logo' />

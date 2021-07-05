@@ -11,11 +11,16 @@ const PostImageWrapper = styled.div`
     }
 `;
 
-const PhotoImagePost = ({ postImg, id }) => {
+const PhotoImagePost = ({ postImg, id, setLoad }) => {
     let history = useHistory();
     return (
         <PostImageWrapper onClick={() => history.push(`/post/${id}`)}>
-            <img className='post-header-image' src={postImg} alt='feed-post' />
+            <img
+                className='post-header-image'
+                src={postImg}
+                alt='feed-post'
+                onLoad={() => setLoad(true)}
+            />
         </PostImageWrapper>
     );
 };

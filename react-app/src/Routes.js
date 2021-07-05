@@ -6,7 +6,6 @@ import { toast } from 'react-toastify';
 
 export const ProtectedRoute = ({ component: Component, path, exact }) => {
     const { currentUser } = useContext(UserContext);
-    console.log('HEEY');
     if (!currentUser.id) {
         toast.info('Please Login', {
             position: 'top-right',

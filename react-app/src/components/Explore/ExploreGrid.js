@@ -27,7 +27,6 @@ const LoadingWrapper = styled.div`
         }
     }
 
-
     position: fixed;
     bottom: 55vh;
     opacity: 1;
@@ -49,7 +48,7 @@ const ExploreGrid = (props) => {
 
     const [toRender, setToRender] = useState([]);
     const [hasMore, setHasMore] = useState(true);
-    const [loading, setLoading] = useState(false);
+    const [load, setLoad] = useState(false);
 
     function getRandomInt(min, max) {
         min = Math.ceil(min);
@@ -105,14 +104,11 @@ const ExploreGrid = (props) => {
 
     const fetchMore = () => {
         if (!currentUser.id) return;
-
         (async () => {
+            setLoad(true);
             const len = toRender.length;
             try {
-                const res = await fetch(
-                    `/api/post/scroll/${len * 3}`,
-    
-                );
+                const res = await fetch(`/api/post/scroll/${len * 3}`);
                 const obj = await res.json();
 
                 let photoArray = obj.posts;
@@ -123,10 +119,11 @@ const ExploreGrid = (props) => {
 
                 const componentToRender = getTemplate(len, photoArray);
                 setToRender([...toRender, ...componentToRender]);
+                setLoad(false);
             } catch {
                 setHasMore(false);
                 setToRender([]);
-                setLoading(false);
+                setLoad(false);
             }
         })();
     };
@@ -142,10 +139,8 @@ const ExploreGrid = (props) => {
             >
                 {toRender}
             </InfiniteScroll>
-            <LoadingWrapper
-                style={{ animationName: `${loading ? 'fadeIn' : 'fadeOut'}` }}
-            >
-                <Loading />
+            <LoadingWrapper>
+                <Loading load={load} />
             </LoadingWrapper>
         </ExploreGridWrapper>
     );

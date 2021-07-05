@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react';
 import styled from 'styled-components';
-import { PostsContext, UserContext } from '../../Contexts';
+import { PostsContext } from '../../Contexts';
 
 const CommentInputWrapper = styled.section`
     padding: 0 16px;
@@ -43,8 +43,7 @@ const CommentInputWrapper = styled.section`
 `;
 
 const CommentInputField = ({ id: postId, isSinglePost }) => {
-    const [content, setContent] = useState('');
-    const { currentUser } = useContext(UserContext);
+    const [content, setContent] = useState('');;
     const { setPosts } = useContext(PostsContext);
 
     const updateCommentState = (e) => {
@@ -54,7 +53,7 @@ const CommentInputField = ({ id: postId, isSinglePost }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (content === '') return;
-        const data = { content, userId: currentUser.id, postId };
+        const data = { content, postId };
         const res = await fetch(`/api/comment`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -62,7 +61,7 @@ const CommentInputField = ({ id: postId, isSinglePost }) => {
         });
 
         if (!res.ok) throw res;
-        const comment = await res.json();
+        const {comment} = await res.json();
         console.log(comment);
         setPosts((posts) => {
             let currentPost = posts[postId];

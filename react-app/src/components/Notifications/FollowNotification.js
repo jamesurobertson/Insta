@@ -1,7 +1,8 @@
-import { useContext, useState, useEffect } from 'react';
+import { useContext } from 'react';
 import styled from 'styled-components';
 import { fadeIn } from '../../Styles/animations';
-import { UserContext, ProfileContext } from '../../Contexts';
+import { UserContext } from '../../Contexts';
+import { showErrors } from '../../config';
 
 const FollowNotificationWrapper = styled.div`
     display: flex;
@@ -27,93 +28,76 @@ const FollowNotificationWrapper = styled.div`
     }
 `;
 
-const FollowNotification = (props) => {
-    const { currentUser } = useContext(UserContext);
-    const { profileData, setProfileData } = useContext(ProfileContext);
-    const [followingList, setFollowingList] = useState([]);
-
-    useEffect(() => {
-        if (!profileData) return;
-        const resFollowingList = profileData.followingList.map(
-            (followingEntry) => {
-                return followingEntry.user_followed_id;
-            }
-        );
-        setFollowingList(resFollowingList);
-    }, [profileData, setFollowingList]);
+const FollowNotification = ({ user, style }) => {
+    const { currentUser, setCurrentUser } = useContext(UserContext);
 
     const followUser = async () => {
-        const body = { userId: currentUser.id, userFollowedId: props.user.id };
-        try {
-            const res = await fetch(`/api/follow`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(body),
-            });
+        const res = await fetch(`/api/follow/${user.id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
 
-            if (!res.ok) throw res;
-
-            const response = await res.json();
-
-            const updatesList = [...profileData.followingList, response];
-            setProfileData({
-                ...profileData,
-                ...{ followingList: updatesList },
-            });
-        } catch (e) {
-            console.error(e);
+        if (!res.ok) {
+            const errors = await res.json();
+            showErrors([errors]);
+            return;
         }
+
+        const follow = await res.json();
+
+        setCurrentUser((currentUser) => ({
+            ...currentUser,
+            following: {
+                ...currentUser.following,
+                [follow.following_id]: follow,
+            },
+        }));
     };
 
     const unfollowUser = async () => {
-        const body = { userId: currentUser.id, userFollowedId: props.user.id };
         try {
-            const res = await fetch(`/api/follow`, {
+            const res = await fetch(`/api/follow/${user.id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(body),
             });
 
-            if (!res.ok) throw res;
+            if (!res.ok) {
+                const errors = await res.json();
+                showErrors([errors]);
+                return;
+            }
 
-            const response = await res.json();
-
-            const { user_followed_id: deletedId } = response;
-
-            const filteredList = profileData.followingList.filter(
-                (user) => user.user_followed_id !== deletedId
-            );
-            setProfileData({
-                ...profileData,
-                ...{ followingList: filteredList },
-            });
+            const follow = await res.json();
+            const newFollows = { ...currentUser.following };
+            delete newFollows[follow.following_id];
+            setCurrentUser((currentUser) => ({
+                ...currentUser,
+                following: newFollows,
+            }));
         } catch (e) {
             console.error(e);
         }
     };
 
-    if (!followingList) return null;
     return (
-        <FollowNotificationWrapper style={props.style}>
+        <FollowNotificationWrapper style={style}>
             <>
-                <a href={`/profile/${props.user.id}`}>
+                <a href={`/profile/${user.id}`}>
                     <img
                         className='avatar'
-                        src={props.user.profile_image_url}
-                        alt={props.user.full_name}
+                        src={user.profile_image_url}
+                        alt={user.full_name}
                     />
                 </a>
                 <p>
-                    <a href={`/profile/${props.user.id}`}>
-                        {props.user.username}{' '}
-                    </a>
+                    <a href={`/profile/${user.id}`}>{user.username} </a>
                     started following you!
                 </p>
-                {followingList.includes(props.user.id) ? (
+                {currentUser.following[user.id] ? (
                     <div className='buttonWrapper'>
                         <button
                             style={{ width: '85px' }}

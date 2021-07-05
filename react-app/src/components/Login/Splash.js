@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import { fadeIn } from '../../Styles/animations';
 
@@ -14,13 +13,17 @@ const SplashImg = styled.img`
     width: 100%;
     height: 100%;
     object-fit: cover;
-    animation: ${fadeIn} 5s 3s forwards;
+    animation: ${({ loaded }) => (loaded ? fadeIn : 'none')} 2s forwards;
 `;
 
-const Splash = () => {
+const Splash = ({ loaded, setLoaded }) => {
     return (
         <SplashWrapper>
-            <SplashImg src='https://picsum.photos/2000/3000' />
+            <SplashImg
+                src='https://picsum.photos/2000/3000'
+                loaded={loaded}
+                onLoad={() => setLoaded(true)}
+            />
         </SplashWrapper>
     );
 };

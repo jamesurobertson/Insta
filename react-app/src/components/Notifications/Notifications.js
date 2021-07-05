@@ -1,7 +1,6 @@
-import { useContext, useEffect, useState } from 'react';
+import { useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 import styled from 'styled-components';
-import { UserContext, ProfileContext } from '../../Contexts';
 import CommentNotification from './CommentNotification';
 import FollowNotification from './FollowNotification';
 import LikeNotification from './LikeNotification';
@@ -49,51 +48,35 @@ const NotificationsWrapper = styled.div`
 `;
 
 const Notifications = () => {
-    const { currentUser } = useContext(UserContext);
-    const { profileData, setProfileData } = useContext(ProfileContext);
     const [toRender, setToRender] = useState([]);
+    const [count, setCount] = useState('0+0+0+0');
     const [hasMore, setHasMore] = useState(true);
 
-    useEffect(() => {
-        if (!currentUser.id) return;
-        (async () => {
-            try {
-                const res = await fetch(`/api/profile/${currentUser.id}`);
-
-                if (!res.ok) throw res;
-
-                const data = await res.json();
-
-                setProfileData(data);
-            } catch (e) {
-                console.error(e);
-            }
-        })();
-    }, [currentUser.id, setProfileData]);
-
     const loadMore = () => {
-        if (!currentUser.id) return;
         (async () => {
             try {
-                const res = await fetch(
-                    `/api/note/${currentUser.id}/scroll/${toRender.length}`
-                );
+                const res = await fetch(`/api/note/scroll/${count}`);
 
                 if (!res.ok) throw res;
 
-                const { notes } = await res.json();
-                console.log(notes);
-                const nodeList = notes.map((notification, i) => {
-                    switch (notification.type) {
+                const {
+                    notes,
+                    count: { comment, follow, post_like, comment_like },
+                } = await res.json();
+
+                
+
+                setCount(`${comment}+${follow}+${post_like}+${comment_like}`);
+                const nodeList = notes.map((note, i) => {
+                    switch (note.type) {
                         case 'comment':
                             return (
                                 <CommentNotification
                                     style={{
                                         animationDuration: `${1 + i * 0.25}s`,
                                     }}
-                                    post={notification.post}
-                                    user={notification.user}
-                                    key={`${notification.type}-${notification.id}`}
+                                    {...note}
+                                    key={`${note.user.id}-${note.type}-${note.id}`}
                                 />
                             );
                         case 'follow':
@@ -102,29 +85,26 @@ const Notifications = () => {
                                     style={{
                                         animationDuration: `${1 + i * 0.25}s`,
                                     }}
-                                    post={notification.post}
-                                    user={notification.user}
-                                    key={`${notification.type}-${notification.id}`}
+                                    {...note}
+                                    key={`${note.type}-${note.id}`}
                                 />
                             );
                         default:
                             return (
                                 <LikeNotification
-                                    type={notification.likeable_type}
+                                    {...note}
                                     style={{
                                         animationDuration: `${1 + i * 0.25}s`,
                                     }}
-                                    post={notification.post}
-                                    user={notification.user}
-                                    key={`${notification.type}}-${notification.id}`}
+                                    key={`${note.user.id}-${note.type}-${note.content_type}-${note.id}`}
                                 />
                             );
                     }
                 });
 
-                setToRender([...toRender, ...nodeList]);
+                setToRender((toRender) => [...toRender, ...nodeList]);
 
-                if (notes.length < 20) {
+                if (notes.length === 0) {
                     setHasMore(false);
                 }
             } catch (e) {
@@ -132,7 +112,7 @@ const Notifications = () => {
             }
         })();
     };
-    if (!profileData) return null;
+
     return (
         <NotificationsWrapper>
             <h1>Notifications</h1>
