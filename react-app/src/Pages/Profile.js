@@ -45,16 +45,19 @@ const Profile = (props) => {
 
                 const data = await res.json();
                 setProfileData(data);
+                console.log(data);
             } catch (e) {
                 console.error(e);
             }
         })();
     }, [userId, setProfileData]);
 
-    if (!profileData || !currentUser.id) return null;
+    if (!profileData?.user || !currentUser.id) return null;
+    console.log(profileData, currentUser.id);
 
     if (profileData.user.id !== Number(userId))
         return <LoadingPage style={{ animationDuration: '1s' }} />;
+
     return (
         <ProfileWrapper>
             <ProfileHeader windowSize={windowSize} />

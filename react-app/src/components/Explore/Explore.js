@@ -54,6 +54,7 @@ const Explore = () => {
             const res = await fetch(`/api/search?query=${queryLower}`);
 
             const { results } = await res.json();
+            console.log(results);
 
             setQueryRes(results);
         } catch (e) {

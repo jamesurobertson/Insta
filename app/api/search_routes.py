@@ -9,7 +9,6 @@ search_routes = Blueprint("query", __name__)
 def query():
     query = request.args.get("query")
 
-    results = {}
     users = list(
         map(
             lambda user: user.to_dict(),
@@ -17,6 +16,4 @@ def query():
         )
     )
 
-    results["users"] = users
-
-    return {"resuts": results}
+    return {"results": users}

@@ -2,10 +2,15 @@ import { useState, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import Modal from 'react-modal';
 import DynamicModal from '../DynamicModal';
-import { ProfileContext, UserContext } from '../../Contexts';
+import {
+    PostsContextProvider,
+    ProfileContext,
+    UserContext,
+} from '../../Contexts';
 import ProfilePicModal from './ProfilePicModal';
 import { RiLogoutBoxRLine } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
+import { showErrors } from '../../config';
 
 const ProfileHeaderWrapper = styled.div`
     display: flex;
@@ -137,50 +142,52 @@ Modal.setAppElement('#root');
 
 const ProfileHeader = (props) => {
     const { windowSize } = props;
-    const { currentUser } = useContext(UserContext);
+    const { currentUser, setCurrentUser } = useContext(UserContext);
+    const { profileData } = useContext(ProfileContext);
 
     // modals
     const [isFollowersOpen, setIsFollowersOpen] = useState(false);
     const [isFollowingOpen, setIsFollowingOpen] = useState(false);
     const [isEditProfilePicOpen, setIsEditProfilePicOpen] = useState(false);
 
-    const [currentUserFollowingList, setCurrentUserFollowingList] = useState(
-        []
-    );
+    // const [currentUserFollowingList, setCurrentUserFollowingList] = useState(
+    //     []
+    // );
 
-    const { profileData, setProfileData } = useContext(ProfileContext);
     const {
-        num_posts: numPosts,
+        posts,
         user: {
             id: profileId,
             bio,
             profile_image_url: profileImg,
             username,
             full_name,
+            followers,
+            following,
         },
     } = profileData;
 
-    useEffect(() => {
-        (async () => {
-            try {
-                const res = await fetch(
-                    `/api/follow/${currentUser.id}/following`
-                );
+    // useEffect(() => {
+    //     (async () => {
+    //         try {
+    //             const res = await fetch(
+    //                 `/api/follow/${currentUser.id}/following`
+    //             );
 
-                if (!res.ok) throw res;
+    //             if (!res.ok) throw res;
 
-                const { users: currentUserFollowing } = await res.json();
+    //             const { users: currentUserFollowing } = await res.json();
 
-                const followingList = [];
-                currentUserFollowing.forEach((user) => {
-                    followingList.push(user.id);
-                });
-                setCurrentUserFollowingList(followingList);
-            } catch (e) {
-                console.error(e);
-            }
-        })();
-    }, [profileData, currentUser.id]);
+    //             const followingList = [];
+    //             currentUserFollowing.forEach((user) => {
+    //                 followingList.push(user.id);
+    //             });
+    //             setCurrentUserFollowingList(followingList);
+    //         } catch (e) {
+    //             console.error(e);
+    //         }
+    //     })();
+    // }, [profileData, currentUser.id]);
 
     const closeEditPicModal = () => {
         setIsEditProfilePicOpen(false);
@@ -219,56 +226,53 @@ const ProfileHeader = (props) => {
         window.location.reload();
     };
 
-    const followUser = async (e) => {
-        e.preventDefault();
-        const body = { userId: currentUser.id, userFollowedId: profileId };
-        try {
-            const res = await fetch(`/api/follow`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(body),
-            });
+    const followUser = async () => {
+        const res = await fetch(`/api/follow/${profileId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
 
-            if (!res.ok) throw res;
-
-            const response = await res.json();
-
-            const updatesList = [...profileData.followersList, response];
-            setProfileData({
-                ...profileData,
-                ...{ followersList: updatesList },
-            });
-        } catch (e) {
-            console.error(e);
+        if (!res.ok) {
+            const errors = await res.json();
+            showErrors([errors]);
+            return;
         }
+
+        const follow = await res.json();
+
+        setCurrentUser((currentUser) => ({
+            ...currentUser,
+            following: {
+                ...currentUser.following,
+                [follow.following_id]: follow,
+            },
+        }));
     };
 
-    const unfollowUser = async (e) => {
-        e.preventDefault();
-        const body = { userId: currentUser.id, userFollowedId: profileId };
+    const unfollowUser = async () => {
         try {
-            const res = await fetch(`/api/follow`, {
+            const res = await fetch(`/api/follow/${profileId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(body),
             });
 
-            if (!res.ok) throw res;
+            if (!res.ok) {
+                const errors = await res.json();
+                showErrors([errors]);
+                return;
+            }
 
-            const response = await res.json();
-            const { user_id: deletedId } = response;
-
-            const filteredList = profileData.followersList.filter(
-                (user) => user.user_id !== deletedId
-            );
-            setProfileData({
-                ...profileData,
-                ...{ followersList: filteredList },
-            });
+            const follow = await res.json();
+            const newFollows = { ...currentUser.following };
+            delete newFollows[follow.following_id];
+            setCurrentUser((currentUser) => ({
+                ...currentUser,
+                following: newFollows,
+            }));
         } catch (e) {
             console.error(e);
         }
@@ -326,7 +330,9 @@ const ProfileHeader = (props) => {
                             <Link to='/accounts/edit'>
                                 <button>Edit Profile</button>
                             </Link>
-                        ) : currentUserFollowingList.includes(profileId) ? (
+                        ) : Object.keys(currentUser.following)
+                              .map((key) => Number(key))
+                              .includes(profileId) ? (
                             <button
                                 style={{ width: '85px' }}
                                 onClick={unfollowUser}
@@ -352,7 +358,9 @@ const ProfileHeader = (props) => {
                 <ProfileHeaderBig>
                     <BigProfileImageWrapper
                         onClick={
-                            currentUser.id === profileId ? changeProfImg : ''
+                            currentUser.id === profileId
+                                ? changeProfImg
+                                : () => {}
                         }
                     >
                         <img
@@ -385,7 +393,9 @@ const ProfileHeader = (props) => {
                                         Edit Profile
                                     </button>
                                 </Link>
-                            ) : currentUserFollowingList.includes(profileId) ? (
+                            ) : Object.keys(currentUser.following)
+                                  .map((key) => Number(key))
+                                  .includes(profileId) ? (
                                 <button
                                     className='big-profile__editProfile-button'
                                     onClick={unfollowUser}
@@ -414,7 +424,7 @@ const ProfileHeader = (props) => {
                         <div className='big-profile-details'>
                             <div className='big-profile__detail'>
                                 <span style={{ fontWeight: 'bold' }}>
-                                    {numPosts}
+                                    {posts.length}
                                 </span>{' '}
                                 posts
                             </div>
@@ -424,7 +434,7 @@ const ProfileHeader = (props) => {
                                 onClick={() => setIsFollowersOpen(true)}
                             >
                                 <span style={{ fontWeight: 'bold' }}>
-                                    {profileData.followersList.length}
+                                    {followers.length}
                                 </span>{' '}
                                 followers
                             </div>
@@ -434,7 +444,7 @@ const ProfileHeader = (props) => {
                                 onClick={() => setIsFollowingOpen(true)}
                             >
                                 <span style={{ fontWeight: 'bold' }}>
-                                    {profileData.followingList.length}
+                                    {following.length}
                                 </span>{' '}
                                 following
                             </div>

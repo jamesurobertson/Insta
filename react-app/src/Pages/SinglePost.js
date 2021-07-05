@@ -51,7 +51,11 @@ const SinglePost = (props) => {
         <>
             <SinglePostWrapper>
                 <PostHeader {...post} isSinglePost={true} />
-                <PhotoImagePost id={id} postImg={post.image_url} />
+                <PhotoImagePost
+                    id={id}
+                    postImg={post.image_url}
+                    setLoad={setLoad}
+                />
                 <IconPost isSinglePost={true} {...post} />
                 <PostCommentSection {...post} isSinglePost={true} />
                 <CommentInputField {...post} isSinglePost={true} />

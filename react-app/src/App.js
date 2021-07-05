@@ -74,8 +74,8 @@ function App() {
                     return obj;
                 }, {});
                 setCurrentUser(user);
-                setLoaded(true);
             }
+            setLoaded(true);
         })();
     }, [setCurrentUser]);
 
