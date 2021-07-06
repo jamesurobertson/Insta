@@ -105,20 +105,21 @@ const ExploreGrid = (props) => {
     const fetchMore = () => {
         if (!currentUser.id) return;
         (async () => {
-            setLoad(true);
+            if (load) return;
             const len = toRender.length;
             try {
                 const res = await fetch(`/api/post/scroll/${len * 3}`);
-                const obj = await res.json();
+                setLoad(true);
+                const { posts } = await res.json();
 
-                let photoArray = obj.posts;
+                let photoArray = posts;
 
                 if (photoArray.length < 3) {
                     setHasMore(false);
                 }
 
                 const componentToRender = getTemplate(len, photoArray);
-                setToRender([...toRender, ...componentToRender]);
+                setToRender((toRender) => [...toRender, ...componentToRender]);
                 setLoad(false);
             } catch {
                 setHasMore(false);
@@ -133,7 +134,6 @@ const ExploreGrid = (props) => {
         <ExploreGridWrapper key='gridWrapper'>
             <InfiniteScroll
                 initialLoad={true}
-                pageStart={4}
                 loadMore={fetchMore}
                 hasMore={hasMore}
             >

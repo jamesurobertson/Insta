@@ -57,19 +57,21 @@ const Home = () => {
 
     const [feedPosts, setFeedPosts] = useState([]);
     const [hasMore, setHasMore] = useState(true);
-    const [load, setLoad] = useState(true);
+    const [load, setLoad] = useState(false);
 
     const loadMore = () => {
         if (!currentUser.id) return;
 
         (async () => {
-            setLoad(true);
-            if (postOrder.size > feedPosts.length) return;
+            if (load) return;
             const res = await fetch(`/api/post/user/scroll/${postOrder.size}`);
-
+            setLoad(true);
             if (!res.ok) throw res;
 
             const { posts } = await res.json();
+            if (posts.length < 3) {
+                setHasMore(false);
+            }
             let obj = posts.reduce(
                 (obj, post) => {
                     obj.posts = { ...obj.posts, [post.id]: post };
@@ -90,9 +92,7 @@ const Home = () => {
     };
 
     useEffect(() => {
-        if (!postOrder.size) return;
         let nodeList = [];
-
         postOrder.forEach((postId) => {
             nodeList.push(
                 <Post key={`feedPost-${postId}`} post={posts[postId]} />
@@ -100,10 +100,6 @@ const Home = () => {
         });
 
         setFeedPosts(nodeList);
-
-        if (postOrder.size < 3) {
-            setHasMore(false);
-        }
 
         setLoad(false);
     }, [posts, postOrder]);
@@ -118,11 +114,7 @@ const Home = () => {
                         <Loading load={load} setLoad={setLoad} />
                     </LoadingWrapper>
                     <Feed>
-                        <InfiniteScroll
-                            pageStart={0}
-                            loadMore={loadMore}
-                            hasMore={hasMore}
-                        >
+                        <InfiniteScroll loadMore={loadMore} hasMore={hasMore}>
                             {feedPosts}
                         </InfiniteScroll>
                     </Feed>

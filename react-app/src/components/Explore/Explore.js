@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { backendURL } from '../../config';
 
 import ExploreGrid from './ExploreGrid';
 import SearchGrid from './SearchGrid';
@@ -8,9 +7,6 @@ import SearchGrid from './SearchGrid';
 const ExploreWrapper = styled.div`
     margin-top: 54px;
     padding-top: 10px;
-
-    h1 {
-    }
 
     .searchBox,
     .searchResult {
@@ -54,7 +50,6 @@ const Explore = () => {
             const res = await fetch(`/api/search?query=${queryLower}`);
 
             const { results } = await res.json();
-            console.log(results);
 
             setQueryRes(results);
         } catch (e) {
@@ -72,20 +67,10 @@ const Explore = () => {
                 ></input>
             </div>
 
-            {queryRes.length === 0 && query === '' ? (
+            {!query ? (
                 <ExploreGrid />
             ) : (
-                <>
-                    <div className='searchResult'>
-                        <h1>
-                            {queryRes.length === 0
-                                ? 'No Results Found'
-                                : `Search Results for: ${query}`}
-                        </h1>
-                    </div>
-
-                    <SearchGrid queryRes={queryRes} query={query} />
-                </>
+                <SearchGrid queryRes={queryRes} query={query} />
             )}
         </ExploreWrapper>
     );

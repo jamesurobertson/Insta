@@ -4,6 +4,33 @@ import styled from 'styled-components';
 import CommentNotification from './CommentNotification';
 import FollowNotification from './FollowNotification';
 import LikeNotification from './LikeNotification';
+import Loading from '../Loading/Loading';
+
+const LoadingWrapper = styled.div`
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeOut {
+        from {
+            opacity: 1;
+        }
+        to {
+            opacity: 0;
+        }
+    }
+
+    opacity: 0;
+    animation-name: fadeIn;
+    animation-duration: 2s;
+    animation-fill-mode: forwards;
+    z-index: -1;
+`;
 
 const NotificationsWrapper = styled.div`
     display: flex;
@@ -49,22 +76,22 @@ const NotificationsWrapper = styled.div`
 
 const Notifications = () => {
     const [toRender, setToRender] = useState([]);
+    const [load, setLoad] = useState(false);
     const [count, setCount] = useState('0+0+0+0');
     const [hasMore, setHasMore] = useState(true);
 
     const loadMore = () => {
         (async () => {
+            if (load) return;
             try {
                 const res = await fetch(`/api/note/scroll/${count}`);
-
+                setLoad(true);
                 if (!res.ok) throw res;
 
                 const {
                     notes,
                     count: { comment, follow, post_like, comment_like },
                 } = await res.json();
-
-                
 
                 setCount(`${comment}+${follow}+${post_like}+${comment_like}`);
                 const nodeList = notes.map((note, i) => {
@@ -103,9 +130,10 @@ const Notifications = () => {
                 });
 
                 setToRender((toRender) => [...toRender, ...nodeList]);
-
+                setLoad(false);
                 if (notes.length === 0) {
                     setHasMore(false);
+                    setLoad(false);
                 }
             } catch (e) {
                 console.error(e);
@@ -124,6 +152,9 @@ const Notifications = () => {
             >
                 {toRender}
             </InfiniteScroll>
+            <LoadingWrapper>
+                <Loading load={load} />
+            </LoadingWrapper>
         </NotificationsWrapper>
     );
 };

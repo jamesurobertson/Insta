@@ -14,14 +14,24 @@ import {
 const LoadingWrapper = styled.div`
     .positioner {
         position: fixed;
-        top: calc(50% - 20vh);
+        bottom: -21vh;
+        /* top: calc(50% - 20vh); */
         left: calc(50% - 12.5vh);
-        z-index: 12;
+        z-index: -1;
         width: 40vh;
         height: 40vh;
     }
     opacity: 0;
     animation: ${inOut} 2s linear 0s forwards;
+    .positioner2 {
+        position: fixed;
+        bottom: -21vh;
+
+        left: calc(50% - 12.5vh);
+        z-index: 12;
+        width: 40vh;
+        height: 40vh;
+    }
 
     .box {
         position: absolute;
@@ -33,8 +43,9 @@ const LoadingWrapper = styled.div`
     .color {
         height: 10vh;
         width: 10vh;
-        opacity: 0.5;
+        opacity: 0.7;
         border-radius: 50%;
+        border: black solid 2pt;
     }
 
     .for-color {
