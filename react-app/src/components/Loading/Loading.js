@@ -26,7 +26,6 @@ const LoadingWrapper = styled.div`
     .positioner2 {
         position: fixed;
         bottom: -21vh;
-
         left: calc(50% - 12.5vh);
         z-index: 12;
         width: 40vh;
@@ -108,6 +107,11 @@ const LoadingWrapper = styled.div`
     }
     .blue2 {
         background-color: blue;
+    }
+    @media screen and (max-width: 475px) {
+        .positioner {
+            bottom: calc(-21vh + 54px);
+        }
     }
 `;
 
