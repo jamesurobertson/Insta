@@ -1,7 +1,7 @@
 
 
 # Isntgram
-*By James Robertson, Mylo James, and Aaron Pierskalla - [Visit Isntgram](http://isntgram.herokuapp.com/)*
+*By James Robertson, Mylo James, and Aaron Pierskalla - [Visit Isntgram](https://isntgram-app.herokuapp.com/)*
 
 **Table of Contents**
 * [Technologies Used](#technologies-used)
